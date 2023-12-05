@@ -1,0 +1,24 @@
+---
+const { frontmatter } = Astro.props;
+import BaseLayout from "./BaseLayout.astro";
+import SingleColumnProse from "../components/SingleColumnProse.astro";
+---
+
+<BaseLayout title={frontmatter.title}>
+  <SingleColumnProse>
+    <h1>{frontmatter.title}</h1>
+    <p>Published on: {frontmatter.pubDate.slice(0, 10)}</p>
+    <p>Written by {frontmatter.author}</p>
+    <p>Tags:</p>
+    <ul>
+      {
+        frontmatter.tags.map((tag: string) => (
+          <li>
+            <a href={`/tags/${tag}`}>{tag}</a>
+          </li>
+        ))
+      }
+    </ul>
+    <slot />
+  </SingleColumnProse>
+</BaseLayout>
