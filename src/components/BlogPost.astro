@@ -1,0 +1,61 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  url: string;
+  title: string;
+  pubDate: string;
+  description: string;
+  image: {
+    url: string;
+    alt: string;
+  };
+  author: string;
+}
+
+const { url, title, pubDate, description, image, author }: Props = Astro.props;
+
+const dateObject = new Date(pubDate);
+
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const formattedDate = `${dateObject.getDate()} ${
+  months[dateObject.getMonth() - 1]
+} ${dateObject.getFullYear()}`;
+
+import blogSampleImage from "../images/blogSample.jpg";
+---
+
+<article>
+  <a href={url}>
+    <div class="card max-w-full bg-base-100 shadow-xl">
+      <figure>
+        <Image src={blogSampleImage} alt={image.alt} width="384" height="126" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title">
+          {title}
+        </h2>
+        <div class="opacity-70">
+          <p class="pb-2">{description}</p>
+          <p class="text-xs">
+            <time datetime={pubDate}>{formattedDate}</time> by {author}
+          </p>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>

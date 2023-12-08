@@ -1,9 +1,15 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import SingleColumnProse from "../../components/SingleColumnProse.astro";
+import type {
+  InferGetStaticParamsType,
+  InferGetStaticPropsType,
+  GetStaticPaths,
+  MarkdownInstance,
+} from "astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 
-export async function getStaticPaths() {
-  const allPosts = await Astro.glob("../posts/*.md");
+export const getStaticPaths = (async () => {
+  const allPosts: MarkdownInstance<Record<string, any>>[] =
+    await Astro.glob("../posts/*.md");
 
   const uniqueTags = [
     ...new Set(allPosts.map((post) => post.frontmatter.tags).flat()),
@@ -11,30 +17,28 @@ export async function getStaticPaths() {
 
   return uniqueTags.map((tag) => {
     const filteredPosts = allPosts.filter((post) =>
-      post.frontmatter.tags.includes(tag),
+      post.frontmatter.tags?.includes(tag),
     );
-    return {
-      params: { tag },
-      props: { posts: filteredPosts },
-    };
+    return { params: { tag }, props: { posts: filteredPosts } };
   });
-}
+}) satisfies GetStaticPaths;
 
-const { tag } = Astro.params;
-const { posts } = Astro.props;
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { tag } = Astro.params as Params;
+const { posts } = Astro.props as Props;
 ---
 
-<BaseLayout title={tag}>
-  <SingleColumnProse>
-    <h1>Posts tagged with <em>{tag}</em>:</h1>
-    <ul>
-      {
-        posts.map((post) => (
-          <li>
-            <a href={post.url}>{post.frontmatter.title}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </SingleColumnProse>
-</BaseLayout>
+<PageLayout title={tag}>
+  <h1>Posts tagged with: <em>{tag}</em></h1>
+  <ul>
+    {
+      posts.map((post) => (
+        <li>
+          <a href={post.url}>{post.frontmatter.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>

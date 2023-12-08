@@ -1,0 +1,14 @@
+/* Light and dark mode colors. */
+:root {
+  --sl-color-accent-low: oklch(var(--sc));
+  --sl-color-accent: oklch(var(--a));
+  --sl-color-accent-high: oklch(var(--p));
+  --sl-color-white: oklch(var(--bc) / 1);
+  --sl-color-gray-1: oklch(var(--bc) / 0.8);
+  --sl-color-gray-2: oklch(var(--bc) / 0.8);
+  --sl-color-gray-3: oklch(var(--n));
+  --sl-color-gray-4: oklch(var(--n));
+  --sl-color-gray-5: oklch(var(--n));
+  --sl-color-gray-6: oklch(var(--b1));
+  --sl-color-black: oklch(var(--b2) / 1);
+}
