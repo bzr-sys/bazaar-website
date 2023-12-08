@@ -1,6 +1,5 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-
 import starlight from "@astrojs/starlight";
 
 // https://astro.build/config
@@ -26,5 +25,5 @@ export default defineConfig({
       ],
     }),
   ],
-  site: "https://example.com", // add Netlify URL, for RSS Feed
+  site: "https://rethinkid-website.netlify.app",
 });
