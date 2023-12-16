@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+
+const allFeatures = await getCollection("features");
+const orderedFeatures = allFeatures.sort((a, b) =>
+  a.data.order < b.data.order ? -1 : 1,
+);
+---
+
+<div class="grid gap-4 px-4 py-8 lg:grid-cols-3">
+  {
+    orderedFeatures.map((f) => (
+      <div class="card w-full bg-neutral shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">{f.data.title}</h2>
+          <p>{f.data.summary}</p>
+          <div class="card-actions justify-end">
+            <a href={`/${f.collection}/${f.slug}`} class="btn btn-primary">
+              Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</div>

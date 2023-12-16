@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+const allFeatures = await getCollection("features");
+const orderedFeatures = allFeatures.sort((a, b) =>
+  a.data.order < b.data.order ? -1 : 1,
+);
+---
+
+{
+  orderedFeatures.map((f) => (
+    <li>
+      <a href={`/${f.collection}/${f.slug}`} class="link-hover link">
+        {f.data.title}
+      </a>
+    </li>
+  ))
+}

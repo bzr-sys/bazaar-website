@@ -1,0 +1,12 @@
+---
+import BigTitle from "../components/BigTitle.astro";
+import FeaturesSummary from "../components/FeaturesSummary.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Features";
+---
+
+<BaseLayout title={title}>
+  <BigTitle>{title}</BigTitle>
+  <FeaturesSummary />
+</BaseLayout>

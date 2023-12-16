@@ -1,27 +1,36 @@
+---
+import FeaturesLinkItems from "./FeaturesLinkItems.astro";
+import FooterUl from "./FooterUl.astro";
+---
+
 <footer class="footer bg-base-200 p-10 text-base-content">
   <nav>
     <header class="footer-title">Features</header>
-    <a class="link-hover link">Free for developers</a>
-    <a class="link-hover link">Identity</a>
-    <a class="link-hover link">Realtime data storage</a>
-    <a class="link-hover link">Social</a>
-    <a class="link-hover link">Sharing</a>
+    <FooterUl>
+      <FeaturesLinkItems />
+    </FooterUl>
   </nav>
   <nav>
     <header class="footer-title">Company</header>
-    <a href="/about" class="link-hover link">About</a>
-    <a href="/contact" class="link-hover link">Contact</a>
-    <a href="/customers" class="link-hover link">Customers</a>
-    <a href="/careers" class="link-hover link">Careers</a>
-    <a href="/press" class="link-hover link">Press</a>
+    <FooterUl>
+      <li><a href="/about" class="link-hover link">About</a></li>
+      <li><a href="/contact" class="link-hover link">Contact</a></li>
+      <li><a href="/customers" class="link-hover link">Customers</a></li>
+      <li><a href="/careers" class="link-hover link">Careers</a></li>
+      <li><a href="/press" class="link-hover link">Press</a></li>
+    </FooterUl>
   </nav>
+
   <nav>
     <header class="footer-title">Legal</header>
-    <a href="/terms" class="link-hover link">Terms of use</a>
-    <a href="/privacy" class="link-hover link">Privacy policy</a>
-    <a href="/cookies" class="link-hover link">Cookie policy</a>
+    <FooterUl>
+      <li><a href="/terms" class="link-hover link">Terms of use</a></li>
+      <li><a href="/privacy" class="link-hover link">Privacy policy</a></li>
+      <li><a href="/cookies" class="link-hover link">Cookie policy</a></li>
+    </FooterUl>
   </nav>
 </footer>
+
 <footer
   class="footer border-t border-base-300 bg-base-200 px-10 py-4 text-base-content"
 >

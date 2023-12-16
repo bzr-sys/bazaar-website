@@ -2,11 +2,11 @@
 import PageLayout from "../../layouts/PageLayout.astro";
 const allPosts = await Astro.glob("../posts/*.md");
 const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
-const pageTitle = "Tag Index";
+const pageTitle = "Blog Tags";
 ---
 
 <PageLayout title={pageTitle}>
-  <h1>Blog Tags</h1>
+  <h1>{pageTitle}</h1>
   <ul>
     {
       tags.map((tag) => (
