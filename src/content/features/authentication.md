@@ -1,15 +1,43 @@
 ---
 title: Authentication
-summary: Clouded streamlines app authentication with an easy-to-integrate login() method and secure OAuth flow, offering seamless user authorization and token management for enhanced security and developer convenience.
+summary: RethinkID enhances app authentication with a simple API and robust OAuth flow, ensuring secure authorization and efficient token management for improved security and developer experience.
 order: 4
 ---
 
-Clouded simplifies the authentication process for app developers with a secure and user-friendly approach. Our SDK's login() method, easily integrated into any part of your application, initiates a straightforward authentication flow. By attaching this method to a button click, users are presented with a pop-up directing them to Clouded's OAuth page. New users can quickly create a Clouded account, while existing users are prompted to authorize the app, streamlining the login process for all parties.
+RethinkID Authentication offers a straightforward and secure solution right out of the box.
 
-Our robust system follows the OAuth Code Exchange flow with PKCE, ensuring high security standards. Once the user authorizes the app, our SDK seamlessly handles the exchange of the auth code for a JWT access token. This token is then used to authenticate backend requests, integrating effortlessly with Clouded's database services.
+## RethinkID OAuth Process
 
-By choosing Clouded, developers can eliminate the complexity and security concerns of implementing authentication, allowing them to focus on creating exceptional user experiences.
+RethinkID-powered apps require end-users to have a RethinkID account. Authentication is done via a user's account, where they authorize their chosen apps. The authentication flow takes place in a RethinkID pop-up. Users can then manage app authorization from their RethinkID Dashboard.
 
-///
+## Intuitive SDK for Quick Integration
 
-SDK stores access tokens in local storage automatically and adds the token when making a Socket.IO connection. No need to manually store access tokens and pass with each request.
+Create a sign-up or login request:
+
+```ts
+rethinkid.login();
+```
+
+The `login` method opens a login pop-up window. A user first creates a RethinkID account (or logs in to their existing RethinkID account), then authorizes your app. After authorizing your app, the pop-up window closes, and the SDK stores an access token in local storage. The user is now logged in, and a connection to the Data API is made.
+
+Verify user login status:
+
+```ts
+rethinkid.isLoggedIn();
+```
+
+Customize your login flow by setting a callback:
+
+```ts
+rethinkid.onLogin(async () => {
+  // Custom login handling
+});
+```
+
+## Simplified Permissions
+
+Leveraging RethinkID's database-per-user architecture, users gain immediate access to their databases, bypassing the need for complex access policies. For more refined control, the [Sharing API](/docs) allows assigning permissions with precision.
+
+## Technical Backbone
+
+Underneath, RethinkID Authentication utilizes the OAuth2 Authorization Code Flow with PKCE extension, ensuring enhanced security. After authorization, a JWT access token is issued. Our SDK simplifies the process, managing login requests, auth code exchanges for access tokens, token storage, and integration with users' [realtime database](/features/realtime-databases), creating a cohesive and secure user experience.
