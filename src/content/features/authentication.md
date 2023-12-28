@@ -8,7 +8,7 @@ RethinkID Authentication offers a straightforward and secure solution right out 
 
 ## RethinkID OAuth Process
 
-RethinkID-powered apps require end-users to have a RethinkID account. Authentication is done via a user's account, where they authorize their chosen apps. The authentication flow takes place in a RethinkID pop-up. Users can then manage app authorization from their RethinkID Dashboard.
+RethinkID-powered apps require users to have a RethinkID account. Authentication is done via a user's account, where they authorize their chosen apps. The authentication flow takes place in a RethinkID pop-up. Users can then manage app authorization from their RethinkID Dashboard.
 
 ## Intuitive SDK for Quick Integration
 

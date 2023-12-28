@@ -24,14 +24,14 @@ const task = tasksCollection.getOne(1);
 
 ## Database-per-user Architecture
 
-RethinkID employs a database architecture where each end-user is assigned
+RethinkID employs a database architecture where each user is assigned
 an individual database for your app through their RethinkID account. This
-approach allows end-users manage their authorized apps, and handle their app-specific data including viewing, exporting, or deleting, through
+approach allows users manage their authorized apps, and handle their app-specific data including viewing, exporting, or deleting, through
 their RethinkID dashboard, thereby supporting better data privacy and
 ownership practices.
 
-Screenshot of the RethinkID admin dashboard for end-users
+Screenshot of the RethinkID admin dashboard for users
 
 The per-user-per-app database model provides simplified access management. It eliminates the need for configuring access policies, as users have automatic access to their databases.
 
-Granting access to an another user's data can be done conveniently with the [Permissions API](/docs).
+Granting access to an another user's data can be done conveniently with the [Sharing API](/docs).
