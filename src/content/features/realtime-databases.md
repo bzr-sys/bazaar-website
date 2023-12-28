@@ -1,6 +1,6 @@
 ---
 title: NoSQL Realtime Databases
-summary: Clouded's document-orientated per-user database architecture streamlines development and enhances data privacy, featuring an intuitive SDK for efficient realtime operations.
+summary: RethinkID's document-orientated per-user database architecture streamlines development and enhances data privacy, featuring an intuitive SDK for efficient realtime operations.
 order: 3
 ---
 
