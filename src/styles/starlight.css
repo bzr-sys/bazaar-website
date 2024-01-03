@@ -6,7 +6,8 @@
   --sl-color-white: oklch(var(--bc) / 1);
   --sl-color-gray-1: oklch(var(--bc) / 0.8);
   --sl-color-gray-2: oklch(var(--bc) / 0.8);
-  --sl-color-gray-3: oklch(var(--n));
+  /* "On this page" menu item color */
+  /* --sl-color-gray-3: oklch(var(--n)); */
   --sl-color-gray-4: oklch(var(--n));
   --sl-color-gray-5: oklch(var(--n));
   --sl-color-gray-6: oklch(var(--b1));

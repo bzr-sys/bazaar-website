@@ -28,6 +28,18 @@ export default defineConfig({
             directory: "docs/guides",
           },
         },
+        {
+          label: "Features",
+          autogenerate: {
+            directory: "docs/features",
+          },
+        },
+        {
+          label: "Tutorials",
+          items: [
+            { label: "Create a Vue.js Battleship App", link: "/blog/post-1" },
+          ],
+        },
       ],
     }),
   ],

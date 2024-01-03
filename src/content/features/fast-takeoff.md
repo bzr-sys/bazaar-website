@@ -1,16 +1,15 @@
 ---
 title: Fast Takeoff
-summary: RethinkID's architecture delivers a lightning-fast TTFA (Time To First App). Streamlined authentication, schema-less document-orientated databases, zero access policy configuration, and lazy collection creation enable developers to launch apps quickly and focus on innovation.
+summary: RethinkID helps achieve a fast TTFA (Time To First App). Streamlined authentication, schema-less document-orientated databases, no access policy configuration, and lazy collection creation enable developers to launch apps quickly and focus on innovation.
 order: 2
 ---
 
-RethinkID revolutionizes the development process with its lightning-fast TTFA (Time To First App), enabling developers to launch applications swiftly and efficiently. The [database-per-user-per-app architecture](../features/realtime-databases) eliminates the need for complex access policies, as users can automatically access their databases. This streamlined approach is further enhanced by optional lazy collection creation and a schema-less, document-oriented database design for maximum flexibility.
+RethinkID helps achieve a fast TTFA (Time To First App), enabling developers to launch applications swiftly and efficiently.
 
-Additionally, the SDK simplifies [authentication](../features/authentication) by automatically storing access tokens in local storage and seamlessly authenticating them with data API connection connections. This authentication process removes the hassle of manual token management and ensures secure, effortless communication in your applications.
+## Low Friction Data Access
 
-With RethinkID, you can focus on building great features rather than getting bogged down in setup and configuration.
+The [database-per-user-per-app architecture](../features/realtime-databases) eliminates the need for complex access policies, as users can automatically access their databases. Development friction is further reduced by lazy collection creation and a schema-less, document-oriented database design for maximum flexibility.
 
-## TODO
+## Streamlined Authentication
 
-- Show auth flow code snippets
-- Show database architecture diagram
+The RethinkID SDK simplifies the [authentication](../features/authentication) process, managing login requests, auth code exchanges for access tokens, token storage, and integration with users' [realtime database](/features/realtime-databases), creating a cohesive and secure user experience.

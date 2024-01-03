@@ -11,14 +11,14 @@ Databases are document-orientated, with no need to create or enforce schemas. Da
 Create a document:
 
 ```ts
-const tasksCollection = rethinkid.collection("tasks");
+const tasksCollection = rethinkId.collection("tasks");
 const id = tasksCollection.insert({ id: 1, name: "Do laundry" });
 ```
 
 Read a document:
 
 ```ts
-const tasksCollection = rethinkid.collection("tasks");
+const tasksCollection = rethinkId.collection("tasks");
 const task = tasksCollection.getOne(1);
 ```
 

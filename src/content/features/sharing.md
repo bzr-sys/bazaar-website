@@ -1,14 +1,73 @@
 ---
 title: Sharing
-summary: RethinkID's Sharing feature set offers a robust Sharing API for realtime collaboration, allowing precise control over database access and the ability to react to changes in shared content.
+summary: RethinkID's Sharing API offers powerful features for realtime collaboration, allowing precise control over database access and the ability to react to changes in shared content.
 order: 5
 ---
 
-RethinkID includes a powerful Sharing API, empowering developers to implement sharing and collaboration in their applications. With the database-per-user architecture, users can interact with their data by default. The Sharing API is used to grant access to others. This feature offers granular control over database collections and documents, enabling precise access rights management down to individual document levels.
+RethinkID comes with a powerful Sharing API, empowering developers to implement sharing and collaboration in their applications.
 
-The Sharing API is simple to use but caters to complex sharing scenarios. This control extends to creating shareable links and subscribing to change events, allowing developers to track when a link is created, updated, deleted, or redeemed in realtime. Developers can subscribe to changes in permissions granted to an user.
+With the database-per-user architecture, users can interact with their data by default. The Sharing API facilitates granting access to other users. Permissions can be granted to docs and collections with filters to deliver precise control.
 
-## TODO
+Share a document with a user with read permissions:
 
-- Show diagram with permission granted to another user
-- Show code snippet for permission, maybe
+```ts
+const newPermission = {
+  collectionName: "example-collection-name",
+  userId: "example-user-id",
+  types: ["read"],
+  filter: {
+    id: "example-doc-id",
+  },
+};
+const { id } = await rethinkId.permissions.create(newPermission);
+```
+
+The Sharing API is simple to use but caters to complex scenarios. Subscribe to change events to react to granted permissions changes in realtime.
+
+Subscribe to change events for a granted permission for a collection:
+
+```ts
+rethinkId.permissions.granted.subscribe(
+  { collectionName: "example-collection-name" },
+  async ({ oldDoc, newDoc }) => {
+    if (oldDoc === null && newDoc) {
+      // Granted permission added
+    }
+    if (oldDoc && newDoc === null) {
+      // Granted permission removed 
+    }
+  }
+);
+```
+
+Create share links and similarly subscribe to receive change events when a link is created, updated, deleted, or redeemed in realtime.
+
+Create a share link for a doc will all permissions:
+
+```ts
+const permissionTemplate = {
+  collectionName: "example-collection-name",
+  types: ["read", "insert", "update", "delete"],
+  filter: {
+    id: "example-doc-id",
+  },
+};
+
+const { url } = await rethinkId.permissions.links.create(permissionTemplate);
+```
+
+Sharing can also be managed through a RethinkID modal:
+
+```ts
+const permissionTemplate = {
+  collectionName: "example-collection-name",
+  types: ["read", "insert", "update", "delete"],
+  filter: {
+    id: "example-doc-id",
+  },
+};
+
+rethinkId.permissions.openModal(permissionTemplate);
+```
+
+TODO screenshot modal.

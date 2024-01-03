@@ -1,5 +1,5 @@
 ---
-title: Vue.js Docs
+title: Vue.js
 ---
 
-Vue.js docs go here.
+Get started with RethinkID and Vue.js.

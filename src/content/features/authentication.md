@@ -10,12 +10,12 @@ RethinkID Authentication offers a straightforward and secure solution right out 
 
 RethinkID-powered apps require users to have a RethinkID account. Authentication is done via a user's account, where they authorize their chosen apps. The authentication flow takes place in a RethinkID pop-up. Users can then manage app authorization from their RethinkID Dashboard.
 
-## Intuitive SDK for Quick Integration
+## Simple SDK
 
 Create a sign-up or login request:
 
 ```ts
-rethinkid.login();
+rethinkId.login();
 ```
 
 The `login` method opens a login pop-up window. A user first creates a RethinkID account (or logs in to their existing RethinkID account), then authorizes your app. After authorizing your app, the pop-up window closes, and the SDK stores an access token in local storage. The user is now logged in, and a connection to the Data API is made.
@@ -23,18 +23,18 @@ The `login` method opens a login pop-up window. A user first creates a RethinkID
 Verify user login status:
 
 ```ts
-rethinkid.isLoggedIn();
+rethinkId.isLoggedIn();
 ```
 
 Customize your login flow by setting a callback:
 
 ```ts
-rethinkid.onLogin(async () => {
+rethinkId.onLogin(async () => {
   // Custom login handling
 });
 ```
 
-## Simplified Permissions
+## Simplified Sharing
 
 Leveraging RethinkID's database-per-user architecture, users gain immediate access to their databases, bypassing the need for complex access policies. For more refined control, the [Sharing API](/docs) allows assigning permissions with precision.
 
