@@ -4,6 +4,8 @@ title: Social
 
 Get started with RethinkID Social.
 
+## Open the Social Modal
+
 Open modal:
 
 ```js
@@ -18,7 +20,7 @@ rid.social.openModal((userId) => {
 });
 ```
 
-Get user: 
+## Get a User
 
 ```js
 // Get logged in user
@@ -28,11 +30,15 @@ rid.social.getUser()
 rid.social.getUser("example-user-id")
 ```
 
+## List Contacts
+
 List the contacts of the logged in user:
 
 ```js
 rid.social.contacts.list()
 ```
+
+## Subscribe to Contacts Events
 
 Subscribe to change events for contacts of the logged in user:
 

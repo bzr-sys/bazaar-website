@@ -18,7 +18,7 @@ rid.collections.drop()
 rid.collections.list()
 ```
 
-## Data API - Collection
+## Collection
 
 The most convenient way to interact with a collection is to create a collections object:
 
