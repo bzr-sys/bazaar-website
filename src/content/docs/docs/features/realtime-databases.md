@@ -4,68 +4,74 @@ title: Realtime Databases
 
 Get started with the RethinkID Realtime Databases.
 
-## Fetch data
+## Collections
 
-TODO 
+```js
+rid.collections.create()
+```
 
-## Insert data
+```js
+rid.collections.drop()
+```
 
-TODO 
+```js
+rid.collections.list()
+```
 
-## Update data
+## Data API - Collection
 
-TODO 
+The most convenient way to interact with a collection is to create a collections object:
 
-## Replace data?
+```js
+const collection = rid.collection("example-collection");
+```
 
-TODO 
+```js
+collection.getAll()
+```
 
-## Upsert data??
+```js
+collection.getOne()
+```
 
-TODO 
+```js
+collection.getPage()
+```
 
-## Delete data
+```js
+collection.insertOne()
+```
 
-TODO 
+```js
+collection.updateOne()
+```
 
-## Using filters
+```js
+collection.replaceOne()
+```
 
-TODO 
+```js
+collection.deleteAll()
+```
 
-## Realtime: Subscribe to data
+```js
+collection.deleteOne()
+```
 
-TODO 
+```js
+collection.subscribeAll()
+```
 
-## Handle 'connected to the data API'
+```js
+collection.subscribeOne()
+```
 
-TODO 
+## Connection Callbacks
 
-## Handle connection error
+```js
+rid.onApiConnect()
+```
 
-TODO 
-
-<!-- // rid.onApiConnect()
-// rid.onApiConnectError()
-
-/**
- * Data API - Collection
- */
-
-// rid.collection().getAll
-// rid.collection().getOne
-// rid.collection().getPage // implement! could do for transactions
-// rid.collection().insertOne
-// rid.collection().updateOne
-// rid.collection().replaceOne // implement! how to do this?
-// rid.collection().deleteAll
-// rid.collection().deleteOne
-// rid.collection().subscribeAll
-// rid.collection().subscribeOne // implement! do this for budget I guess,
-
-/**
- * Collections
- */
-
-// rid.collections.create()
-// rid.collections.drop()
-// rid.collections.list() -->
+```js
+rid.onApiConnectError()
+```

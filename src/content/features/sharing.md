@@ -19,7 +19,7 @@ const newPermission = {
     id: "example-doc-id",
   },
 };
-const { id } = await rethinkId.permissions.create(newPermission);
+const { id } = await rid.permissions.create(newPermission);
 ```
 
 The Sharing API is simple to use but caters to complex scenarios. Subscribe to change events to react to granted permissions changes in realtime.
@@ -27,7 +27,7 @@ The Sharing API is simple to use but caters to complex scenarios. Subscribe to c
 Subscribe to change events for a granted permission for a collection:
 
 ```ts
-rethinkId.permissions.granted.subscribe(
+rid.permissions.granted.subscribe(
   { collectionName: "example-collection-name" },
   async ({ oldDoc, newDoc }) => {
     if (oldDoc === null && newDoc) {
@@ -53,7 +53,7 @@ const permissionTemplate = {
   },
 };
 
-const { url } = await rethinkId.permissions.links.create(permissionTemplate);
+const { url } = await rid.permissions.links.create(permissionTemplate);
 ```
 
 Sharing can also be managed through a RethinkID modal:
@@ -67,7 +67,7 @@ const permissionTemplate = {
   },
 };
 
-rethinkId.permissions.openModal(permissionTemplate);
+rid.permissions.openModal(permissionTemplate);
 ```
 
 TODO screenshot modal.

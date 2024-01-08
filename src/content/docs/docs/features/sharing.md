@@ -2,25 +2,58 @@
 title: Sharing
 ---
 
-Get started with RethinkID Sharing.
+RethinkID Sharing documentation.
 
-## Share a resource
+Open the sharing modal:
 
-TODO
+```ts
+const permissionTemplate = {
+  collectionName: "example-collection-name",
+  types: ["read", "insert", "update", "delete"],
+  filter: {
+    id: "example-doc-id",
+  },
+};
 
-<!-- // rid.permissions.openModal()
+rid.permissions.openModal(permissionTemplate);
+```
 
-// rid.permissions.granted.
-// - rid.permissions.granted.list()
-// - rid.permissions.granted.delete()
-// - rid.permissions.granted.subscribe()
+```js
+rid.permissions.granted.list()
+```
 
-// rid.permissions.create()
-// rid.permissions.delete()
-// rid.permissions.list()
+```js
+rid.permissions.granted.delete()
+```
 
-// rid.permissions.links.
-// - rid.permissions.links.create()
-// - rid.permissions.links.list()
-// - rid.permissions.links.delete()
-// - rid.permissions.links.subscribe() -->
+```js
+rid.permissions.granted.subscribe()
+```
+
+```js
+rid.permissions.create()
+```
+
+```js
+rid.permissions.delete()
+```
+
+```js
+rid.permissions.list()
+```
+
+```js
+rid.permissions.links.create()
+```
+
+```js
+rid.permissions.links.list()
+```
+
+```js
+rid.permissions.links.delete()
+```
+
+```js
+rid.permissions.links.subscribe()
+```

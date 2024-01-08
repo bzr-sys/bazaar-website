@@ -2,27 +2,40 @@
 title: Auth
 ---
 
-Get started with RethinkID Auth.
+RethinkID Auth documentation.
 
-## Create a new new
+Create a new user or Log in:
 
-TODO
+```js
+// Add as a button click handler
+rid.login()
+```
 
-## Sign in a user
+Log out a user:
 
-TODO
+```js
+// Add as a button click handler
+rid.logOut()
+```
 
-## Sign out a user
+Check if user is logged in:
 
-TODO
+```js
+rid.isLoggedIn()
+```
 
-## Handle 'user is signed in'
+Handle a successful log in:
 
-TODO
+```js
+rid.onLogin(() => {
+  // Handle user log in
+});
+```
 
+Handle a log in error:
 
-<!-- // rid.isLoggedIn()
-// rid.logOut()
-// rid.login()
-// rid.onLogin()
-// rid.onLoginError() -->
+```js
+rid.onLoginError(() => {
+  // Handle log in error
+});
+```

@@ -15,7 +15,7 @@ RethinkID-powered apps require users to have a RethinkID account. Authentication
 Create a sign-up or login request:
 
 ```ts
-rethinkId.login();
+rid.login();
 ```
 
 The `login` method opens a login pop-up window. A user first creates a RethinkID account (or logs in to their existing RethinkID account), then authorizes your app. After authorizing your app, the pop-up window closes, and the SDK stores an access token in local storage. The user is now logged in, and a connection to the Data API is made.
@@ -23,13 +23,13 @@ The `login` method opens a login pop-up window. A user first creates a RethinkID
 Verify user login status:
 
 ```ts
-rethinkId.isLoggedIn();
+rid.isLoggedIn();
 ```
 
 Customize your login flow by setting a callback:
 
 ```ts
-rethinkId.onLogin(async () => {
+rid.onLogin(async () => {
   // Custom login handling
 });
 ```

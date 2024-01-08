@@ -4,13 +4,48 @@ title: Social
 
 Get started with RethinkID Social.
 
-## Get a User
+Open modal:
 
-TODO
+```js
+rid.social.openModal()
+```
 
-<!-- // rid.social.openModal()
+Open model and pass a callback to do something with the user ID selected in the modal:
 
-// rid.social.getUser()
+```js
+rid.social.openModal((userId) => {
+  // do something with userId
+});
+```
 
-// rid.social.contacts.list
-// rid.social.contacts.subscribe -->
+Get user: 
+
+```js
+// Get logged in user
+rid.social.getUser()
+
+// Get user by ID
+rid.social.getUser("example-user-id")
+```
+
+List the contacts of the logged in user:
+
+```js
+rid.social.contacts.list()
+```
+
+Subscribe to change events for contacts of the logged in user:
+
+```js
+rid.social.contacts.subscribe(({ newDoc, oldDoc }) => {
+  if (newDoc && !oldDoc) {
+    // Contact added
+  }
+  if (newDoc && oldDoc) {
+    // Contact updated
+  }
+  if (!newDoc && oldDoc) {
+    // Contact deleted
+  }
+});
+```
