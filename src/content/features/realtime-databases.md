@@ -1,7 +1,7 @@
 ---
 title: NoSQL Realtime Databases
 summary: RethinkID's document-orientated per-user database architecture streamlines development and enhances data privacy, featuring an intuitive SDK for efficient realtime operations.
-order: 3
+order: 5
 ---
 
 Databases are document-orientated, with no need to create or enforce schemas. Database collections are lazily created, enabling you to get your apps up and running quicker.

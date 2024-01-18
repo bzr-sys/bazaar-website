@@ -1,7 +1,7 @@
 ---
 title: Authentication
 summary: RethinkID enhances app authentication with a simple API and robust OAuth flow, ensuring secure authorization and efficient token management for improved security and developer experience.
-order: 4
+order: 6
 ---
 
 RethinkID Authentication offers a straightforward and secure solution right out of the box.

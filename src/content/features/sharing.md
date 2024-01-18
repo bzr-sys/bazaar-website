@@ -1,7 +1,7 @@
 ---
 title: Sharing
 summary: RethinkID's Sharing API offers powerful features for realtime collaboration, allowing precise control over database access and the ability to react to changes in shared content.
-order: 5
+order: 7
 ---
 
 RethinkID comes with a powerful Sharing API, empowering developers to implement sharing and collaboration in their applications.

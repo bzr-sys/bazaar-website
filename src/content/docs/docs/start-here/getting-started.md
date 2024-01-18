@@ -2,17 +2,17 @@
 title: Getting Started
 ---
 
-Getting started with RethinkID is quick and easy. To being, you create a RethinkID account, then create a RethinkID App. Next, you install the JavaScript SDK, configure an instance of the SDK, then create and log in a user before interacting with data.
+Getting started with RethinkID is quick and easy. To being, you create a RethinkID account, then create a RethinkID Project and register your app. Next, you install the JavaScript SDK, configure an instance of the SDK, then create and log in a user before interacting with data.
 
 ## Create a RethinkID Account
 
 To begin, [create a RethinkID account](https://id.rethinkdb.cloud/login).
 
-## Create a RethinkID App
+## Create a RethinkID Project
 
 On your RethinkID dashboard go to the Developers section by clicking [**Developers**](https://id.rethinkdb.cloud/developers).
 
-Next, click **Create App**.
+Next, click **Create Project**.
 
 - Give your app a name.
 - Add your app's URL.
@@ -32,11 +32,11 @@ Or, load it from a CDN:
 <script src="https://unpkg.com/@rethinkid/rethinkid-js-sdk"></script>
 ```
 
-## Create a SDK Client
+## Create an SDK Client
 
 ```js
 const rethinkId = new RethinkID({
-  appId: "<example-app-id>",
+  appId: "example-app-id",
   loginRedirectUri: "http://example.com",
 });
 ```
@@ -45,13 +45,13 @@ const rethinkId = new RethinkID({
 
 ```js
 // Add as a button click handler
-rid.login()
+rid.login();
 ```
 
 Check if user is logged in:
 
 ```js
-rid.isLoggedIn()
+rid.isLoggedIn();
 ```
 
 Handle a successful log in:
@@ -78,5 +78,7 @@ tasksCollection.insertOne({ task });
 ## Fetch all Docs
 
 ```js
-tasksCollection.getAll() // returns a Promise
+tasksCollection.getAll(); // returns a Promise
 ```
+
+Learn about the full capabilities of [realtime databases](/docs/features/realtime-databases).

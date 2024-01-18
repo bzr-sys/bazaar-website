@@ -1,7 +1,7 @@
 ---
 title: Fast Takeoff
 summary: RethinkID helps achieve a fast TTFA (Time To First App). Streamlined authentication, schema-less document-orientated databases, no access policy configuration, and lazy collection creation enable developers to launch apps quickly and focus on innovation.
-order: 2
+order: 4
 ---
 
 RethinkID helps achieve a fast TTFA (Time To First App), enabling developers to launch applications swiftly and efficiently.

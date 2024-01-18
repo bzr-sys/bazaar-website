@@ -1,7 +1,7 @@
 ---
 title: Zero Running Costs
 summary: RethinkID revolutionizes app development with its zero running costs model, liberating creators from financial overheads. Ideal for hobby projects or scalable apps, it provides a cost-effective foundation for growth, from niche to widespread use.
-order: 1
+order: 3
 ---
 
 RethinkID introduces a groundbreaking approach to app development empowering developers to create without running costs. This unique offering enables developers to pursue their creative ideas, from personal hobby projects to large-scale applications, without worrying about escalating expenses.
