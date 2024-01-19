@@ -4,7 +4,7 @@ summary: RethinkID's document-orientated per-user database architecture streamli
 order: 5
 ---
 
-Databases are document-orientated, with no need to create or enforce schemas. Database collections are lazily created, enabling you to get your apps up and running quicker.
+RethinkID realtime databases are document-orientated, with no need to create or enforce schemas. Database collections are lazily created, enabling you to get your apps up and running quicker.
 
 ## Simple SDK
 

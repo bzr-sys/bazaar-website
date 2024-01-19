@@ -1,0 +1,212 @@
+---
+title: Realtime Databases
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+RethinkID realtime databases are document-orientated, with no need to create or enforce schemas.
+
+## Database Per User Per App
+
+Databases are created per user and per app. Each user will get their own database for your app. And for any other RethinkID-powered app used, a user gets their own separate database.
+
+## Collections
+
+Collections are analogous to tables in a traditional relational database.
+
+### Create a Collection
+
+Create collections manually using the `rid.collections.create` method. Note though, we recommend creating a collection object with [`rid.collection`](#using-collections) to lazily create a collection and while providing the most efficient way to interact with a collection's data.
+
+```js
+const message = await rid.collections.create("example-collection-name");
+```
+
+### Drop a Collection
+
+Drop, or delete, a collection with the following:
+
+```js
+const message = await rid.collections.drop("example-collection-name");
+```
+
+### List Collections
+
+List the names of all collections.
+
+```js
+const collectionsNames = await rid.collections.list();
+```
+
+## Using a Collection
+
+The most convenient way to interact with a collection is to create a collections object. A collection object defaults to the database of the authenticated user.
+
+The collection will be lazily created the first time someone tries to interact with it.
+
+```js
+const exampleCollection = rid.collection("example-collection");
+```
+
+### Access Another User's Collection
+
+To access the collection of a specific user, set a user ID. If not explicitly set, the user ID defaults to the authenticated user's.
+
+```js
+const exampleCollection = rid.collection("example-collection", {
+  userId: "collection-owners-user-id",
+});
+```
+
+### Handle Lazy Collection Creation
+
+When a database is lazily created, you might want to take some action. For example, to set [permissions](/docs/features/sharing) or insert some initial data. You can do this as follows:
+
+```js
+const exampleCollection = rid.collection("example-collection", {
+  onCreate: async () => {
+    exampleCollection.insertOne({ id: 1, task: "Create first RethinkID app!" });
+  },
+});
+```
+
+### Get all Docs
+
+Get all docs from a collection:
+
+```js
+const docs = await exampleCollection.getAll();
+```
+
+You can filter the returned documents with fine-grain control.
+
+```js
+// Results in "((height > 80 AND height < 140) OR (weight > 10 AND weight < 25)) AND (age < 12)"
+const filter = {
+  $or: [
+    {
+      height: {
+        $gt: 80,
+        $lt: 140,
+      },
+    },
+    {
+      weight: {
+        $gt: 10,
+        $lt: 25,
+      },
+    },
+  ],
+  age: { $lt: 12 },
+};
+
+const docs = await exampleCollection.getAll(filter);
+```
+
+Filters are powerful, and so can get complex. To understand the full capabilities of filters, see these corresponding types:
+
+```ts
+/**
+ * A FilterObject is an object that either maps
+ * - string keys to string | number | boolean | null. This corresponds to an equality operation
+ * - string keys to FilterComparison. This corresponds to the operation defined in FilterComparison
+ * - $and to FilterObject[]. This combines the result of each FilterObject in the array with AND
+ * - $or to FilterObject[]. This combines the result of each FilterObject in the array with OR
+ * - $not to FilterObject. This applies NOT to the result of the FilterObject
+ *
+ * All fields in a FilterObject are combined with an AND.
+ */
+export type FilterObject = {
+  $and?: FilterObject[];
+  $or?: FilterObject[];
+  $not?: FilterObject;
+  [field: string]: FilterComparison | string | number | boolean | null;
+};
+
+/**
+ * A FilterComparison is an object, that applies a set of comparison operators.
+ * Multiple properties are combined with AND. Most comparison operators are self-explanatory
+ * logical operators except for contains, which checks if an element is part of an array.
+ */
+export type FilterComparison = {
+  $eq?: string | number;
+  $ne?: string | number;
+  $gt?: string | number;
+  $ge?: string | number;
+  $lt?: string | number;
+  $le?: string | number;
+  $contains?: string | number;
+};
+```
+
+`getAll` has a second `options` parameter. Set offsets and order to further control returned docs:
+
+<Tabs>
+  <TabItem label="JS">
+    ```js
+    const docs = await exampleCollection.getAll(
+      { startOffset: 10, endOffset: 20, orderBy: { height: "desc" } },
+      {},
+    );
+    ```
+  </TabItem>
+  <TabItem label="TS">
+    ```ts
+    import { OrderByType } from "@rethinkid/rethinkid-js-sdk";
+
+    const docs = await exampleCollection.getAll(
+      { startOffset: 10, endOffset: 20, orderBy: { height: OrderByType.DESC } },
+      {},
+    );
+    ```
+
+  </TabItem>
+</Tabs>
+
+### Get a one document
+
+```js
+exampleCollection.getOne();
+```
+
+```js
+exampleCollection.getPage();
+```
+
+```js
+exampleCollection.insertOne();
+```
+
+```js
+exampleCollection.updateOne();
+```
+
+```js
+exampleCollection.replaceOne();
+```
+
+```js
+exampleCollection.deleteAll();
+```
+
+```js
+exampleCollection.deleteOne();
+```
+
+```js
+exampleCollection.subscribeAll();
+```
+
+```js
+exampleCollection.subscribeOne();
+```
+
+## Connection Callbacks
+
+```js
+rid.onApiConnect();
+```
+
+```js
+rid.onApiConnectError();
+```
