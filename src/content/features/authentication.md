@@ -34,9 +34,11 @@ rid.onLogin(async () => {
 });
 ```
 
+Read the [Auth docs](/docs/features/auth).
+
 ## Simplified Sharing
 
-Leveraging RethinkID's database-per-user architecture, users gain immediate access to their databases, bypassing the need for complex access policies. For more refined control, the [Sharing API](/docs) allows assigning permissions with precision.
+Leveraging RethinkID's database-per-user architecture, users gain immediate access to their databases, bypassing the need for complex access policies. For more refined control, the [Sharing API](/features/sharing) allows assigning permissions with precision.
 
 ## Technical Backbone
 

@@ -12,15 +12,17 @@ Create a document:
 
 ```ts
 const tasksCollection = rid.collection("tasks");
-const id = tasksCollection.insert({ id: 1, name: "Do laundry" });
+const id = await tasksCollection.insert({ id: 1, name: "Do laundry" });
 ```
 
 Read a document:
 
 ```ts
 const tasksCollection = rid.collection("tasks");
-const task = tasksCollection.getOne(1);
+const task = await tasksCollection.getOne(1);
 ```
+
+Read the [Realtime Database docs](/docs/features/realtime-databases).
 
 ## Database-per-user Architecture
 
@@ -34,4 +36,4 @@ Screenshot of the RethinkID admin dashboard for users
 
 The per-user-per-app database model provides simplified access management. It eliminates the need for configuring access policies, as users have automatic access to their databases.
 
-Granting access to an another user's data can be done conveniently with the [Sharing API](/docs).
+Granting access to an another user's data can be done conveniently with the [Sharing API](/features/sharing).

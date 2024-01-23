@@ -55,15 +55,23 @@ const exampleCollection = rid.collection("example-collection", options);
 
 The `options` parameter is optional.
 
-When using TypeScript, you can specify the type of the collection doc. Docs must have an `id`.
+When using TypeScript, you can specify the type of the collection doc.
 
 ```ts
 type TaskDoc = {
-  id: string;
+  id: string; // required
   name: string;
   completed: boolean;
 };
 const tasksCollection = rid.collection<TaskDoc>("tasks");
+```
+
+Collection doc types must include an `id` of type `string`. That is, it must extend or conform to the `Doc` type.
+
+```ts
+type Doc = {
+  id: string;
+};
 ```
 
 ### Use a Specific User's Collection
@@ -74,6 +82,10 @@ To use the collection of a specific user, pass an `options` argument to set a us
 const options = { userId: "collection-owners-user-id" };
 const exampleCollection = rid.collection("example-collection", options);
 ```
+
+:::note
+[Permission](/docs/features/sharing) is obviously required to access another user's data.
+:::
 
 ### Handle Lazy Collection Creation
 
@@ -100,38 +112,16 @@ The `filter` and `options` parameters are optional.
 
 Learn how [Filtering](#filtering) works.
 
-Use the `options` parameter to set offsets and order to further control returned docs.
+Use the `options` parameter to set offsets and [order](#ordering-sorting) to further control returned docs.
 
-<Tabs>
-  <TabItem label="JS">
-    ```js
-    const filter = {}; // No filter
-    const options = { startOffset: 10, endOffset: 20, orderBy: { height: "desc" } };
+```js
+const filter = {}; // No filter
+const options = { startOffset: 10, endOffset: 20, orderBy: { height: "desc" } };
 
-    const docs = await exampleCollection.getAll(
-      filter,
-      options,
-    );
-    ```
+const docs = await exampleCollection.getAll(filter, options);
+```
 
-  </TabItem>
-  <TabItem label="TS">
-    ```ts
-    import { OrderByType, FilterObject, CollectionGetAllOptions } from "@rethinkid/rethinkid-js-sdk";
-
-    const filter: FilterObject = {}; // No filter
-    const options: CollectionGetAllOptions = { startOffset: 10, endOffset: 20, orderBy: { height: OrderByType.DESC } };
-
-    const docs = await exampleCollection.getAll(
-      filter,
-      options,
-    );
-    ```
-
-  </TabItem>
-</Tabs>
-
-### Get a Docs by page
+### Get Docs by Page
 
 Offsets are useful, but for a more ergonimc way to work with pagination, there is `getPage`.
 
@@ -141,14 +131,21 @@ const pageSize = 20;
 const paginatedDocs = await exampleCollection.getPage(pageNumber, pageSize);
 ```
 
-Like `getAll`, `getPage` also takes an optional [`filter`](#filtering).
+Like `getAll`, `getPage` also takes optional [`filter`](#filtering) and `options` parameters.
 
 ```js
 const paginatedDocs = await exampleCollection.getPage(
   pageNumber,
   pageSize,
   filter,
+  options,
 );
+```
+
+The options parameter allows you to [order](#ordering-sorting) the returned docs.
+
+```js
+const options = { orderBy: { height: "desc" } };
 ```
 
 ### Get a Doc
@@ -334,15 +331,6 @@ const filter = {
 };
 ```
 
-### Filter with `NOT` Condition
-
-```js
-// Select documents where `category` is not 'archived'
-const filter = {
-  $not: { category: "archived" },
-};
-```
-
 ### Filter with Combined AND and OR Conditions
 
 ```js
@@ -350,6 +338,26 @@ const filter = {
 const filter = {
   age: { $lt: 50 },
   $or: [{ status: "active" }, { score: { $gt: 80 } }],
+};
+```
+
+### Filter with `$contains` Condition
+
+The `$contains` operator is used to check if an array field in the documents contains a specified value.
+
+```javascript
+// Select documents where the 'tags' array field contains 'urgent'
+const filter = {
+  tags: { $contains: "urgent" },
+};
+```
+
+### Filter with `NOT` Condition
+
+```js
+// Select documents where `category` is not 'archived'
+const filter = {
+  $not: { category: "archived" },
 };
 ```
 
@@ -426,4 +434,27 @@ export type FilterComparison = {
   $le?: string | number;
   $contains?: string | number;
 };
+```
+
+## Ordering (Sorting)
+
+The `orderBy` option allows you to sort the results fetched from a collection using the `getAll` or `getPage` methods. By defining the order criteria for one or more fields, you can organize the returned documents according to specific requirements.
+
+`orderBy` is an object where each key represents a field name to sort by, and the value is either `"asc"` for ascending order or `"desc"` for descending order.
+
+You can sort by single or multiple fields, specifying the order for each field individually:
+
+```javascript
+// Sorting by 'height' in descending order, then by 'age' in ascending order
+const orderBy = { height: "desc", age: "asc" };
+const sortedDocs = await exampleCollection.getAll(filter, { orderBy });
+```
+
+When using TypeScript, `orderBy` leverages the `OrderByType` enum for type safety:
+
+```typescript
+import { OrderByType } from "@rethinkid/rethinkid-js-sdk";
+
+const orderBy: OrderBy = { height: OrderByType.DESC, age: OrderByType.ASC };
+const sortedDocs = await exampleCollection.getAll(filter, { orderBy });
 ```
