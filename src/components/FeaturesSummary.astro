@@ -10,7 +10,7 @@ const orderedFeatures = allFeatures.sort((a, b) =>
 <div class="grid gap-4 px-4 py-8 lg:grid-cols-3">
   {
     orderedFeatures.map((f) => (
-      <div class="card w-full bg-neutral shadow-xl">
+      <div class="card w-full bg-base-200 shadow-xl">
         <div class="card-body">
           <h2 class="card-title">
             <a href={`/${f.collection}/${f.slug}`}>{f.data.title}</a>

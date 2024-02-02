@@ -6,7 +6,17 @@ export default {
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    themes: ["winter", "night"],
-    darkTheme: "night",
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["retro"],
+          primary: "#db9a59",
+        },
+        dark: {
+          ...require("daisyui/src/theming/themes")["night"],
+          primary: "#db9a59",
+        },
+      },
+    ],
   },
 };

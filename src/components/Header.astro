@@ -1,6 +1,6 @@
 ---
 import NavBarEnd from "./NavBarEnd.astro";
-import Logo from "./Logo.astro";
+import LogoTextSVG from "./LogoTextSVG.astro";
 import FeaturesLinkItems from "./FeaturesLinkItems.astro";
 ---
 
@@ -37,8 +37,10 @@ import FeaturesLinkItems from "./FeaturesLinkItems.astro";
           <li><a href="/blog">Blog</a></li>
         </ul>
       </div>
-      <Logo />
 
+      <div class="ml-2 mr-4">
+        <a href="/"><LogoTextSVG width="115px" /></a>
+      </div>
       <ul class="menu menu-horizontal hidden px-1 lg:flex">
         <li>
           <details>
