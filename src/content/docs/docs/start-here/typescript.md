@@ -2,4 +2,4 @@
 title: TypeScript
 ---
 
-The RethinkID JS SDK is built with TypeScript providing full typing support.
+The Bazaar JS SDK is built with TypeScript providing full typing support.

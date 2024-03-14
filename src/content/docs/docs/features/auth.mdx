@@ -4,7 +4,7 @@ title: Auth
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-RethinkID provides authentication out-of-the-box allowing you to create and authenticate users securely and easily.
+Bazaar provides authentication out-of-the-box allowing you to create and authenticate users securely and easily.
 
 Authorization is provided with the [Sharing API](/docs/features/sharing).
 
@@ -13,7 +13,7 @@ Authorization is provided with the [Sharing API](/docs/features/sharing).
 Sign up and log in are conveniently combined into a single method call:
 
 ```js
-rid.login();
+bzr.login();
 ```
 
 Calling the `login` method opens a pop-up window by default, which falls back to redirect login if the pop-up fails to open.
@@ -23,14 +23,14 @@ Login types `popup_fallback`, `popup`, and `redirect` can be optionally set:
 <Tabs>
   <TabItem label="JS">
     ```js
-    rid.login({ type: "redirect" });
+    bzr.login({ type: "redirect" });
     ```
   </TabItem>
   <TabItem label="TS">
     ```ts
-    import { LoginType } from "@rethinkid/rethinkid-js-sdk";
+    import { LoginType } from "@bzr/bazaar-js";
 
-    rid.login({ type: LoginType.REDIRECT});
+    bzr.login({ type: LoginType.REDIRECT});
     ```
 
   </TabItem>
@@ -41,7 +41,7 @@ Login types `popup_fallback`, `popup`, and `redirect` can be optionally set:
 A utility method to delete an auth token from local storage and perform a page refresh.
 
 ```js
-rid.logOut();
+bzr.logOut();
 ```
 
 ## Check if a User is Logged In
@@ -49,7 +49,7 @@ rid.logOut();
 A utility method to check if an auth token is set in local storage.
 
 ```js
-rid.isLoggedIn();
+bzr.isLoggedIn();
 ```
 
 ## Handle a Successful Login Event
@@ -57,7 +57,7 @@ rid.isLoggedIn();
 Logging in takes place without a page fresh, so you need a way to handle a successful login event. To do so, set a callback as the first and only argument of `onLogin`:
 
 ```js
-rid.onLogin(() => {
+bzr.onLogin(() => {
   // Handle user log in
   // e.g. Set local state and redirect
 });
@@ -68,7 +68,7 @@ rid.onLogin(() => {
 Handle a login error event:
 
 ```js
-rid.onLoginError(() => {
+bzr.onLoginError(() => {
   // Handle log in error
   // e.g. Show error message
 });

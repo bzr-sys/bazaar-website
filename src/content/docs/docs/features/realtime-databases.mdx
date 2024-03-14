@@ -4,11 +4,11 @@ title: Realtime Databases
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-RethinkID realtime databases are document-orientated (NoSQL) and schema-less.
+Bazaar realtime databases are document-orientated (NoSQL) and schema-less.
 
 ## Database Architecture
 
-Databases are created per user and per app. Each user gets their own database for your app. And for any other RethinkID-powered app used, a user gets their own separate database.
+Databases are created per user and per app. Each user gets their own database for your app. And for any other Bazaar-powered app used, a user gets their own separate database.
 
 ## Collections
 
@@ -16,10 +16,10 @@ Collections are analogous to tables in a relational databases. Collections are m
 
 ### Create a Collection
 
-Create collections manually using the `rid.collections.create` method.
+Create collections manually using the `bzr.collections.create` method.
 
 ```js
-const message = await rid.collections.create("example-collection-name");
+const message = await bzr.collections.create("example-collection-name");
 ```
 
 :::note
@@ -32,7 +32,7 @@ A collection object is the most efficient way to interact with a collection's da
 Drop, or delete, a collection and all of its docs.
 
 ```js
-const message = await rid.collections.drop("example-collection-name");
+const message = await bzr.collections.drop("example-collection-name");
 ```
 
 ### List Collections
@@ -40,7 +40,7 @@ const message = await rid.collections.drop("example-collection-name");
 List the names of all collections.
 
 ```js
-const collectionsNames = await rid.collections.list();
+const collectionsNames = await bzr.collections.list();
 ```
 
 ## Using a Collection
@@ -50,7 +50,7 @@ The most convenient way to interact with a collection is to create a collection 
 A collection will be lazily created the first time someone tries to interact with it.
 
 ```js
-const exampleCollection = rid.collection("example-collection", options);
+const exampleCollection = bzr.collection("example-collection", options);
 ```
 
 The `options` parameter is optional.
@@ -63,7 +63,7 @@ type TaskDoc = {
   name: string;
   completed: boolean;
 };
-const tasksCollection = rid.collection<TaskDoc>("tasks");
+const tasksCollection = bzr.collection<TaskDoc>("tasks");
 ```
 
 Collection doc types must include an `id` of type `string`. That is, it must extend or conform to the `Doc` type.
@@ -80,7 +80,7 @@ To use the collection of a specific user, pass an `options` argument to set a us
 
 ```js
 const options = { userId: "collection-owners-user-id" };
-const exampleCollection = rid.collection("example-collection", options);
+const exampleCollection = bzr.collection("example-collection", options);
 ```
 
 :::note
@@ -94,10 +94,10 @@ When a database is lazily created, you might want to take some action. For examp
 ```js
 const options = {
   onCreate: async () => {
-    exampleCollection.insertOne({ id: 1, task: "Create first RethinkID app!" });
+    exampleCollection.insertOne({ id: 1, task: "Create first Bazaar app!" });
   },
 };
-const exampleCollection = rid.collection("example-collection", options);
+const exampleCollection = bzr.collection("example-collection", options);
 ```
 
 ### Get all Docs
@@ -293,7 +293,7 @@ Returns an unsubscribe function.
 Execute a callback function when a successful connection to the database is established.
 
 ```js
-rid.onApiConnect(() => {
+bzr.onApiConnect(() => {
   console.log("Connected to the database successfully.");
 });
 ```
@@ -303,7 +303,7 @@ rid.onApiConnect(() => {
 Execute a callback function when there is an error connecting to the database.
 
 ```js
-rid.onApiConnectError((error) => {
+bzr.onApiConnectError((error) => {
   console.error("Connection error:", error);
 });
 ```
@@ -453,7 +453,7 @@ const sortedDocs = await exampleCollection.getAll(filter, { orderBy });
 When using TypeScript, `orderBy` leverages the `OrderByType` enum for type safety:
 
 ```typescript
-import { OrderByType } from "@rethinkid/rethinkid-js-sdk";
+import { OrderByType } from "@bzr/bazaar-js";
 
 const orderBy: OrderBy = { height: OrderByType.DESC, age: OrderByType.ASC };
 const sortedDocs = await exampleCollection.getAll(filter, { orderBy });

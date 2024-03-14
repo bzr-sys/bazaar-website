@@ -2,15 +2,15 @@
 title: Getting Started
 ---
 
-Getting started with RethinkID is quick and easy. To being, you create a RethinkID account, then create a RethinkID Project and register your app. Next, you install the JavaScript SDK, configure an instance of the SDK, then create and log in a user before interacting with data.
+Getting started with Bazaar is quick and easy. To being, you create a Bazaar account, then create a Bazaar Project and register your app. Next, you install the JavaScript SDK, configure an instance of the SDK, then create and log in a user before interacting with data.
 
-## Create a RethinkID Account
+## Create a Bazaar Account
 
-To begin, [create a RethinkID account](https://id.rethinkdb.cloud/login).
+To begin, [create a Bazaar account](https://cloud.bzr.dev/login).
 
-## Create a RethinkID Project
+## Create a Bazaar Project
 
-On your RethinkID dashboard go to the Developers section by clicking [**Developers**](https://id.rethinkdb.cloud/developers).
+On your Bazaar dashboard go to the Developers section by clicking [**Developers**](https://cloud.bzr.dev/developers).
 
 Next, click **Create Project**.
 
@@ -23,19 +23,19 @@ Next, click **Create Project**.
 Install the SDK from NPM:
 
 ```bash
-npm i @rethinkid/rethinkid-js-sdk
+npm i @bzr/bazaar-js
 ```
 
 Or, load it from a CDN:
 
 ```html
-<script src="https://unpkg.com/@rethinkid/rethinkid-js-sdk"></script>
+<script src="https://unpkg.com/@bzr/bazaar-js"></script>
 ```
 
 ## Create an SDK Client
 
 ```js
-const rethinkId = new RethinkID({
+const bzr = new Bazaar({
   appId: "example-app-id",
   loginRedirectUri: "http://example.com",
 });
@@ -45,19 +45,19 @@ const rethinkId = new RethinkID({
 
 ```js
 // Add as a button click handler
-rid.login();
+bzr.login();
 ```
 
 Check if user is logged in:
 
 ```js
-rid.isLoggedIn();
+bzr.isLoggedIn();
 ```
 
 Handle a successful log in:
 
 ```js
-rid.onLogin(() => {
+bzr.onLogin(() => {
   // Handle user log in
 });
 ```
@@ -65,13 +65,13 @@ rid.onLogin(() => {
 ## Create a Collection
 
 ```js
-const tasksCollection = rid.collection("tasks");
+const tasksCollection = bzr.collection("tasks");
 ```
 
 ## Insert a Doc
 
 ```js
-const task = { name: "Make dream apps with RethinkID" };
+const task = { name: "Make dream apps with Bazaar" };
 tasksCollection.insertOne({ task });
 ```
 

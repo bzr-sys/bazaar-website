@@ -3,7 +3,7 @@ title: Docs
 description: Learn more about my project in this docs site built with Starlight.
 template: splash
 hero:
-  title: 'RethinkID Docs'
+  title: 'Bazaar Docs'
   tagline: Enjoy build apps, for free.
   actions:
     - text: Get Started
