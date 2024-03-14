@@ -453,7 +453,7 @@ const sortedDocs = await exampleCollection.getAll(filter, { orderBy });
 When using TypeScript, `orderBy` leverages the `OrderByType` enum for type safety:
 
 ```typescript
-import { OrderByType } from "@bzr/bazaar-js";
+import { OrderByType } from "@bzr/bazaar";
 
 const orderBy: OrderBy = { height: OrderByType.DESC, age: OrderByType.ASC };
 const sortedDocs = await exampleCollection.getAll(filter, { orderBy });

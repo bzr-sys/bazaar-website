@@ -23,13 +23,13 @@ Next, click **Create Project**.
 Install the SDK from NPM:
 
 ```bash
-npm i @bzr/bazaar-js
+npm i @bzr/bazaar
 ```
 
 Or, load it from a CDN:
 
 ```html
-<script src="https://unpkg.com/@bzr/bazaar-js"></script>
+<script src="https://unpkg.com/@bzr/bazaar"></script>
 ```
 
 ## Create an SDK Client
