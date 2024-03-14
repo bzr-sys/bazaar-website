@@ -2,4 +2,4 @@
 title: React
 ---
 
-Get started with RethinkID and React.
+Get started with Bazaar and React.

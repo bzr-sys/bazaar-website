@@ -7,7 +7,7 @@ export default defineConfig({
   integrations: [
     tailwind(),
     starlight({
-      title: "RethinkID Docs",
+      title: "Bazaar Docs",
       customCss: ["./src/styles/starlight.css"],
       components: {
         SiteTitle: "./src/components/starlight/SiteTitle.astro",
@@ -41,5 +41,5 @@ export default defineConfig({
       ],
     }),
   ],
-  site: "https://rethinkid-website.netlify.app",
+  site: "https://bzr-website.netlify.app",
 });

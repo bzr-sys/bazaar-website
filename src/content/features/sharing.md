@@ -1,10 +1,10 @@
 ---
 title: Sharing
-summary: RethinkID's Sharing API offers powerful features for realtime collaboration, allowing precise control over database access and the ability to react to changes in shared content.
+summary: Bazaar's Sharing API offers powerful features for realtime collaboration, allowing precise control over database access and the ability to react to changes in shared content.
 order: 7
 ---
 
-RethinkID comes with a powerful Sharing API, empowering developers to implement sharing and collaboration in their applications.
+Bazaar comes with a powerful Sharing API, empowering developers to implement sharing and collaboration in their applications.
 
 With the database-per-user architecture, users can interact with their data by default. The Sharing API facilitates granting access to other users. Permissions can be granted to docs and collections with filters to deliver precise control.
 
@@ -19,7 +19,7 @@ const newPermission = {
     id: "example-doc-id",
   },
 };
-const { id } = await rid.permissions.create(newPermission);
+const { id } = await bzr.permissions.create(newPermission);
 ```
 
 The Sharing API is simple to use but caters to complex scenarios. Subscribe to change events to react to granted permissions changes in realtime.
@@ -27,7 +27,7 @@ The Sharing API is simple to use but caters to complex scenarios. Subscribe to c
 Subscribe to change events for a granted permission for a collection:
 
 ```ts
-rid.permissions.granted.subscribe(
+bzr.permissions.granted.subscribe(
   { collectionName: "example-collection-name" },
   async ({ oldDoc, newDoc }) => {
     if (oldDoc === null && newDoc) {
@@ -53,10 +53,10 @@ const permissionTemplate = {
   },
 };
 
-const { url } = await rid.permissions.links.create(permissionTemplate);
+const { url } = await bzr.permissions.links.create(permissionTemplate);
 ```
 
-Sharing can also be managed through a RethinkID modal:
+Sharing can also be managed through a Bazaar modal:
 
 ```ts
 const permissionTemplate = {
@@ -67,7 +67,7 @@ const permissionTemplate = {
   },
 };
 
-rid.permissions.openModal(permissionTemplate);
+bzr.permissions.openModal(permissionTemplate);
 ```
 
 TODO screenshot modal.

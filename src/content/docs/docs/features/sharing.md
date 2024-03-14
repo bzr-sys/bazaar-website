@@ -2,7 +2,7 @@
 title: Sharing
 ---
 
-RethinkID Sharing documentation.
+Bazaar Sharing documentation.
 
 ## Open the Sharing Modal
 
@@ -19,7 +19,7 @@ const permissionTemplate = {
   },
 };
 
-rid.permissions.openModal(permissionTemplate);
+bzr.permissions.openModal(permissionTemplate);
 ```
 
 ## Permissions
@@ -30,10 +30,10 @@ List permission granted by a user:
 
 ```js
 // List all permissions granted by a user
-rid.permissions.list()
+bzr.permissions.list()
 
 // Specify options to filter permissions a user granted
-rid.permissions.list({
+bzr.permissions.list({
   collectionName: "example-collection-name",
   userId: "example-owner-id",
   type: ["read"]
@@ -54,7 +54,7 @@ const newPermission = {
   },
 };
 
-rid.permissions.create(newPermission);
+bzr.permissions.create(newPermission);
 ```
 
 ### Delete a Permission
@@ -62,7 +62,7 @@ rid.permissions.create(newPermission);
 Delete a permission a user has granted:
 
 ```js
-rid.permissions.delete("example-permission-id")
+bzr.permissions.delete("example-permission-id")
 ```
 
 ## Share Links
@@ -72,7 +72,7 @@ rid.permissions.delete("example-permission-id")
 List all of a user's share links:
 
 ```js
-rid.permissions.links.list({ collectionName: "example-collection-name", type: "insert"})
+bzr.permissions.links.list({ collectionName: "example-collection-name", type: "insert"})
 ```
 
 ### Create a Share Link
@@ -90,7 +90,7 @@ const permissionTemplate = {
   },
 };
 
-rid.permissions.links.create(permissionTemplate)
+bzr.permissions.links.create(permissionTemplate)
 ```
 
 ### Delete a Share Link
@@ -98,14 +98,14 @@ rid.permissions.links.create(permissionTemplate)
 Delete a share link:
 
 ```js
-rid.permissions.links.delete("example-link-id")
+bzr.permissions.links.delete("example-link-id")
 ```
 
 ### Subscribe to Share Link Events
 
 ```js
 const options = { collectionName: "example-collection-name", type: "insert"};
-rid.permissions.links.subscribe(options, ({ oldDoc, newDoc }) => {
+bzr.permissions.links.subscribe(options, ({ oldDoc, newDoc }) => {
   if (!oldDoc && newDoc) {
     // Handle link added
   }
@@ -126,10 +126,10 @@ List permissions that have been granted to the authenticated user:
 
 ```js
 // List all permissions granted to a user
-rid.permissions.granted.list()
+bzr.permissions.granted.list()
 
 // Specify options to filter permissions granted to a user
-rid.permissions.granted.list({
+bzr.permissions.granted.list({
   collectionName: "example-collection-name",
   ownerId: "example-owner-id",
   type: ["read"]
@@ -141,7 +141,7 @@ rid.permissions.granted.list({
 Delete a permission that was granted to the authenticated user:
 
 ```js
-rid.permissions.granted.delete("example-granted-permission-id")
+bzr.permissions.granted.delete("example-granted-permission-id")
 ```
 
 ### Subscribe to Granted Permission Events
@@ -150,7 +150,7 @@ Subscribe to change event for permissions granted to a user:
 
 ```js
 const subscribeOptions = {}
-rid.permissions.granted.subscribe(subscribeOptions, { oldDoc, newDoc } => {
+bzr.permissions.granted.subscribe(subscribeOptions, { oldDoc, newDoc } => {
   if (oldDoc === null && newDoc) {
     // Handle granted permission added.
   }
