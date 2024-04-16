@@ -41,5 +41,5 @@ export default defineConfig({
       ],
     }),
   ],
-  site: "https://bzr-website.netlify.app",
+  site: "https://bzr.dev",
 });
