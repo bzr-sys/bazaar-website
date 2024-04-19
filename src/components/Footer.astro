@@ -2,8 +2,6 @@
 import FeaturesLinkItems from "./FeaturesLinkItems.astro";
 import FooterUl from "./FooterUl.astro";
 import LogoIconSVG from "./LogoIconSVG.astro";
-
-export const serviceName = import.meta.env.PUBLIC_SERVICE_NAME;
 ---
 
 <footer class="footer bg-base-200 p-10 text-base-content">
@@ -36,7 +34,7 @@ export const serviceName = import.meta.env.PUBLIC_SERVICE_NAME;
 >
   <aside class="grid-flow-col items-center">
     <LogoIconSVG width="24px" />
-    <p>{serviceName} <br />The developer-first service.</p>
+    <p>Bazaar <br />The developer-first service.</p>
   </aside>
   <!-- Social icons we eventually probably want -->
   <!-- <nav class="md:place-self-center md:justify-self-end">
