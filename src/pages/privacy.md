@@ -1,5 +1,6 @@
 ---
 layout: ../layouts/PageLayout.astro
+title: Privacy Policy
 ---
 
 # Privacy Policy

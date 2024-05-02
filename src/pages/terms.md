@@ -1,12 +1,13 @@
 ---
 layout: ../layouts/PageLayout.astro
+title: Terms of Use
 ---
+
+# Terms of Use
 
 TODO update
 located in San
 Francisco, CA 94110, United States
-
-# Terms of Use
 
 Last Revised: April 19, 2024
 

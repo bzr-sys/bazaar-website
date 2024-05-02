@@ -1,7 +1,7 @@
 ---
 layout: ../layouts/PageLayout.astro
+title: Acceptable Use Policy
 ---
-
 
 # Acceptable Use Policy
 
