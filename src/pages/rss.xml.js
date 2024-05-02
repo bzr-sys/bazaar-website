@@ -5,7 +5,7 @@ export async function GET(context) {
     title: `Bazaar | Blog`,
     description: "Tutorials and news.",
     site: context.site,
-    items: await pagesGlobToRssItems(import.meta.glob("./**/*.md")),
+    items: await pagesGlobToRssItems(import.meta.glob("./blog/**/*.md")),
     customData: `<language>en-us</language>`,
   });
 }
