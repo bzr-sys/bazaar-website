@@ -8,10 +8,6 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        light: {
-          ...require("daisyui/src/theming/themes")["retro"],
-          primary: "#db9a59",
-        },
         dark: {
           ...require("daisyui/src/theming/themes")["night"],
           primary: "#db9a59",
