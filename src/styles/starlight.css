@@ -13,3 +13,8 @@
   --sl-color-gray-6: oklch(var(--b1));
   --sl-color-black: oklch(var(--b2) / 1);
 }
+
+.main-pane ul {
+  list-style: disc;
+  padding-left: 1rem;
+}
