@@ -38,6 +38,7 @@ export default defineConfig({
             { label: "Create a Vue.js Battleship App", link: "/blog/post-1" },
           ],
         },
+        { label: "API Reference", link: "/api" },
       ],
     }),
   ],
