@@ -1,0 +1,416 @@
+---
+title: Collections
+---
+
+Bazaar provides document-orientated (NoSQL) and schema-less databases scoped to a user and app. A database contains collections which are analogous to tables in a relational databases. Collections are made up of documents, or docs, analogous to rows in a relational databases.
+
+## Using a Collection
+
+To use a collection, create a collection object. By default, a collection object interacts with the database of the authenticated user.
+
+A collection will be lazily created the first time someone tries to interact with it.
+
+```js
+const exampleCollection = bzr.collection("example-collection");
+// Use the collection
+const allDocs = await exampleCollection.getAll();
+```
+
+When using TypeScript, you can specify the type of the collection doc.
+
+```ts
+type TaskDoc = {
+  id: string; // required
+  name: string;
+  completed: boolean;
+};
+const tasksCollection = bzr.collection<TaskDoc>("tasks");
+```
+
+Collection doc types must include an `id` of type `string`. That is, it must extend or conform to the `Doc` type.
+
+```ts
+type Doc = {
+  id: string;
+};
+```
+
+### Use a Specific User's Collection
+
+To use the collection of a specific user, pass an `options` argument to set a user ID. If not explicitly set, the user ID defaults to the authenticated user's.
+
+```js
+const options = { userId: "collection-owners-user-id" };
+const exampleCollection = bzr.collection("example-collection", options);
+```
+
+:::note
+[Permission](/docs/features/permissions) is obviously required to access another user's data.
+:::
+
+### Handle Lazy Collection Creation
+
+When a collection is lazily created, you might want to take some action. For example, to set [permissions](/docs/features/permissions) or insert some initial data. You can do this as follows:
+
+```js
+const options = {
+  onCreate: async () => {
+    exampleCollection.insertOne({ id: 1, task: "Create first Bazaar app!" });
+  },
+};
+const exampleCollection = bzr.collection("example-collection", options);
+```
+
+### Get all Docs
+
+Get all docs from a collection.
+
+```js
+const docs = await exampleCollection.getAll(filter, options);
+```
+
+The `filter` and `options` parameters are optional: 
+
+```js
+const allDocs = await exampleCollection.getAll();
+```
+
+A filter allows you to get only a subset of documents. Learn how [Filtering](#filtering) works.
+
+Use the `options` parameter to set offsets and [order](#ordering-sorting) to further control returned docs.
+
+```js
+const filter = {}; // No filter
+const options = { startOffset: 10, endOffset: 20, orderBy: { height: "desc" } };
+
+const docs = await exampleCollection.getAll(filter, options);
+```
+
+### Get Docs by Page
+
+Offsets are useful, but for a more ergonomic way to work with pagination, there is `getPage`.
+
+```js
+const pageNumber = 2;
+const pageSize = 20;
+const paginatedDocs = await exampleCollection.getPage(pageNumber, pageSize);
+```
+
+Like `getAll`, `getPage` also takes optional [`filter`](#filtering) and `options` parameters.
+
+```js
+const paginatedDocs = await exampleCollection.getPage(
+  pageNumber,
+  pageSize,
+  filter,
+  options,
+);
+```
+
+The options parameter allows you to [order](#ordering-sorting) the returned docs.
+
+```js
+const options = { orderBy: { height: "desc" } };
+```
+
+### Get a Doc
+
+Get a single doc.
+
+```js
+const doc = await exampleCollection.getOne("example-doc-id");
+```
+
+If no document with this ID exists, `null` is returned.
+
+### Insert a Doc
+
+Insert a new doc with an auto-generated ID.
+
+```js
+const docId = await exampleCollection.insertOne({ name: "Skylar" });
+```
+
+Insert a new doc with a specific ID.
+
+```js
+const docId = await exampleCollection.insertOne({ id: "1", name: "Skylar" });
+```
+
+The ID must be unique; attempting to insert a document with an existing ID will fail.
+
+### Update a Doc
+
+Update a doc.
+
+```js
+const message = await exampleCollection.updateOne(docId, partialDoc);
+```
+
+For example, if you have a doc:
+
+```js
+const doc = {
+  id: "1",
+  name: "Leo",
+  age: 40,
+  weightKg: 80,
+};
+```
+
+And update as follows:
+
+```js
+const message = await exampleCollection.updateOne("1", { weightKg: 82 });
+```
+
+The result will be:
+
+```js
+const doc = {
+  id: "1",
+  name: "Leo",
+  age: 40,
+  weightKg: 82,
+};
+```
+
+### Replace a Doc
+
+Replace an existing doc with a new one. The new doc completely overwrites the existing doc.
+
+```js
+const newDoc = { id: "example-doc-id", name: "New Name", completed: false };
+const message = await exampleCollection.replaceOne("example-doc-id", newDoc);
+```
+
+### Delete All Docs
+
+Delete all documents in a collection. This action cannot be undone.
+
+```js
+const message = await exampleCollection.deleteAll(filter);
+```
+
+See [`filter`](#filtering) docs.
+
+### Delete a Doc
+
+Delete a specific document from a collection by its ID.
+
+```js
+const message = await exampleCollection.deleteOne("example-doc-id");
+```
+
+### Subscribe to Collection Change Events
+
+Receive realtime updates whenever any document in the collection changes.
+
+```js
+const unsubscribe = await exampleCollection.subscribeAll(filter, listener);
+```
+
+The listener is an object that contains optional functions to be run when an object is added, updated, or deleted. It has type
+
+```ts
+type SubscribeListener<T extends Doc> = {
+  onAdd?: (doc: T) => void;
+  onChange?: (oldDoc: T, newDoc: T) => void;
+  onDelete?: (doc: T) => void;
+};
+```
+
+Similar to the `getAll` method, the `filter` is optional and can be empty. See [`filter`](#filtering) docs.
+
+```js
+const unsubscribe = await exampleCollection.subscribeAll({}, listener);
+```
+
+Returns an unsubscribe function.
+
+### Subscribe to Doc Change Events
+
+Receive realtime updates for a specific document in the collection.
+
+```js
+const docId = "example-doc-id";
+const unsubscribe = await exampleCollection.subscribeOne(
+  docId,
+  listener,
+);
+```
+
+Returns an unsubscribe function.
+
+### Reserved field names and values
+
+All special field names and values that are used throughout Bazaar start with a `$` sign. As such, we recommend not using field names or values that start with a `$`.
+
+In documents, currently the only reserved value is `$now`. It will resolve to a UTC timestamp on the server. This allows you to generate a predictable timestamp in your data no mater in which timestamp the app is running.
+
+## Filtering
+
+You can filter the document queries with fine-grained control.
+
+### Comparison Operatiors
+
+By default, filter values are checked for equality. The filter
+
+```js
+const filter = {
+  isActive: true,
+};
+```
+
+will return all documents where `isActive === true`.
+
+Comparison operator can also be specified explicitly. The equality filter above would then look as follows:
+
+```js
+const filter = {
+  isActive: { $eq: true },
+};
+```
+
+Filters currently support the following comparison operators:
+
+* `$eq`: equal
+* `$ne`: not equal
+* `$gt`: greater than
+* `$ge`: greater than or equal
+* `$lt`: less than
+* `$le`: less than or equal
+
+### Filter with `$contains` Operator
+
+The `$contains` operator is used to check if an array field in the documents contains a specified value.
+
+```javascript
+// Select documents where the 'tags' array field contains 'urgent'
+const filter = {
+  tags: { $contains: "urgent" },
+};
+```
+
+### Filter with `AND` Conditions
+
+```js
+// Select documents where `age` is greater than 30 and `isActive` is true
+const filter = {
+  age: { $gt: 30 },
+  isActive: true,
+};
+```
+
+For simple filters, this is enough. For more complex filtering queries you can also use the `$and` key:
+
+```js
+// Select documents where `age` is greater than 30 and `isActive` is true
+const filter = {
+  $and: [{ age: { $gt: 30 }}, { isActive: true }]
+};
+```
+
+### Filter with `OR` Conditions
+
+```js
+// Select documents where `status` is either 'pending' or 'completed'
+const filter = {
+  $or: [{ status: "pending" }, { status: "completed" }],
+};
+```
+
+### Filter with `NOT` Condition
+
+```js
+// Select documents where `category` is not 'archived'
+const filter = {
+  $not: { category: "archived" },
+};
+```
+
+### Nested Filter Conditions
+
+```js
+// Select documents where `manager` is 'John' and either `yearsOfExperience` is greater than 5 or (`department` is 'HR' and `location` is 'New York')
+const filter = {
+  manager: "John",
+  $or: [
+    { yearsOfExperience: { $gt: 5 } },
+    { $and: [{ department: "HR" }, { location: "New York" }] },
+  ],
+};
+```
+
+And for a more complex example:
+
+```js
+/**
+ * Select documents where either `height` is between 80 and 140 (exclusive)
+ * or `weight` is between 10 and 25 (exclusive), and additionally, `age` is less than 55.
+ */
+const filter = {
+  $or: [
+    {
+      height: {
+        $gt: 80,
+        $lt: 140,
+      },
+    },
+    {
+      weight: {
+        $gt: 10,
+        $lt: 25,
+      },
+    },
+  ],
+  age: { $lt: 55 },
+};
+```
+
+## Ordering (Sorting)
+
+The `orderBy` option allows you to sort the results fetched from a collection using the `getAll` or `getPage` methods. By defining the order criteria for one or more fields, you can organize the returned documents according to specific requirements.
+
+`orderBy` is an object where each key represents a field name to sort by, and the value is either `OrderByType.ASC` for ascending order or `OrderByType.DESC` for descending order.
+
+You can sort by single or multiple fields, specifying the order for each field individually:
+
+```js
+// Sorting by 'height' in descending order, then by 'age' in ascending order
+const orderBy = { height: OrderByType.DESC, age: OrderByType.ASC };
+const sortedDocs = await exampleCollection.getAll(filter, { orderBy });
+```
+
+## Managing Collections
+
+Generally, collections are created lazily and don't need additional management. However, in some cases manually creating, dropping, or listing collections is useful.
+
+### Create a Collection
+
+Create collections manually using the `bzr.collections.create` method.
+
+```js
+const message = await bzr.collections.create("example-collection-name");
+```
+
+:::note
+The recommended approach is to have a collection be created lazily by using a [collection object](#using-collections).
+A collection object is the most efficient way to interact with a collection's data.
+:::
+
+### Drop a Collection
+
+Drop, or delete, a collection and all of its docs.
+
+```js
+const message = await bzr.collections.drop("example-collection-name");
+```
+
+### List Collections
+
+List the names of all collections.
+
+```js
+const collectionsNames = await bzr.collections.list();
+```
