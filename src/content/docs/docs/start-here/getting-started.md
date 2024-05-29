@@ -2,21 +2,23 @@
 title: Getting Started
 ---
 
-Getting started with Bazaar is quick and easy. To being, you create a Bazaar account, then create a Bazaar Project and register your app. Next, you install the JavaScript SDK, configure an instance of the SDK, then create and log in a user before interacting with data.
+Getting started with Bazaar is quick and easy. To being, you create a Bazaar account, then create a Bazaar App and register your app. Next, you install the JavaScript SDK, configure an instance of the SDK, then create and log in a user before interacting with data.
 
 ## Create a Bazaar Account
 
 To begin, [create a Bazaar account](https://cloud.bzr.dev/login).
 
-## Create a Bazaar Project
+## Create a Bazaar App
 
-On your Bazaar dashboard go to the Developers section by clicking [**Developers**](https://cloud.bzr.dev/developers).
+On your Bazaar dashboard go to the Developers section by opening the menu and clicking [**Developers**](https://cloud.bzr.dev/developers).
 
-Next, click **Create Project**.
+Next, click **Create App**.
 
 - Give your app a name.
 - Add your app's URL.
-- Add one or more redirect URIs.
+- Optionally, add one or more redirect URIs (defaults to your app URL).
+
+Click **Create** to get an app ID.
 
 ## Install the JavaScript SDK
 
@@ -32,10 +34,12 @@ Or, load it from a CDN:
 <script src="https://unpkg.com/@bzr/bazaar"></script>
 ```
 
-## Create an SDK Client
+## Create an Bazaar App Client
 
 ```js
-const bzr = new Bazaar({
+import { BazaarApp } from "@bzr/bazaar";
+
+const bzr = new BazaarApp({
   appId: "example-app-id",
   loginRedirectUri: "http://example.com",
 });
@@ -78,7 +82,7 @@ tasksCollection.insertOne({ task });
 ## Fetch all Docs
 
 ```js
-tasksCollection.getAll(); // returns a Promise
+const allTasks = await tasksCollection.getAll();
 ```
 
-Learn about the full capabilities of [realtime databases](/docs/features/realtime-databases).
+Learn about the full capabilities of [collections](/docs/features/collections).

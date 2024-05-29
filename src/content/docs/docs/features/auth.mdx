@@ -1,12 +1,10 @@
 ---
-title: Auth
+title: Authentication
 ---
-
-import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 Bazaar provides authentication out-of-the-box allowing you to create and authenticate users securely and easily.
 
-Authorization is provided with the [Sharing API](/docs/features/sharing).
+Authorization is provided with the [Permissions API](/docs/features/permissions).
 
 ## Sign up and Log in
 
@@ -18,23 +16,18 @@ bzr.login();
 
 Calling the `login` method opens a pop-up window by default, which falls back to redirect login if the pop-up fails to open.
 
-Login types `popup_fallback`, `popup`, and `redirect` can be optionally set:
+Optionally, you can set a login type:
 
-<Tabs>
-  <TabItem label="JS">
-    ```js
-    bzr.login({ type: "redirect" });
-    ```
-  </TabItem>
-  <TabItem label="TS">
-    ```ts
-    import { LoginType } from "@bzr/bazaar";
+```ts
+import { LoginType } from "@bzr/bazaar";
+bzr.login({ type: LoginType.REDIRECT });
+```
 
-    bzr.login({ type: LoginType.REDIRECT});
-    ```
+Available `LoginType` are
 
-  </TabItem>
-</Tabs>
+- `POPUP_FALLBACK`: Complete auth in a popup window but fall back to redirect if popup creation fails (default).
+- `POPUP`: Complete auth in a popup window.
+- `REDIRECT`: Complete auth via a redirect. This may case the site to loose context (temporary, unsaved data).
 
 ## Log Out
 

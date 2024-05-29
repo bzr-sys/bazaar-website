@@ -1,0 +1,50 @@
+---
+title: Handle Events
+---
+
+## Handle a Successful Login Event
+
+Logging in takes place without a page fresh, so you need a way to handle a successful login event. To do so, set a callback as the first and only argument of `onLogin`:
+
+```js
+bzr.onLogin(() => {
+  // Handle user log in
+  // e.g. Set local state and redirect
+});
+```
+
+For more information about loging in a user, see the [authentication section](/docs/features/auth) 
+
+## Handle a Login Error Event
+
+Handle a login error event:
+
+```js
+bzr.onLoginError(() => {
+  // Handle log in error
+  // e.g. Show error message
+});
+```
+
+
+
+## Handle a Successful Connection Event
+
+Execute a callback function when a successful connection to the API is established.
+
+```js
+bzr.onApiConnect(() => {
+  console.log("Connected to the API successfully.");
+});
+```
+
+## Handle a Connection Error Event
+
+Execute a callback function when there is an error connecting to the API.
+
+```js
+bzr.onApiConnectError((error) => {
+  console.error("Connection error:", error);
+});
+```
+
