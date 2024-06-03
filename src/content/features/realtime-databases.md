@@ -36,4 +36,4 @@ Screenshot of the Bazaar admin dashboard for users
 
 The per-user-per-app database model provides simplified access management. It eliminates the need for configuring access policies, as users have automatic access to their databases.
 
-Granting access to an another user's data can be done conveniently with the [Sharing API](/features/sharing).
+Granting access to an another user's data can be done conveniently with the [Permissions API](/features/permissions).
