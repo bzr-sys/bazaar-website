@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import LogoOutlineSVG from "./LogoOutlineSVG.astro";
 
 const allFeatures = await getCollection("features");
 const orderedFeatures = allFeatures.sort((a, b) =>
@@ -12,6 +13,9 @@ const orderedFeatures = allFeatures.sort((a, b) =>
     orderedFeatures.map((f) => (
       <div class="card w-full bg-base-200 shadow-xl">
         <div class="card-body">
+          <div class="mx-auto">
+            <LogoOutlineSVG width="200px" />
+          </div>
           <h2 class="card-title">
             <a href={`/${f.collection}/${f.slug}`}>{f.data.title}</a>
           </h2>
