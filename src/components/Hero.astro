@@ -1,16 +1,32 @@
-<div class="hero">
-  <div class="hero-overlay"></div>
-  <div class="hero-content py-28 text-center text-neutral-content">
+---
+import poweredByBazaar from "../images/powered-by-bazaar.png";
+---
+
+<div
+  class="hero-bg hero relative"
+  style={`background-image: url(${poweredByBazaar.src})`}
+>
+  <div class="hero-content pb-40 pt-28 text-center text-neutral-content">
     <div class="max-w-md">
       <h1 class="mb-5 text-5xl font-bold">Build With Ease, Run Cost-Free</h1>
       <p class="mb-5">
         Bring your apps to life with zero running-costs. Bazaar provides
         authentication, document-orientated databases with realtime
-        capabilities, a powerful Sharing API, and more.
+        capabilities, a powerful permissions API, and more.
       </p>
-      <a href="/docs/start-here/getting-started/" class="btn btn-primary"
-        >Get Started</a
-      >
     </div>
   </div>
 </div>
+
+<style>
+  .hero-bg {
+    background: no-repeat bottom center;
+    background-size: 100%;
+  }
+
+  @media (min-width: 853px) {
+    .hero-bg {
+      background-size: auto;
+    }
+  }
+</style>
