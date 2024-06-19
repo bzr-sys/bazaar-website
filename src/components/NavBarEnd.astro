@@ -1,13 +1,15 @@
+---
+import UserSVG from "./UserSVG.astro";
+---
+
 <ul class="flex [&>li]:mx-2">
   <li><a class="btn btn-ghost btn-sm" href="/contact">Contact</a></li>
   <li>
-    <a class="btn btn-outline btn-sm" href="https://cloud.bzr.dev/login"
-      >Log In</a
-    >
-  </li>
-  <li>
-    <a class="btn btn-primary btn-sm" href="https://cloud.bzr.dev/login"
-      >Sign Up</a
-    >
+    <a class="block pt-1" href="https://cloud.bzr.dev/login"
+      ><span class="sr-only"
+        >Log in, sign up, or go to the Bazaar dashboard</span
+      >
+      <UserSVG width="20px" />
+    </a>
   </li>
 </ul>
