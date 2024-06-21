@@ -1,7 +1,7 @@
 ---
 title: Privacy and Data Protection
 summary: Bazaar protects user privacy by separating user data from the actual app. This gives users total visibility & control over the data that was provided to any Bazaar app. This also benefits app developers, as they no longer have to handle any regulatory requirements such as GDPR.
-order: 2
+order: 1
 ---
 
 Bazaar is basically an identity provider on steroids. In addition to your identity, it also provides data storage that can be used within the context of an app. This means, a user's data is stored in their Bazaar account instead of an app's backend.

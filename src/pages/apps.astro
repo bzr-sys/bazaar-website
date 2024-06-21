@@ -1,12 +1,12 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
 import BigTitle from "../components/BigTitle.astro";
 import FeatureGrid from "../components/FeatureGrid.astro";
-import BaseLayout from "../layouts/BaseLayout.astro";
 
-const title = "Features";
+const title = "Highlighted Apps";
 ---
 
 <BaseLayout title={title}>
   <BigTitle>{title}</BigTitle>
-  <FeatureGrid collection="features" />
+  <FeatureGrid collection="apps"/>
 </BaseLayout>
