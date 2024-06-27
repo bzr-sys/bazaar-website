@@ -34,7 +34,7 @@ Or, load it from a CDN:
 <script src="https://unpkg.com/@bzr/bazaar"></script>
 ```
 
-## Create an Bazaar App Client
+## Create a Bazaar App Client
 
 ```js
 import { BazaarApp } from "@bzr/bazaar";

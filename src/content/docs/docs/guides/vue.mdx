@@ -1,0 +1,700 @@
+---
+title: Vue.js
+---
+
+import { Steps } from "@astrojs/starlight/components";
+import { Aside } from "@astrojs/starlight/components";
+
+In this guide, you'll learn how to create a to-do app with features to view, add, delete, and mark tasks as complete.
+
+## Prerequisites
+
+- Some experience with Vue.js
+- Node and NPM
+
+## Create New Vue Project
+
+Create new Vue project:
+
+```bash
+npm create vue@latest
+```
+
+Choose a project name. I am using `bazaar-vue-todo`.
+
+Then, answer the following prompts:
+
+```bash
+Add TypeScript? › No
+Add JSX Support? › No
+Add Vue Router for Single Page Application development? No
+Add Pinia for state management? No
+Add Vitest for Unit Testing? No
+Add an End-to-End Testing Solution? No
+Add ESLint for code quality? No
+Add Vue DevTools 7 extension for debugging? (experimental) No
+```
+
+You can choose `yes` to any prompt, though none of the options are needed for this guide.
+
+After answering all prompts, you'll see the following output:
+
+```bash title="Output"
+Scaffolding project in /<your-path>/bazaar-vue-todo...
+
+Done. Now run:
+
+  cd bazaar-vue-todo
+  npm install
+  npm run dev
+```
+
+Run those three commands, then open the new Vue app in your browser at the URL shown in the `npm run dev` output.
+
+Check out new project in browser. The default URL is `http://localhost:5173/`.
+
+## Prepare the Scaffolded Project
+
+Before you start creating your to-do app, you'll prepare the freshly scaffolded Vue project.
+
+<Steps>
+
+1. Delete the unnecessary items from the Vue starter app:
+
+   ```js
+   import { Steps } from "@astrojs/starlight/components";
+   ```
+
+   - `src/components/*`
+   - `src/assets/base.css`
+   - `src/assets/logo.svg`
+
+   You could remove the files in your code editor. Or if you prefer, in your terminal, from your project folder, run the following command:
+
+   ```bash
+   rm -rf src/components/* src/assets/base.css src/assets/logo.svg
+   ```
+
+2. Add CSS:
+
+   Open up `assets/main.css` and remove everything from the file and add the following styles:
+
+   ```css title="main.css"
+   body {
+     font-family: sans-serif;
+   }
+
+   .container {
+     margin: 0 auto;
+     max-width: 600px;
+     padding: 3em 0;
+   }
+
+   .card {
+     background-color: #eee;
+     padding: 1rem;
+   }
+
+   .todo-form {
+     margin: 2rem 0;
+   }
+
+   .todos {
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+   }
+
+   .todo-text {
+     margin-bottom: 1rem;
+   }
+
+   .strikethrough {
+     text-decoration: line-through;
+   }
+   ```
+
+3. Prepare `App.vue`:
+
+   Next, Open up `src/App.vue` and replace its contents with the following:
+
+   ```vue title="App.vue"
+   <script setup></script>
+
+   <template>
+     <div class="container">
+       <h1>To Do</h1>
+     </div>
+   </template>
+
+   <style scoped></style>
+   ```
+
+</Steps>
+
+Now, if you view your app again in the browser you'll see only "To Do".
+
+## Install and initialize a Bazaar Client
+
+```bash
+npm install @bzr/bazaar
+```
+
+In `src/App.vue`, at the start of `<script setup>`, import the Bazaar library:
+
+```vue title="App.vue"
+<script setup>
+import { BazaarApp } from "@bzr/bazaar";
+
+const bzr = new BazaarApp({
+  appId: "test",
+  loginRedirectUri: window.location.href,
+});
+</script>
+```
+
+Test the client by checking logged-in status:
+
+```vue title="App.vue" ins={9}
+<script setup>
+import { BazaarApp } from "@bzr/bazaar";
+
+const bzr = new BazaarApp({
+  appId: "test",
+  loginRedirectUri: window.location.href,
+});
+
+console.log("is logged in:", bzr.isLoggedIn());
+</script>
+```
+
+You'll see the following in your web browser's dev tools console:
+
+```log title="Browser dev tools console"
+is logged in: false
+```
+
+## Local Development
+
+For local development, we recommend you use the Bazaar mock server. If you're Vue app is running on the default Vite dev server port, `http://localhost:5173/`, then run the mock server in a new terminal tab:
+
+```bash
+npx @bzr/bazaar-mock -u http://localhost:5173/
+```
+
+You'll be prompted to install the `@bzr/bazaar-mock` NPM package if you haven't done so before.
+
+```bash title="Output"
+Running mock Bazaar server at: http://localhost:3377
+
+App ID is test
+App URL is http://localhost:5173/
+Redirect URIs are http://localhost:5173/
+Use any email to sign up / log in. Code is always 1234
+```
+
+## Authentication
+
+Now that the Bazaar mock server is running, the next step is to authenticate a user.
+
+Add log in and log out buttons:
+
+```vue title="App.vue" ins={4,5}
+<template>
+  <div class="container">
+    <h1>To Do</h1>
+    <button @click="bzr.login">Log in</button>
+    <button @click="bzr.logOut">Log out</button>
+  </div>
+</template>
+```
+
+When you click the button a login pop-up window will open. Log in using the code `1234` and whatever other info you like.
+
+After you login the the pop-up closes, refresh the page and you'll see:
+
+```log title="Browser dev tools console"
+is logged in: true
+```
+
+<Aside>
+  The `bzr.logOut` method deletes an access token from local storage and
+  performs a page refresh.
+</Aside>
+
+Next, refactor the login code so that the login status updates immediately after a successful login, not just on page load.
+
+```vue title="App.vue" del={9} ins={11-21}
+<script setup>
+import { BazaarApp } from "@bzr/bazaar";
+
+const bzr = new BazaarApp({
+  appId: "test",
+  loginRedirectUri: window.location.href,
+});
+
+console.log("is logged in:", bzr.isLoggedIn());
+
+function doLoginActions() {
+  console.log("is logged in:", bzr.isLoggedIn());
+}
+
+// Perform login actions if the user is already logged in on page load
+if (bzr.isLoggedIn()) {
+  doLoginActions();
+}
+
+// Set up handler to perform login actions immediately after a successful login
+bzr.onLogin(doLoginActions);
+</script>
+```
+
+Now, log out and log back in and you'll see `is logged in: true` after the pop-up closes, without the need for a page refresh.
+
+## Display Logged-in Content
+
+Next, you'll display content in your template depending on a user's logged-in status.
+
+```vue title="App.vue" ins={3,7,11,19,21,22,24} del={10}
+<script setup>
+import { BazaarApp } from "@bzr/bazaar";
+import { ref } from "vue";
+
+const bzr = new BazaarApp(/* ... */);
+
+const isLoggedIn = ref(false);
+
+function doLoginActions() {
+  console.log("is logged in:", bzr.isLoggedIn());
+  isLoggedIn.value = true;
+}
+
+// ...
+</script>
+<template>
+  <div class="container">
+    <h1>To Do</h1>
+    <template v-if="!isLoggedIn">
+      <button @click="bzr.login">Log in</button>
+    </template>
+    <template v-else>
+      <button @click="bzr.logOut">Log out</button>
+    </template>
+  </div>
+</template>
+```
+
+Now only the `Log in` button will display when logged out, and the `Log out` button will display when logged in.
+
+<Aside>`/* ... */`, `// ...`, and `<!-- ... -->` indicate portions of code omitted for brevity.</Aside>
+
+## Add To Do
+
+Next, you'll implement the feature to add new to-do items.
+
+Add the following changes in your `script`:
+
+```vue title="App.vue" ins={5-14,27-35}
+<script setup>
+// ...
+
+const isLoggedIn = ref(false);
+const todoText = ref("");
+
+const todosCollection = bzr.collection("todos");
+
+async function onSubmit() {
+  const todo = { text: todoText.value, completed: false };
+  const id = await todosCollection.insertOne(todo);
+  console.log(id);
+  todoText.value = "";
+}
+
+// ...
+</script>
+<template>
+  <div class="container">
+    <h1>To Do</h1>
+    <template v-if="!isLoggedIn">
+      <button @click="bzr.login">Log in</button>
+    </template>
+    <template v-else>
+      <button @click="bzr.logOut">Log out</button>
+
+      <form class="todo-form" @submit.prevent="onSubmit">
+        <input
+          type="text"
+          v-model="todoText"
+          placeholder="Write a to do..."
+          required
+        />
+        <button>Add</button>
+      </form>
+    </template>
+  </div>
+</template>
+```
+
+You create a `todos` collection, and insert a to do when the form is submitted.
+
+# Display To Dos
+
+```vue title="App.vue" ins={6,14,20} del={13}
+<script setup>
+// ...
+
+const isLoggedIn = ref(false);
+const todoText = ref("");
+const todos = ref([]);
+
+const todosCollection = bzr.collection("todos");
+
+async function onSubmit() {
+  const todo = { text: todoText.value, completed: false };
+  const id = await todosCollection.insertOne(todo);
+  console.log(id);
+  todos.value.push({ id, ...todo });
+  todoText.value = "";
+}
+
+function doLoginActions() {
+  isLoggedIn.value = true;
+  todosCollection.getAll().then((docs) => (todos.value = docs));
+}
+
+// ...
+</script>
+```
+
+The, in the `template` display the to-dos after the form:
+
+```vue title="App.vue" ins={6-12}
+<template>
+  <!-- ... -->
+
+  <form class="todo-form" @submit.prevent="onSubmit"><!-- ... --></form>
+
+  <div class="todos">
+    <div class="card" v-for="todo of todos" :key="todo.id">
+      <div class="todo-text">
+        {{ todo.text }}
+      </div>
+    </div>
+  </div>
+
+  <!-- ... -->
+</template>
+```
+
+## Delete To Do
+
+```vue title="App.vue" ins={8-12}
+<script setup>
+// ...
+
+async function onSubmit() {
+  /* ... */
+}
+
+function deleteTodo(id) {
+  if (!window.confirm("Delete to do forever?")) return;
+  todosCollection.deleteOne(id);
+  todos.value = todos.value.filter((t) => t.id !== id);
+}
+
+// ...
+</script>
+```
+
+Then, in the `template` add the `Delete` button:
+
+```vue title="App.vue" ins={11}
+<template>
+  <!-- ... -->
+
+  <form class="todo-form" @submit.prevent="onSubmit"><!-- ... --></form>
+
+  <div class="todos">
+    <div class="card" v-for="todo of todos" :key="todo.id">
+      <div class="todo-text">
+        {{ todo.text }}
+      </div>
+      <button @click="deleteTodo(todo.id)">Delete</button>
+    </div>
+  </div>
+
+  <!-- ... -->
+</template>
+```
+
+## Mark To Do as Complete
+
+```vue title="App.vue" ins={8-12,30}
+<script setup>
+// ...
+
+function deleteTodo(id) {
+  /* ... */
+}
+
+function toggleToDoCompletion(todo) {
+  const completed = !todo.completed;
+  todosCollection.updateOne(todo.id, { completed });
+  todos.value = todos.value.map((t) =>
+    t.id === todo.id ? { ...t, completed } : t,
+  );
+}
+
+// ...
+</script>
+```
+
+Then, in the `template` add the button and conditional to-do text styling:
+
+```vue title="App.vue" ins={9,12-14} del={8}
+<template>
+  <!-- ... -->
+
+  <form class="todo-form" @submit.prevent="onSubmit"><!-- ... --></form>
+
+  <div class="todos">
+    <div class="card" v-for="todo of todos" :key="todo.id">
+      <div class="todo-text">
+      <div class="todo-text" :class="{ strikethrough: todo.completed }">
+        {{ todo.text }}
+      </div>
+      <button @click="toggleToDoCompletion(todo)">
+        Mark as {{ todo.completed ? "Incomplete" : "Completed" }}
+      </button>
+      <button @click="deleteTodo(todo.id)">Delete</button>
+    </div>
+  </div>
+
+  <!-- ... -->
+</template>
+```
+
+With that the app functionality is complete.
+
+Here is the full `App.vue` file:
+
+```vue title="App.vue"
+<script setup>
+import { BazaarApp } from "@bzr/bazaar";
+import { ref } from "vue";
+
+const bzr = new BazaarApp({
+  appId: "test",
+  loginRedirectUri: window.location.href,
+});
+
+const isLoggedIn = ref(false);
+const todoText = ref("");
+const todos = ref([]);
+
+const todosCollection = bzr.collection("todos");
+
+async function onSubmit() {
+  const todo = { text: todoText.value, completed: false };
+  const id = await todosCollection.insertOne(todo);
+  todos.value.push({ id, ...todo });
+  todoText.value = "";
+}
+
+function deleteTodo(id) {
+  if (!window.confirm("Delete to do forever?")) return;
+  todosCollection.deleteOne(id);
+  todos.value = todos.value.filter((t) => t.id !== id);
+}
+
+function toggleToDoCompletion(todo) {
+  const completed = !todo.completed;
+  todosCollection.updateOne(todo.id, { completed });
+  todos.value = todos.value.map((t) =>
+    t.id === todo.id ? { ...t, completed } : t,
+  );
+}
+
+function doLoginActions() {
+  isLoggedIn.value = true;
+  todosCollection.getAll().then((docs) => (todos.value = docs));
+}
+
+if (bzr.isLoggedIn()) {
+  doLoginActions();
+}
+
+bzr.onLogin(doLoginActions);
+</script>
+<template>
+  <div class="container">
+    <h1>To Do</h1>
+    <template v-if="!isLoggedIn">
+      <button @click="bzr.login">Log in</button>
+    </template>
+    <template v-else>
+      <button @click="bzr.logOut">Log out</button>
+
+      <form class="todo-form" @submit.prevent="onSubmit">
+        <input
+          type="text"
+          v-model="todoText"
+          placeholder="Write a to do..."
+          required
+        />
+        <button>Add</button>
+      </form>
+
+      <div class="todos">
+        <div class="card" v-for="todo of todos" :key="todo.id">
+          <div class="todo-text" :class="{ strikethrough: todo.completed }">
+            {{ todo.text }}
+          </div>
+          <button @click="toggleToDoCompletion(todo)">
+            Mark as {{ todo.completed ? "Incomplete" : "Completed" }}
+          </button>
+          <button @click="deleteTodo(todo.id)">Delete</button>
+        </div>
+      </div>
+    </template>
+  </div>
+</template>
+```
+
+## Realtime Updates
+
+Adding realtime cross-device updates requires only a small refactor.
+
+```vue title="App.vue" ins={17,20,25-28,48-64} del={16,19,21,33,39-41}
+<script setup>
+import { BazaarApp } from "@bzr/bazaar";
+import { ref } from "vue";
+
+const bzr = new BazaarApp({
+  appId: "test",
+  loginRedirectUri: window.location.href,
+});
+
+const isLoggedIn = ref(false);
+const todoText = ref("");
+const todos = ref([]);
+
+const todosCollection = bzr.collection("todos");
+
+async function onSubmit() {
+function onSubmit() {
+  const todo = { text: todoText.value, completed: false };
+  const id = await todosCollection.insertOne(todo);
+  todosCollection.insertOne(todo);
+  todos.value.push({ id, ...todo });
+  todoText.value = "";
+}
+
+function addTodo(doc) {
+  if (todos.value.some((todo) => todo.id === doc.id)) return;
+  todos.value.push(doc);
+}
+
+function deleteTodo(id) {
+  if (!window.confirm("Delete to do forever?")) return;
+  todosCollection.deleteOne(id);
+  todos.value = todos.value.filter((t) => t.id !== id);
+}
+
+function toggleToDoCompletion(todo) {
+  const completed = !todo.completed;
+  todosCollection.updateOne(todo.id, { completed });
+  todos.value = todos.value.map((t) =>
+    t.id === todo.id ? { ...t, completed } : t,
+  );
+}
+
+function doLoginActions() {
+  isLoggedIn.value = true;
+  todosCollection.getAll().then((docs) => (todos.value = docs));
+
+  todosCollection.subscribeAll(
+    {},
+    {
+      onInitial: (doc) => {
+        addTodo(doc);
+      },
+      onAdd: (doc) => {
+        addTodo(doc);
+      },
+      onChange: (oldDoc, newDoc) => {
+        todos.value = todos.value.map((t) => (t.id === newDoc.id ? newDoc : t));
+      },
+      onDelete: (doc) => {
+        todos.value = todos.value.filter((t) => t.id !== doc.id);
+      },
+    }
+  );
+}
+
+if (bzr.isLoggedIn()) {
+  doLoginActions();
+}
+
+bzr.onLogin(doLoginActions);
+</script>
+```
+
+And that can be even further simplified with the mirror helper.
+
+```vue title="App.vue" ins={39} del={4-7,22-38}
+<script setup>
+// ...
+
+function addTodo(doc) {
+  if (todos.value.some((todo) => todo.id === doc.id)) return;
+  todos.value.push(doc);
+}
+
+function deleteTodo(id) {
+  if (!window.confirm("Delete to do forever?")) return;
+  todosCollection.deleteOne(id);
+}
+
+function toggleToDoCompletion(todo) {
+  const completed = !todo.completed;
+  todosCollection.updateOne(todo.id, { completed });
+}
+
+function doLoginActions() {
+  isLoggedIn.value = true;
+
+  todosCollection.subscribeAll(
+    {},
+    {
+      onInitial: (doc) => {
+        addTodo(doc);
+      },
+      onAdd: (doc) => {
+        addTodo(doc);
+      },
+      onChange: (oldDoc, newDoc) => {
+        todos.value = todos.value.map((t) => (t.id === newDoc.id ? newDoc : t));
+      },
+      onDelete: (doc) => {
+        todos.value = todos.value.filter((t) => t.id !== doc.id);
+      },
+    },
+  );
+  todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(todos.value));
+}
+
+// ...
+</script>
+```
+
+## Next Steps
+
+Check docs. See other features, permissions, social.
+
+## Resources
+
+- NPM mock
+- NPM library
+- Bazaar Cloud
+- Docs
