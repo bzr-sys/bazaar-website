@@ -1,10 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
-import FeaturesSummary from "../components/FeaturesSummary.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
 ---
 
 <BaseLayout title="Bazaar: Build With Ease, Run Cost-Free">
   <Hero />
-  <FeaturesSummary />
+  <FeatureGrid collection="features" limit=6 />
 </BaseLayout>

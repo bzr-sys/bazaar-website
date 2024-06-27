@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import LogoOutlineSVG from "./LogoOutlineSVG.astro";
+
+let { collection, limit } = Astro.props;
+const allFeatures = await getCollection(collection);
+const orderedFeatures = allFeatures.sort((a, b) =>
+  a.data.order < b.data.order ? -1 : 1
+);
+if (!limit) {
+  limit = orderedFeatures.length;
+}
+---
+
+<div class="mx-auto grid max-w-screen-2xl gap-4 px-4 py-8 lg:grid-cols-3">
+  {
+    orderedFeatures.map(
+      (f, i) =>
+        i < limit && (
+          <div class="card w-full bg-base-200 shadow-xl">
+            <div class="card-body">
+              <div class="mx-auto">
+                <LogoOutlineSVG width="200px" />
+              </div>
+              <h2 class="card-title">
+                <a href={`/${f.collection}/${f.slug}`}>{f.data.title}</a>
+              </h2>
+              <p>{f.data.summary}</p>
+              <div class="card-actions justify-end">
+                <a href={`/${f.collection}/${f.slug}`} class="btn btn-primary">
+                  Learn More
+                </a>
+              </div>
+            </div>
+          </div>
+        )
+    )
+  }
+</div>
