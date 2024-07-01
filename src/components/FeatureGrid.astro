@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import LogoOutlineSVG from "./LogoOutlineSVG.astro";
 
 let { collection, limit } = Astro.props;
-const allFeatures = await getCollection(collection);
+const allFeatures: any[] = await getCollection(collection);
 const orderedFeatures = allFeatures.sort((a, b) =>
   a.data.order < b.data.order ? -1 : 1
 );
