@@ -2,17 +2,18 @@
 title: Vue.js
 ---
 
-import { Steps } from "@astrojs/starlight/components";
-import { Aside } from "@astrojs/starlight/components";
+import { Steps, Aside } from "@astrojs/starlight/components";
 
-In this guide, you'll learn how to create a to-do app with features to view, add, delete, and mark tasks as complete.
+In this guide, you will create a todo app in Vue.js with features to add, display, mark as complete, and delete tasks.
 
 ## Prerequisites
 
 - Some experience with Vue.js
 - Node and NPM
+- GitHub account (if you want to deploy your app)
+- Netlify account (if you want to deploy your app)
 
-## Create New Vue Project
+## Creating a New Vue Project
 
 Create new Vue project:
 
@@ -22,10 +23,10 @@ npm create vue@latest
 
 Choose a project name. I am using `bazaar-vue-todo`.
 
-Then, answer the following prompts:
+Then, answer the following prompts, choosing `yes` for TypeScript and no the the remaining options. You can anwser `yes` to whatever you like, but the other options aren't necessary for this guide.
 
 ```bash
-Add TypeScript? › No
+Add TypeScript? › Yes
 Add JSX Support? › No
 Add Vue Router for Single Page Application development? No
 Add Pinia for state management? No
@@ -35,7 +36,7 @@ Add ESLint for code quality? No
 Add Vue DevTools 7 extension for debugging? (experimental) No
 ```
 
-You can choose `yes` to any prompt, though none of the options are needed for this guide.
+You can choose `yes` to any prompt, though only TypesScript is needed for this guide.
 
 After answering all prompts, you'll see the following output:
 
@@ -49,35 +50,29 @@ Done. Now run:
   npm run dev
 ```
 
-Run those three commands, then open the new Vue app in your browser at the URL shown in the `npm run dev` output.
+<Aside>
+  At the time of writing, `npm create vue@latest` installed Vue `3.4.29`.
+</Aside>
 
-Check out new project in browser. The default URL is `http://localhost:5173/`.
+Run those three commands and check out the starter Vue project in your browser. The default URL is `http://localhost:5173/`. You'll see the Vue starter app, `You did it! You've successfully created a project with Vite + Vue 3.`
 
-## Prepare the Scaffolded Project
+## Preparing the Starter Project
 
-Before you start creating your to-do app, you'll prepare the freshly scaffolded Vue project.
+Open the Vue project in your code editor.
+
+Before you start building your todo app, clean up the newly created Vue project by removing some default files and folders, replacing the default CSS, and stripping unnecessary code from `App.vue`.
 
 <Steps>
 
-1. Delete the unnecessary items from the Vue starter app:
-
-   ```js
-   import { Steps } from "@astrojs/starlight/components";
-   ```
+1. Delete unnecessary files from the Vue starter project:
 
    - `src/components/*`
    - `src/assets/base.css`
    - `src/assets/logo.svg`
 
-   You could remove the files in your code editor. Or if you prefer, in your terminal, from your project folder, run the following command:
-
-   ```bash
-   rm -rf src/components/* src/assets/base.css src/assets/logo.svg
-   ```
-
 2. Add CSS:
 
-   Open up `assets/main.css` and remove everything from the file and add the following styles:
+   Open up `assets/main.css` and replace its contents with the following styles:
 
    ```css title="main.css"
    body {
@@ -119,11 +114,14 @@ Before you start creating your to-do app, you'll prepare the freshly scaffolded 
    Next, Open up `src/App.vue` and replace its contents with the following:
 
    ```vue title="App.vue"
-   <script setup></script>
+   <script setup lang="ts">
+   // Todo logic will be implemented here
+   </script>
 
    <template>
      <div class="container">
-       <h1>To Do</h1>
+       <h1>Todo</h1>
+       <!-- Todo template content will be implemented here -->
      </div>
    </template>
 
@@ -132,55 +130,50 @@ Before you start creating your to-do app, you'll prepare the freshly scaffolded 
 
 </Steps>
 
-Now, if you view your app again in the browser you'll see only "To Do".
+Now, if you check your app in the browser again, you'll see the text, **Todo**.
 
-## Install and initialize a Bazaar Client
+## Initializing a Bazaar Client
 
 ```bash
 npm install @bzr/bazaar
 ```
 
-In `src/App.vue`, at the start of `<script setup>`, import the Bazaar library:
+In `src/App.vue`, at the start of `<script setup lang="ts">`, initalize the Bazaar library. Replace the comment, `// Todo logic will be implemented here`, with the following:
 
 ```vue title="App.vue"
-<script setup>
+<script setup lang="ts">
 import { BazaarApp } from "@bzr/bazaar";
 
 const bzr = new BazaarApp({
   appId: "test",
   loginRedirectUri: window.location.href,
-});
-</script>
-```
-
-Test the client by checking logged-in status:
-
-```vue title="App.vue" ins={9}
-<script setup>
-import { BazaarApp } from "@bzr/bazaar";
-
-const bzr = new BazaarApp({
-  appId: "test",
-  loginRedirectUri: window.location.href,
+  onApiConnectError: async (bzr) => bzr.logOut(),
 });
 
+// Test the client initialization by checking the logged in status
 console.log("is logged in:", bzr.isLoggedIn());
 </script>
 ```
 
-You'll see the following in your web browser's dev tools console:
+TODO Explain onApiConnectError.
 
-```log title="Browser dev tools console"
+TODO this config will use the mock server `bazaarUri` in when `process.env.NODE_ENV` is `development`.
+
+You'll see the following in your web browser's developer tools console:
+
+```log title="Developer Console"
 is logged in: false
 ```
 
-## Local Development
+## Developing Locally
 
-For local development, we recommend you use the Bazaar mock server. If you're Vue app is running on the default Vite dev server port, `http://localhost:5173/`, then run the mock server in a new terminal tab:
+For local development, we recommend you use the Bazaar mock server. If your Vue app is running on the default Vite dev server port, `http://localhost:5173/`, then run the mock server in a new terminal tab specifying its port:
 
 ```bash
 npx @bzr/bazaar-mock -u http://localhost:5173/
 ```
+
+If you omit the `-u` option the mock server defaults to port `8080`.
 
 You'll be prompted to install the `@bzr/bazaar-mock` NPM package if you haven't done so before.
 
@@ -193,16 +186,19 @@ Redirect URIs are http://localhost:5173/
 Use any email to sign up / log in. Code is always 1234
 ```
 
-## Authentication
+The Bazaar mock server is running. Next, add user authentication.
 
-Now that the Bazaar mock server is running, the next step is to authenticate a user.
+## Adding User Authentication
+
+In this step, you'll add user authentication and login event handling.
 
 Add log in and log out buttons:
 
-```vue title="App.vue" ins={4,5}
+```vue title="App.vue" del={4} ins={5,6}
 <template>
   <div class="container">
-    <h1>To Do</h1>
+    <h1>Todo</h1>
+    <!-- Todo template content will be implemented here -->
     <button @click="bzr.login">Log in</button>
     <button @click="bzr.logOut">Log out</button>
   </div>
@@ -213,7 +209,7 @@ When you click the button a login pop-up window will open. Log in using the code
 
 After you login the the pop-up closes, refresh the page and you'll see:
 
-```log title="Browser dev tools console"
+```log title="Developer Console"
 is logged in: true
 ```
 
@@ -224,18 +220,13 @@ is logged in: true
 
 Next, refactor the login code so that the login status updates immediately after a successful login, not just on page load.
 
-```vue title="App.vue" del={9} ins={11-21}
-<script setup>
-import { BazaarApp } from "@bzr/bazaar";
+```vue title="App.vue" del={4,5} ins={6-16}
+<script setup lang="ts">
+...
 
-const bzr = new BazaarApp({
-  appId: "test",
-  loginRedirectUri: window.location.href,
-});
-
+// Test the client initialization by checking the logged in status
 console.log("is logged in:", bzr.isLoggedIn());
-
-function doLoginActions() {
+async function doLoginActions() {
   console.log("is logged in:", bzr.isLoggedIn());
 }
 
@@ -249,31 +240,36 @@ bzr.onLogin(doLoginActions);
 </script>
 ```
 
+<Aside>
+  An ellipses (`...`) indicates portions of previously added code omitted for
+  brevity.
+</Aside>
+
 Now, log out and log back in and you'll see `is logged in: true` after the pop-up closes, without the need for a page refresh.
 
-## Display Logged-in Content
+## Displaying Logged-in Content
 
 Next, you'll display content in your template depending on a user's logged-in status.
 
 ```vue title="App.vue" ins={3,7,11,19,21,22,24} del={10}
-<script setup>
+<script setup lang="ts">
 import { BazaarApp } from "@bzr/bazaar";
 import { ref } from "vue";
 
-const bzr = new BazaarApp(/* ... */);
+...
 
 const isLoggedIn = ref(false);
 
-function doLoginActions() {
+async function doLoginActions() {
   console.log("is logged in:", bzr.isLoggedIn());
   isLoggedIn.value = true;
 }
 
-// ...
+...
 </script>
 <template>
   <div class="container">
-    <h1>To Do</h1>
+    <h1>Todo</h1>
     <template v-if="!isLoggedIn">
       <button @click="bzr.login">Log in</button>
     </template>
@@ -286,93 +282,94 @@ function doLoginActions() {
 
 Now only the `Log in` button will display when logged out, and the `Log out` button will display when logged in.
 
-<Aside>`/* ... */`, `// ...`, and `<!-- ... -->` indicate portions of code omitted for brevity.</Aside>
+## Adding a Todo
 
-## Add To Do
+Next, you'll implement the feature to add new todo items.
 
-Next, you'll implement the feature to add new to-do items.
+In your `script`, add the following new lines:
 
-Add the following changes in your `script`:
+```vue title="App.vue" ins={9-26} ins=", type Ref"
+<script setup lang="ts">
+import { BazaarApp, type SubscribeListener } from "@bzr/bazaar";
+import { ref, type Ref } from "vue";
 
-```vue title="App.vue" ins={5-14,27-35}
-<script setup>
-// ...
+const bzr = new BazaarApp({ ... });
 
 const isLoggedIn = ref(false);
-const todoText = ref("");
 
-const todosCollection = bzr.collection("todos");
+type Todo = {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+const todoText = ref("");
+const todos: Ref<Todo[]> = ref([]);
+
+const todosCollection = bzr.collection<Todo>("todos");
 
 async function onSubmit() {
-  const todo = { text: todoText.value, completed: false };
-  const id = await todosCollection.insertOne(todo);
-  console.log(id);
+  const unpersistedTodo = { text: todoText.value, completed: false };
+  const id = await todosCollection.insertOne(unpersistedTodo);
+  todos.value.push({ id, ...unpersistedTodo });
+
   todoText.value = "";
 }
 
-// ...
+...
 </script>
-<template>
-  <div class="container">
-    <h1>To Do</h1>
-    <template v-if="!isLoggedIn">
-      <button @click="bzr.login">Log in</button>
-    </template>
-    <template v-else>
-      <button @click="bzr.logOut">Log out</button>
+```
 
-      <form class="todo-form" @submit.prevent="onSubmit">
-        <input
-          type="text"
-          v-model="todoText"
-          placeholder="Write a to do..."
-          required
-        />
-        <button>Add</button>
-      </form>
-    </template>
-  </div>
+TODO explain.
+
+And in your `template`, add the **add todo** form below the `Log out` button.
+
+```vue title="App.vue" ins={5-13}
+<template>
+  ...
+  <button @click="bzr.logOut">Log out</button>
+
+  <form class="todo-form" @submit.prevent="onSubmit">
+    <input
+      type="text"
+      v-model="todoText"
+      placeholder="Write a todo..."
+      required
+    />
+    <button>Add</button>
+  </form>
+  ...
 </template>
 ```
 
-You create a `todos` collection, and insert a to do when the form is submitted.
+You create a `todos` collection, and insert a todo when the form is submitted.
 
-# Display To Dos
+When submit the **add todo** form, you insert a todo to the database, get its ID, then add the todo to your local state. If you use the Vue Dev Tools you can see the `todos` state getting updated with the todo, complete with ID returned from the database. Next, you need to display todos.
 
-```vue title="App.vue" ins={6,14,20} del={13}
-<script setup>
-// ...
+## Displaying Todos
 
-const isLoggedIn = ref(false);
-const todoText = ref("");
-const todos = ref([]);
+In this step, you'll display todos.
 
-const todosCollection = bzr.collection("todos");
+```vue title="App.vue" ins={6}
+<script setup lang="ts">
+...
 
-async function onSubmit() {
-  const todo = { text: todoText.value, completed: false };
-  const id = await todosCollection.insertOne(todo);
-  console.log(id);
-  todos.value.push({ id, ...todo });
-  todoText.value = "";
-}
-
-function doLoginActions() {
+async function doLoginActions() {
   isLoggedIn.value = true;
   todosCollection.getAll().then((docs) => (todos.value = docs));
 }
 
-// ...
+...
 </script>
 ```
 
-The, in the `template` display the to-dos after the form:
+Then, in the `template` display the todos after the form:
 
 ```vue title="App.vue" ins={6-12}
 <template>
-  <!-- ... -->
+  ...
 
-  <form class="todo-form" @submit.prevent="onSubmit"><!-- ... --></form>
+  <form class="todo-form" @submit.prevent="onSubmit">...</form>
 
   <div class="todos">
     <div class="card" v-for="todo of todos" :key="todo.id">
@@ -382,311 +379,191 @@ The, in the `template` display the to-dos after the form:
     </div>
   </div>
 
-  <!-- ... -->
+  ...
 </template>
 ```
 
-## Delete To Do
+Now, your todos appear below the form.
 
-```vue title="App.vue" ins={8-12}
-<script setup>
-// ...
+Notice, todos are added to the bottom of your list. Usually you want the newest todos to appear first. To do that, you'll reverse the fetched todos.
 
-async function onSubmit() {
-  /* ... */
+```vue title="App.vue" del={4} ins={5,6} ins="fetchedTodos.value"
+<script setup lang="ts">
+...
+
+const todos: Ref<Todo[]> = ref([]);
+const fetchedTodos: Ref<Todo[]> = ref([]);
+const todos = computed(() => [...fetchedTodos.value].reverse());
+
+...
+
+async function doLoginActions() {
+  isLoggedIn.value = true;
+  todosCollection.getAll().then((docs) => (fetchedTodos.value = docs));
 }
 
-function deleteTodo(id) {
-  if (!window.confirm("Delete to do forever?")) return;
+...
+</script>
+```
+
+Next, you'll perform a small refactor to implement realtime cross-device syncing, while doing the same initial data fetch.
+
+## Adding Realtime Syncing
+
+Adding realtime cross-device updates requires only a small refactor. First, import the `arrayMirrorSubscribeListener` helper:
+
+```vue title="App.vue" ins=", arrayMirrorSubscribeListener"
+import { BazaarApp, arrayMirrorSubscribeListener } from "@bzr/bazaar";
+```
+
+Then, update the `onSubmit` and `doLoginActions` methods as follows:
+
+```vue title="App.vue"
+<script setup lang="ts">
+...
+
+function onSubmit() {
+  const unpersistedTodo = { text: todoText.value, completed: false };
+  todosCollection.insertOne(unpersistedTodo);
+  todoText.value = "";
+}
+
+async function doLoginActions() {
+  isLoggedIn.value = true;
+  todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(todos.value));
+}
+
+...
+</script>
+```
+
+`subscribeAll` subscribes to all doc changes in a collection. `arrayMirrorSubscribeListener` is a utility function for working with arrays. You can write your own subscribe listener. The syntax looks like this:
+
+```ts
+import type { AnyDoc, SubscribeListener } from "@bzr/bazaar";
+
+const mySubscribeListener: SubscribeListener<AnyDoc> = {
+  onInitial: (doc) => {
+    // Add doc
+  },
+  onAdd: (doc) => {
+    // Add doc
+  },
+  onChange: (oldDoc, newDoc) => {
+    // Update doc
+  },
+  onDelete: (doc) => {
+    // Delete doc
+  },
+};
+
+todosCollection.subscribeAll({}, mySubscribeListener)
+```
+
+The `arrayMirrorSubscribeListener` implements `onIntial` such that data from a collection is fetched and added to your local state. Essentially it's syntactic sugar for `todosCollection.getAll().then((docs) => (todos.value = docs));`.
+
+## Toggling Todo Completion
+
+In this step, you'll implement toggling todo completion.
+
+```vue title="App.vue" ins={6-8}
+<script setup lang="ts">
+...
+
+function onSubmit() { ... }
+
+function toggleTodoCompletion(todo: Todo) {
+  todosCollection.updateOne(todo.id, { completed: !todo.completed });
+}
+
+...
+</script>
+```
+
+Then, in the `template` add the button and conditional todo text styling:
+
+```vue title="App.vue" ins={9-11} ins=" :class="{ strikethrough: todo.completed }""
+<template>
+  ...
+
+  <div class="todos">
+    <div class="card" v-for="todo of todos" :key="todo.id">
+      <div class="todo-text" :class="{ strikethrough: todo.completed }">
+        {{ todo.text }}
+      </div>
+      <button @click="toggleTodoCompletion(todo)">
+        Mark as {{ todo.completed ? "Incomplete" : "Completed" }}
+      </button>
+    </div>
+  </div>
+
+  ...
+</template>
+```
+
+Now todos can be marked as **completed** and **incomplete**. Next, you'll implement todo deletion.
+
+## Deleting a Todo
+
+```vue title="App.vue" ins={6-9}
+<script setup lang="ts">
+...
+
+function toggleTodoCompletion(todo: Todo) { ... }
+
+function deleteTodo(id: string) {
+  if (!window.confirm("Delete todo forever?")) return;
   todosCollection.deleteOne(id);
-  todos.value = todos.value.filter((t) => t.id !== id);
 }
 
-// ...
+...
 </script>
 ```
 
 Then, in the `template` add the `Delete` button:
 
-```vue title="App.vue" ins={11}
+```vue title="App.vue" ins={7}
 <template>
-  <!-- ... -->
+  ...
 
-  <form class="todo-form" @submit.prevent="onSubmit"><!-- ... --></form>
+  <button @click="toggleTodoCompletion(todo)">
+    Mark as {{ todo.completed ? "Incomplete" : "Completed" }}
+  </button>
+  <button @click="deleteTodo(todo.id)">Delete</button>
 
-  <div class="todos">
-    <div class="card" v-for="todo of todos" :key="todo.id">
-      <div class="todo-text">
-        {{ todo.text }}
-      </div>
-      <button @click="deleteTodo(todo.id)">Delete</button>
-    </div>
-  </div>
-
-  <!-- ... -->
+  ...
 </template>
 ```
 
-## Mark To Do as Complete
+With that, functionality is complete.
 
-```vue title="App.vue" ins={8-12,30}
-<script setup>
-// ...
+Now you'll deploy your app to GitHub Pages.
 
-function deleteTodo(id) {
-  /* ... */
-}
+## Deploying to Netlify
 
-function toggleToDoCompletion(todo) {
-  const completed = !todo.completed;
-  todosCollection.updateOne(todo.id, { completed });
-  todos.value = todos.value.map((t) =>
-    t.id === todo.id ? { ...t, completed } : t,
-  );
-}
-
-// ...
-</script>
+```bash
+git init
+git add .
+git commit -m "Initial commit: Vue todo app"
 ```
 
-Then, in the `template` add the button and conditional to-do text styling:
+Go to GitHub, create public repo named `vue-todo-guide`.
 
-```vue title="App.vue" ins={9,12-14} del={8}
-<template>
-  <!-- ... -->
-
-  <form class="todo-form" @submit.prevent="onSubmit"><!-- ... --></form>
-
-  <div class="todos">
-    <div class="card" v-for="todo of todos" :key="todo.id">
-      <div class="todo-text">
-      <div class="todo-text" :class="{ strikethrough: todo.completed }">
-        {{ todo.text }}
-      </div>
-      <button @click="toggleToDoCompletion(todo)">
-        Mark as {{ todo.completed ? "Incomplete" : "Completed" }}
-      </button>
-      <button @click="deleteTodo(todo.id)">Delete</button>
-    </div>
-  </div>
-
-  <!-- ... -->
-</template>
+```bash
+git remote add origin https://github.com/<your-username>/vue-todo-guide.git
+git branch -M main
+git push -u origin main
 ```
 
-With that the app functionality is complete.
+Go to Netlify, create account, click **Add new site**, then, **import an existing project**. Next, select **GitHub**. Select the organization your repo is in, if relevant, and search for your repo, `vue-todo-guide`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access. Select your repo, choose a site name. I'm using `vue-todo-guide` and note your app's Netlify URL right below the **Site name** field. It will looks something like `https://vue-todo-guide.netlify.app`. Leave the default build settings as the defaults.
 
-Here is the full `App.vue` file:
+Next, click **Add environment variables**. You'll add two environment variables, `VITE_URL` and `VITE_APP_ID`. For `VITE_URL`, use your app's Netlify URL, e.g. `https://vue-todo-guide.netlify.app`. For `VITE_APP_ID`, you must register a Bazaar app.
 
-```vue title="App.vue"
-<script setup>
-import { BazaarApp } from "@bzr/bazaar";
-import { ref } from "vue";
+To get your Bazaar app ID, open up [https://cloud.bzr.dev/], and create a free account. Click on the user icon, top right, then click **Developers**. Next, click **Create App**.
 
-const bzr = new BazaarApp({
-  appId: "test",
-  loginRedirectUri: window.location.href,
-});
+Give your app a name. I'm using **Vue Todo Guide**. And set your \*APP URL\*\*, which should be the same as your app's Netlify URL, e.g. `https://vue-todo-guide.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
 
-const isLoggedIn = ref(false);
-const todoText = ref("");
-const todos = ref([]);
-
-const todosCollection = bzr.collection("todos");
-
-async function onSubmit() {
-  const todo = { text: todoText.value, completed: false };
-  const id = await todosCollection.insertOne(todo);
-  todos.value.push({ id, ...todo });
-  todoText.value = "";
-}
-
-function deleteTodo(id) {
-  if (!window.confirm("Delete to do forever?")) return;
-  todosCollection.deleteOne(id);
-  todos.value = todos.value.filter((t) => t.id !== id);
-}
-
-function toggleToDoCompletion(todo) {
-  const completed = !todo.completed;
-  todosCollection.updateOne(todo.id, { completed });
-  todos.value = todos.value.map((t) =>
-    t.id === todo.id ? { ...t, completed } : t,
-  );
-}
-
-function doLoginActions() {
-  isLoggedIn.value = true;
-  todosCollection.getAll().then((docs) => (todos.value = docs));
-}
-
-if (bzr.isLoggedIn()) {
-  doLoginActions();
-}
-
-bzr.onLogin(doLoginActions);
-</script>
-<template>
-  <div class="container">
-    <h1>To Do</h1>
-    <template v-if="!isLoggedIn">
-      <button @click="bzr.login">Log in</button>
-    </template>
-    <template v-else>
-      <button @click="bzr.logOut">Log out</button>
-
-      <form class="todo-form" @submit.prevent="onSubmit">
-        <input
-          type="text"
-          v-model="todoText"
-          placeholder="Write a to do..."
-          required
-        />
-        <button>Add</button>
-      </form>
-
-      <div class="todos">
-        <div class="card" v-for="todo of todos" :key="todo.id">
-          <div class="todo-text" :class="{ strikethrough: todo.completed }">
-            {{ todo.text }}
-          </div>
-          <button @click="toggleToDoCompletion(todo)">
-            Mark as {{ todo.completed ? "Incomplete" : "Completed" }}
-          </button>
-          <button @click="deleteTodo(todo.id)">Delete</button>
-        </div>
-      </div>
-    </template>
-  </div>
-</template>
-```
-
-## Realtime Updates
-
-Adding realtime cross-device updates requires only a small refactor.
-
-```vue title="App.vue" ins={17,20,25-28,48-64} del={16,19,21,33,39-41}
-<script setup>
-import { BazaarApp } from "@bzr/bazaar";
-import { ref } from "vue";
-
-const bzr = new BazaarApp({
-  appId: "test",
-  loginRedirectUri: window.location.href,
-});
-
-const isLoggedIn = ref(false);
-const todoText = ref("");
-const todos = ref([]);
-
-const todosCollection = bzr.collection("todos");
-
-async function onSubmit() {
-function onSubmit() {
-  const todo = { text: todoText.value, completed: false };
-  const id = await todosCollection.insertOne(todo);
-  todosCollection.insertOne(todo);
-  todos.value.push({ id, ...todo });
-  todoText.value = "";
-}
-
-function addTodo(doc) {
-  if (todos.value.some((todo) => todo.id === doc.id)) return;
-  todos.value.push(doc);
-}
-
-function deleteTodo(id) {
-  if (!window.confirm("Delete to do forever?")) return;
-  todosCollection.deleteOne(id);
-  todos.value = todos.value.filter((t) => t.id !== id);
-}
-
-function toggleToDoCompletion(todo) {
-  const completed = !todo.completed;
-  todosCollection.updateOne(todo.id, { completed });
-  todos.value = todos.value.map((t) =>
-    t.id === todo.id ? { ...t, completed } : t,
-  );
-}
-
-function doLoginActions() {
-  isLoggedIn.value = true;
-  todosCollection.getAll().then((docs) => (todos.value = docs));
-
-  todosCollection.subscribeAll(
-    {},
-    {
-      onInitial: (doc) => {
-        addTodo(doc);
-      },
-      onAdd: (doc) => {
-        addTodo(doc);
-      },
-      onChange: (oldDoc, newDoc) => {
-        todos.value = todos.value.map((t) => (t.id === newDoc.id ? newDoc : t));
-      },
-      onDelete: (doc) => {
-        todos.value = todos.value.filter((t) => t.id !== doc.id);
-      },
-    }
-  );
-}
-
-if (bzr.isLoggedIn()) {
-  doLoginActions();
-}
-
-bzr.onLogin(doLoginActions);
-</script>
-```
-
-And that can be even further simplified with the mirror helper.
-
-```vue title="App.vue" ins={39} del={4-7,22-38}
-<script setup>
-// ...
-
-function addTodo(doc) {
-  if (todos.value.some((todo) => todo.id === doc.id)) return;
-  todos.value.push(doc);
-}
-
-function deleteTodo(id) {
-  if (!window.confirm("Delete to do forever?")) return;
-  todosCollection.deleteOne(id);
-}
-
-function toggleToDoCompletion(todo) {
-  const completed = !todo.completed;
-  todosCollection.updateOne(todo.id, { completed });
-}
-
-function doLoginActions() {
-  isLoggedIn.value = true;
-
-  todosCollection.subscribeAll(
-    {},
-    {
-      onInitial: (doc) => {
-        addTodo(doc);
-      },
-      onAdd: (doc) => {
-        addTodo(doc);
-      },
-      onChange: (oldDoc, newDoc) => {
-        todos.value = todos.value.map((t) => (t.id === newDoc.id ? newDoc : t));
-      },
-      onDelete: (doc) => {
-        todos.value = todos.value.filter((t) => t.id !== doc.id);
-      },
-    },
-  );
-  todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(todos.value));
-}
-
-// ...
-</script>
-```
+Return to Netlify and paste in your app ID as the `VITE_APP_ID` value, and click **Deploy**. You'll see a notice, **Site deploy in progress**. The process will take a few minutes.
 
 ## Next Steps
 
