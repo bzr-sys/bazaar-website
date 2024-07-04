@@ -587,25 +587,26 @@ Next, update the template to include a button for deleting todos:
 
 That code change will render a delete button for each todo.
 
-Here is the completed `App.vue` file:
-
+<details class="collapse bg-base-200">
+  <summary class="collapse-title text-xl font-medium">Show the Completed `App.vue` File</summary>
+  <div class="collapse-content">
 ```vue title="App.vue"
 <script setup lang="ts">
 import { BazaarApp, arrayMirrorSubscribeListener } from "@bzr/bazaar";
 import { ref, computed, type Ref } from "vue";
 
 const bzr = new BazaarApp({
-  appId: import.meta.env.VITE_APP_ID || "test",
-  loginRedirectUri: import.meta.env.VITE_URL || window.location.href,
-  onApiConnectError: async (bzr) => bzr.logOut(),
+appId: import.meta.env.VITE_APP_ID || "test",
+loginRedirectUri: import.meta.env.VITE_URL || window.location.href,
+onApiConnectError: async (bzr) => bzr.logOut(),
 });
 
 const isLoggedIn = ref(false);
 
 type Todo = {
-  id: string;
-  text: string;
-  completed: boolean;
+id: string;
+text: string;
+completed: boolean;
 };
 
 const todoText = ref("");
@@ -615,35 +616,36 @@ const todos = computed(() => [...fetchedTodos.value].reverse());
 const todosCollection = bzr.collection<Todo>("todos");
 
 function onSubmit() {
-  const unpersistedTodo = { text: todoText.value, completed: false };
-  todosCollection.insertOne(unpersistedTodo);
-  todoText.value = "";
+const unpersistedTodo = { text: todoText.value, completed: false };
+todosCollection.insertOne(unpersistedTodo);
+todoText.value = "";
 }
 
 function toggleTodoCompletion(todo: Todo) {
-  todosCollection.updateOne(todo.id, { completed: !todo.completed });
+todosCollection.updateOne(todo.id, { completed: !todo.completed });
 }
 
 function deleteTodo(id: string) {
-  if (!window.confirm("Delete todo forever?")) return;
-  todosCollection.deleteOne(id);
+if (!window.confirm("Delete todo forever?")) return;
+todosCollection.deleteOne(id);
 }
 
 async function doLoginActions() {
-  isLoggedIn.value = true;
-  todosCollection.subscribeAll(
-    {},
-    arrayMirrorSubscribeListener(fetchedTodos.value),
-  );
+isLoggedIn.value = true;
+todosCollection.subscribeAll(
+{},
+arrayMirrorSubscribeListener(fetchedTodos.value),
+);
 }
 
 // Perform login actions if the user is already logged in on page load
 if (bzr.isLoggedIn()) {
-  doLoginActions();
+doLoginActions();
 }
 
 // Set up handler to perform login actions immediately after a successful login
 bzr.onLogin(doLoginActions);
+
 </script>
 
 <template>
@@ -677,11 +679,15 @@ bzr.onLogin(doLoginActions);
         </div>
       </div>
     </template>
+
   </div>
 </template>
 
 <style scoped></style>
-```
+
+````
+  </div>
+</details>
 
 With that, your todo app is complete and ready to deploy.
 
@@ -695,7 +701,7 @@ First, initialize a Git repository and push your code to GitHub:
 git init
 git add .
 git commit -m "Initial commit: Vue todo app"
-```
+````
 
 Go to GitHub and create a public repo named `vue-todo-guide`.
 
