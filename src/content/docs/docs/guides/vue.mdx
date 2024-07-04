@@ -496,34 +496,7 @@ async function doLoginActions() {
 </script>
 ```
 
-In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection, and `arrayMirrorSubscribeListener` ensures that the local `todos` array stays in sync with the collection.
-
-You can write your own subscribe listeners. The syntax looks like this:
-
-```ts
-import type { AnyDoc, SubscribeListener } from "@bzr/bazaar";
-
-const mySubscribeListener: SubscribeListener<AnyDoc> = {
-  onInitial: (doc) => {
-    // Add doc
- },
-  onAdd: (doc) => {
-    // Add doc
- },
-  onChange: (oldDoc, newDoc) => {
-    // Update doc
- },
-  onDelete: (doc) => {
-    // Delete doc
- },
-};
-
-todosCollection.subscribeAll({}, mySubscribeListener)
-```
-
-The `arrayMirrorSubscribeListener` implements `onIntial` so that data from a collection is fetched and added to your local state. Essentially, it's syntactic sugar for `todosCollection.getAll().then((docs) => (todos.value = docs));`.
-
-In `onSubmit`, you no longer need to add the todo to your local state as it will be added in the `arrayMirrorSubscribeListener` when an `onAdd` subscribe change event occurs.
+In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection, and `arrayMirrorSubscribeListener` handles change events, ensuring the local `todos` array stays in sync with the collection. As such, in `onSubmit`, you no longer need to add the todo to your local state. Learn about [subscribe listeners](https://bzr.dev/docs/features/collections/).
 
 With realtime syncing enabled, any changes to the todos will be updated instantly. In the next step, you will implement the functionality to toggle the completion status of todos.
 
