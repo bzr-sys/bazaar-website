@@ -20,7 +20,7 @@ To complete this tutorial, you will need:
 
 In this step, you will create a new Vue project using the official Vue project scaffolding tool. The created project will be using a build setup based on [Vite](https://vitejs.dev/).
 
-Open up your terminal and make your current working directory is the one where you intend to create a project. Then, Run the following command in your command line:
+Open up your terminal and ensure your current working directory is where you intend to create a project. Then, Run the following command in your command line:
 
 ```bash
 npm create vue@latest
@@ -123,7 +123,7 @@ In this step, you will clean up the scaffolded Vue project by removing unnecessa
 
 Check your app in the browser to see the text **Todo**.
 
-With the project cleaned up, you are now ready to integrate Bazaar for authentication and realtime data storage.
+With the project cleaned up, you are ready to integrate Bazaar for authentication and realtime data storage.
 
 ## Step 3 — Running the Mock Server
 
@@ -182,8 +182,8 @@ console.log("is logged in:", bzr.isLoggedIn());
 
 In this code, you set the following `BazaarApp` options:
 
-- `appId`: Checks for a `VITE_APP_ID` environment variable and if not present, uses `test`, the Bazaar mock server default.
-- `loginRedirectUri`: Checks for a `VITE_URL` environment variable and if not present, uses `window.location.href`as the default, e.g. `http://localhost:5173/`.
+- `appId`: Checks for a `VITE_APP_ID` environment variable and, if not present, uses `test`, the Bazaar mock server default.
+- `loginRedirectUri`: Checks for a `VITE_URL` environment variable and, if not present, uses `window.location.href` as the default, e.g. `http://localhost:5173/`.
 - `onApiConnectError`: If a connection error occurs, logs out the user.
 
 <Aside>
@@ -192,7 +192,7 @@ In this code, you set the following `BazaarApp` options:
   Env Variables and Modes docs](https://vitejs.dev/guide/env-and-mode).
 </Aside>
 
-With the Bazaar client initialized, you can now add authentication to your app.
+With the Bazaar client initialized you can now add authentication to your app.
 
 ## Step 5 — Adding User Authentication
 
@@ -213,21 +213,21 @@ First, add log in and log out buttons to your template:
 
 Clicking the login button opens a pop-up window. Create an test account by entering any email address, using the code `1234` and choosing any handle and name.
 
-After you log in the the pop-up will close. Refresh the page and in your developer console you'll see:
+After you log in, the pop-up will close. Refresh the page, and in your developer console you'll see the following:
 
 ```log title="Developer Console"
 is logged in: true
 ```
 
 <Aside type="caution" title="Login Error">
-  If login fails with an error like **Invalid client: redirect_uri does not match client value. Got
+ If login fails with an error like **Invalid client: redirect_uri does not match client value. Got
   http://localhost:5173/, valid is http://localhost:5173**, make sure the `loginRedirectUri` in your Bazaar client config exactly matches the URI of your mock server `-u` option.
 
-In the error above the mock server accepts requests from `http://localhost:5173` and is missing a trailing slash as the Vite dev server is serving on `http://localhost:5173/`.
+In the error above, the mock server accepts requests from `http://localhost:5173` and is missing a trailing slash as the Vite dev server is serving on `http://localhost:5173/`.
 
 </Aside>
 
-Next, refactor the code so that the login status updates immediately after a successful login, not just on page load.
+Next, refactor the code so the login status updates immediately after a successful login, not just on page load.
 
 ```vue title="App.vue" del={4,5} ins={6-16}
 <script setup lang="ts">
@@ -236,12 +236,12 @@ Next, refactor the code so that the login status updates immediately after a suc
 // Test the client initialization by checking the logged in status
 console.log("is logged in:", bzr.isLoggedIn());
 async function doLoginActions() {
-  console.log("is logged in:", bzr.isLoggedIn());
+ console.log("is logged in:", bzr.isLoggedIn());
 }
 
 // Perform login actions if the user is already logged in on page load
 if (bzr.isLoggedIn()) {
-  doLoginActions();
+ doLoginActions();
 }
 
 // Set up handler to perform login actions immediately after a successful login
@@ -254,9 +254,9 @@ bzr.onLogin(doLoginActions);
   brevity.
 </Aside>
 
-Now, log out and log back in and you'll see `is logged in: true` in your console after the pop-up closes, without the need for a page refresh.
+Log out and log back in, and you'll see `is logged in: true` in your console after the pop-up closes without needing a page refresh.
 
-Now, you have added user authentication to your app. In the next step, you will conditionally display content based on the user's login status.
+You have now added user authentication to your app. Next, you will conditionally display content based on the user's login status.
 
 ## Step 6 — Displaying Logged-in Content
 
@@ -274,15 +274,15 @@ const bzr = new BazaarApp({ ... });
 const isLoggedIn = ref(false);
 
 async function doLoginActions() {
-  console.log("is logged in:", bzr.isLoggedIn());
-  isLoggedIn.value = true;
+ console.log("is logged in:", bzr.isLoggedIn());
+ isLoggedIn.value = true;
 }
 
 ...
 </script>
 ```
 
-In these changes, you create a reactive variable for the login status and set the value of that variable to `true` when a user is logged in.
+In these changes, you create a reactive variable for the login status and set its value to `true` when a user logs in.
 
 Next, update the template to display log in and log out buttons conditionally:
 
@@ -300,7 +300,7 @@ Next, update the template to display log in and log out buttons conditionally:
 </template>
 ```
 
-Now, the app displays the appropriate button based on the user's login status.
+The app now displays the appropriate button based on the user's login status.
 
 Next, you'll add the functionality to create todos.
 
@@ -320,9 +320,9 @@ const bzr = new BazaarApp({ ... });
 const isLoggedIn = ref(false);
 
 type Todo = {
-  id: string;
-  text: string;
-  completed: boolean;
+ id: string;
+ text: string;
+ completed: boolean;
 }
 
 const todoText = ref("");
@@ -331,25 +331,25 @@ const todos: Ref<Todo[]> = ref([]);
 const todosCollection = bzr.collection<Todo>("todos");
 
 async function onSubmit() {
-  const unpersistedTodo = { text: todoText.value, completed: false };
-  const id = await todosCollection.insertOne(unpersistedTodo);
-  todos.value.push({ id, ...unpersistedTodo });
+ const unpersistedTodo = { text: todoText.value, completed: false };
+ const id = await todosCollection.insertOne(unpersistedTodo);
+ todos.value.push({ id, ...unpersistedTodo });
 
-  todoText.value = "";
+ todoText.value = "";
 }
 
 ...
 </script>
 ```
 
-In this code, you define a `Todo` type, create two reactive variables, one for the new todo text and another for holding the list of todos.
+In this code, you define a `Todo` type and create two reactive variables, one for the new todo text and another for holding the list of todos.
 
 The `bzr.collection` method creates an object to interact with a database collection. By default, a collection object interacts with the database of the authenticated user.
 
 <Aside title="Bazaar Databases">
   Bazaar provides document-orientated (NoSQL) and schema-less databases scoped
   to a user and app. A database contains collections which are analogous to
-  tables in a relational database. Collections are made up of documents, or
+  tables in a relational databases. Collections are made up of documents, or
   docs, analogous to rows in a relational database.
 </Aside>
 
@@ -377,13 +377,13 @@ Next, add the form to your template after the log out button:
 
 In these changes, you hook up the `onSubmit` handler to the form submit event and bind the `todoText` reactive variable you just created to the input.
 
-You have now implemented the functionality to add new todos, but they are not yet being displayed.
+You have now implemented the functionality to add new todos, but they still need to be displayed.
 
 <Aside>
-  To verify todos are being created in the database and added to local state,
-  you can use the [Vue Devtools browser extension](https://devtools.vuejs.org/)
-  and view the `todos` local state. You'll see todos added with the ID returned
-  from the database.
+  To verify todos are being created in the database and added to the local
+  state, you can use the [Vue Devtools browser
+  extension](https://devtools.vuejs.org/) and view the `todos` local state.
+  You'll see todos added with the ID returned from the database.
 </Aside>
 
 In the next step, you will display these todos in your app.
@@ -399,8 +399,8 @@ First, update the `doLoginActions` function to fetch todos:
 ...
 
 async function doLoginActions() {
-  isLoggedIn.value = true;
-  todosCollection.getAll().then((docs) => (todos.value = docs));
+ isLoggedIn.value = true;
+ todosCollection.getAll().then((docs) => (todos.value = docs));
 }
 
 ...
@@ -429,7 +429,7 @@ Next, update the template to display the todos:
 </template>
 ```
 
-In your browser, add a few more todos and notice they are added to the bottom of your list. Usually you want the newest todos to appear first. To do that, you'll reverse the fetched todos.
+Add a few more todos in your browser and notice they get added to the bottom of your list. Usually you want the newest todos to appear first. To do that, you'll reverse the fetched todos.
 
 ```vue title="App.vue" del={5,14,22} ins={3,6,7,15,23} mark=", computed"
 <script setup lang="ts">
@@ -443,25 +443,25 @@ const todos = computed(() => [...fetchedTodos.value].reverse());
 const todosCollection = bzr.collection<Todo>("todos");
 
 async function onSubmit() {
-  const unpersistedTodo = { text: todoText.value, completed: false };
-  const id = await todosCollection.insertOne(unpersistedTodo);
-  todos.value.push({ id, ...unpersistedTodo });
-  fetchedTodos.value.push({ id, ...unpersistedTodo });
+ const unpersistedTodo = { text: todoText.value, completed: false };
+ const id = await todosCollection.insertOne(unpersistedTodo);
+ todos.value.push({ id, ...unpersistedTodo });
+ fetchedTodos.value.push({ id, ...unpersistedTodo });
 
-  todoText.value = "";
+ todoText.value = "";
 }
 
 async function doLoginActions() {
-  isLoggedIn.value = true;
-  todosCollection.getAll().then((docs) => (todos.value = docs));
-  todosCollection.getAll().then((docs) => (fetchedTodos.value = docs));
+ isLoggedIn.value = true;
+ todosCollection.getAll().then((docs) => (todos.value = docs));
+ todosCollection.getAll().then((docs) => (fetchedTodos.value = docs));
 }
 
 ...
 </script>
 ```
 
-In these changes, you store fetched todos in a new reactive variable, `fetchedTodos`, and update `todos` to be a computed property that will updated when `fetchedTodos` changes. The spread operator (`...`) is used to create a new array, as the `reverse` method updates an array in place. Doing `fetchedTodos.value.reverse()` would cause an infinte re-render.
+In these changes, you store fetched todos in a new reactive variable, `fetchedTodos`, and update `todos` to be a computed property that will updated when `fetchedTodos` changes. The spread operator (`...`) creates a new array, as the `reverse` method updates an array in place. Doing `fetchedTodos.value.reverse()` would cause an infinite re-render.
 
 You have now successfully displayed the todos fetched from the collection. In the next step, you will add realtime syncing to keep the todos updated across different devices.
 
@@ -469,7 +469,7 @@ You have now successfully displayed the todos fetched from the collection. In th
 
 In this step, you will enable realtime updates for your todos so that changes are reflected instantly across different devices.
 
-The `todos` reactive variable is an array, so you can use the `arrayMirrorSubscribeListener` helper. Import it:
+The `todos` reactive variable is an array so you can use the `arrayMirrorSubscribeListener` helper. Import it:
 
 ```vue title="App.vue" ins=", arrayMirrorSubscribeListener"
 import { BazaarApp, arrayMirrorSubscribeListener } from "@bzr/bazaar";
@@ -482,14 +482,14 @@ Then, update the `onSubmit` and `doLoginActions` methods as follows:
 ...
 
 function onSubmit() {
-  const unpersistedTodo = { text: todoText.value, completed: false };
-  todosCollection.insertOne(unpersistedTodo);
-  todoText.value = "";
+ const unpersistedTodo = { text: todoText.value, completed: false };
+ todosCollection.insertOne(unpersistedTodo);
+ todoText.value = "";
 }
 
 async function doLoginActions() {
-  isLoggedIn.value = true;
-  todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(fetchedTodos.value));
+ isLoggedIn.value = true;
+ todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(fetchedTodos.value));
 }
 
 ...
@@ -506,22 +506,22 @@ import type { AnyDoc, SubscribeListener } from "@bzr/bazaar";
 const mySubscribeListener: SubscribeListener<AnyDoc> = {
   onInitial: (doc) => {
     // Add doc
-  },
+ },
   onAdd: (doc) => {
     // Add doc
-  },
+ },
   onChange: (oldDoc, newDoc) => {
     // Update doc
-  },
+ },
   onDelete: (doc) => {
     // Delete doc
-  },
+ },
 };
 
 todosCollection.subscribeAll({}, mySubscribeListener)
 ```
 
-The `arrayMirrorSubscribeListener` implements `onIntial` such that data from a collection is fetched and added to your local state. Essentially it's syntactic sugar for `todosCollection.getAll().then((docs) => (todos.value = docs));`.
+The `arrayMirrorSubscribeListener` implements `onIntial` so that data from a collection is fetched and added to your local state. Essentially, it's syntactic sugar for `todosCollection.getAll().then((docs) => (todos.value = docs));`.
 
 In `onSubmit`, you no longer need to add the todo to your local state as it will be added in the `arrayMirrorSubscribeListener` when an `onAdd` subscribe change event occurs.
 
@@ -540,7 +540,7 @@ First, add the `toggleTodoCompletion` function:
 function onSubmit() { ... }
 
 function toggleTodoCompletion(todo: Todo) {
-  todosCollection.updateOne(todo.id, { completed: !todo.completed });
+ todosCollection.updateOne(todo.id, { completed: !todo.completed });
 }
 
 ...
@@ -587,8 +587,8 @@ First, add the `deleteTodo` function:
 function toggleTodoCompletion(todo: Todo) { ... }
 
 function deleteTodo(id: string) {
-  if (!window.confirm("Delete todo forever?")) return;
-  todosCollection.deleteOne(id);
+ if (!window.confirm("Delete todo forever?")) return;
+ todosCollection.deleteOne(id);
 }
 
 ...
@@ -612,13 +612,13 @@ Next, update the template to include a button for deleting todos:
 </template>
 ```
 
-This will render a delete button for each todo.
+That code change will render a delete button for each todo.
 
-With that, your todo app is complete and you're ready to deploy.
+With that, your todo app is complete and ready to deploy.
 
 ## Step 12 — Deploying to Netlify
 
-In this step, you will deploy your Vue.js Todo app to Netlify. You can deploy a Bazaar-powered app anywhere static sites can be hosted. Netlify provides an impressively frictionless deployment process and free static site hosting for public GitHub repos.
+In this step, you will deploy your Vue.js Todo app to Netlify. You can deploy a Bazaar-powered app anywhere static sites can be hosted. Netlify provides a frictionless deployment process and free static site hosting for public GitHub repos.
 
 First, initialize a Git repository and push your code to GitHub:
 
@@ -628,7 +628,7 @@ git add .
 git commit -m "Initial commit: Vue todo app"
 ```
 
-Go to GitHub, create public repo named `vue-todo-guide`.
+Go to GitHub and create a public repo named `vue-todo-guide`.
 
 ```bash
 git remote add origin https://github.com/<your-username>/vue-todo-guide.git
@@ -646,14 +646,14 @@ Configure the site settings and build settings as follows:
 
 Add environment variables `VITE_URL` and `VITE_APP_ID`. For `VITE_URL`, use your app's Netlify URL (e.g., `https://vue-todo-guide.netlify.app`).
 
-To get your Bazaar app ID, open up [cloud.bzr.dev](https://cloud.bzr.dev/) and create a free account. Click on the user icon, top right, then click **Developers**. Next, click **Create App**.
+To get your Bazaar app ID, open [cloud.bzr.dev](https://cloud.bzr.dev/) and create a free account. Click on the user icon at the top right, then click **Developers**. Next, click **Create App**.
 
-Give your app a name. I'm using **Vue Todo Guide**. And set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://vue-todo-guide.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
+Give your app a name. I'm using **Vue Todo Guide**. Set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://vue-todo-guide.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
 
-Return to Netlify and paste in your app ID as the `VITE_APP_ID` value, and click **Deploy**. You'll see a notice, **Site deploy in progress**. The process will take a few minutes afterwhich your todo app will be deployed!
+Return to Netlify and paste in your app ID as the `VITE_APP_ID` value, and click **Deploy**. You'll see a notice, **Site deploy in progress**. The process will take a few minutes, after which your todo app will be deployed!
 
 ## Conclusion
 
-In this tutorial, you built and deployed a Todo app using Vue.js and Bazaar. You set up a new Vue project, integrate Bazaar for backend services, implement user authentication, add and display todos, enable realtime syncing, and deploy your app to Netlify.
+In this tutorial, you built and deployed a Todo app using Vue.js and Bazaar. You set up a new Vue project, integrated Bazaar for backend services, implemented user authentication, added and displayed todos, enabled realtime syncing, and deployed your app to Netlify.
 
 Check the [Bazaar documentation](https://cloud.bzr.dev/docs) for more features and capabilities.
