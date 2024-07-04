@@ -14,7 +14,7 @@ To complete this tutorial, you will need:
 - [Node.js](https://nodejs.org/en/) installed on your machine.
 - [Git](https://github.com/git-guides/install-git) installed on your machine.
 - A [GitHub](https://github.com/) account for code repository hosting.
-- (Optional) A [Netlify](https://www.netlify.com/) account for deploying your app, if desired.
+- (Optional) A [Netlify](https://www.netlify.com/) account for deploying your app.
 
 ## Step 1 — Scaffolding a New Vue Project
 
@@ -102,7 +102,7 @@ In this step, you will clean up the scaffolded Vue project by removing unnecessa
    }
    ```
 
-3. Finally, update `src/App.vue`:
+3. Finally, replace the contents of `src/App.vue` with the following:
 
    ```vue title="App.vue"
    <script setup lang="ts">
@@ -123,7 +123,7 @@ In this step, you will clean up the scaffolded Vue project by removing unnecessa
 
 Check your app in the browser to see the text **Todo**.
 
-With the project cleaned up, you are now ready to integrate Bazaar for backend services.
+With the project cleaned up, you are now ready to integrate Bazaar for authentication and realtime data storage.
 
 ## Step 3 — Running the Mock Server
 
@@ -134,6 +134,8 @@ Run the following command to start the mock server:
 ```bash
 npx @bzr/bazaar-mock -u http://localhost:5173/
 ```
+
+This command assumes the Vite dev server is running on the default port `5173`. Update accordingly if you're running on a different port.
 
 Install the `@bzr/bazaar-mock` NPM package if prompted.
 
@@ -162,8 +164,9 @@ npm install @bzr/bazaar
 
 Next, initialize the Bazaar client in `src/App.vue`:
 
-```vue title="App.vue"
+```vue title="App.vue" del={2} ins={3-12}
 <script setup lang="ts">
+// Todo logic will be implemented here
 import { BazaarApp } from "@bzr/bazaar";
 
 const bzr = new BazaarApp({
@@ -179,9 +182,9 @@ console.log("is logged in:", bzr.isLoggedIn());
 
 In this code, you set the following `BazaarApp` options:
 
-- `appId`: Checks for a `VITE_APP_ID` environment variable and if not present, use `test`, the Bazaar mock server default.
-- `loginRedirectUri`: Checks for a `VITE_URL` environment variable and if not present, use `window.location.href`as the default, e.g. `http://localhost:5173/`.
-- `onApiConnectError`: If a connection error occurs, log out the user.
+- `appId`: Checks for a `VITE_APP_ID` environment variable and if not present, uses `test`, the Bazaar mock server default.
+- `loginRedirectUri`: Checks for a `VITE_URL` environment variable and if not present, uses `window.location.href`as the default, e.g. `http://localhost:5173/`.
+- `onApiConnectError`: If a connection error occurs, logs out the user.
 
 <Aside>
   To prevent accidentally leaking env variables to the client, only variables
@@ -195,7 +198,7 @@ With the Bazaar client initialized, you can now add authentication to your app.
 
 In this step, you'll add user authentication to your app.
 
-First, add login and logout buttons to your template:
+First, add log in and log out buttons to your template:
 
 ```vue title="App.vue" del={4} ins={5,6}
 <template>
@@ -266,7 +269,7 @@ First, make the following changes to your script:
 import { BazaarApp } from "@bzr/bazaar";
 import { ref } from "vue";
 
-...
+const bzr = new BazaarApp({ ... });
 
 const isLoggedIn = ref(false);
 
@@ -283,7 +286,7 @@ In these changes, you create a reactive variable for the login status and set th
 
 Next, update the template to display log in and log out buttons conditionally:
 
-```vue
+```vue title="App.vue" ins={4,6,7,9}
 <template>
   <div class="container">
     <h1>Todo</h1>
@@ -303,11 +306,11 @@ Next, you'll add the functionality to create todos.
 
 ## Step 7 — Adding a Todo
 
-In this step, you'll implement the feature to create a todo.
+In this step, you'll implement the feature to create todos.
 
 Make the following changes to your script:
 
-```vue title="App.vue" ins={9-26} ins=", type Ref"
+```vue title="App.vue" ins={3,9-26} mark=", type Ref"
 <script setup lang="ts">
 import { BazaarApp, type SubscribeListener } from "@bzr/bazaar";
 import { ref, type Ref } from "vue";
@@ -339,17 +342,26 @@ async function onSubmit() {
 </script>
 ```
 
-In this code, you define a `Todo` type, create a reactive variable for the new todo text and another for holding the todos.
+In this code, you define a `Todo` type, create two reactive variables, one for the new todo text and another for holding the list of todos.
 
 The `bzr.collection` method creates an object to interact with a database collection. By default, a collection object interacts with the database of the authenticated user.
 
+<Aside title="Bazaar Databases">
+  Bazaar provides document-orientated (NoSQL) and schema-less databases scoped
+  to a user and app. A database contains collections which are analogous to
+  tables in a relational database. Collections are made up of documents, or
+  docs, analogous to rows in a relational database.
+</Aside>
+
 The `onSubmit` function adds a new todo to the `todos` collection with `todosCollection.insertOne` (collections are created lazily) and adds the todo to your app's local state with the ID generated by the database after insertion.
 
-Next, add the form to your template:
+Next, add the form to your template after the log out button:
 
-```vue
+```vue title="App.vue" ins={5-13}
 <template>
   ...
+  <button @click="bzr.logOut">Log out</button>
+
   <form class="todo-form" @submit.prevent="onSubmit">
     <input
       type="text"
@@ -363,9 +375,18 @@ Next, add the form to your template:
 </template>
 ```
 
-In these changes, you hook up the `onSubmit` handler to the form and bind the `todoText` reactive variable you just created to the input.
+In these changes, you hook up the `onSubmit` handler to the form submit event and bind the `todoText` reactive variable you just created to the input.
 
-You have now implemented the functionality to add new todos. In the next step, you will display these todos in your app.
+You have now implemented the functionality to add new todos, but they are not yet being displayed.
+
+<Aside>
+  To verify todos are being created in the database and added to local state,
+  you can use the [Vue Devtools browser extension](https://devtools.vuejs.org/)
+  and view the `todos` local state. You'll see todos added with the ID returned
+  from the database.
+</Aside>
+
+In the next step, you will display these todos in your app.
 
 ## Step 8 — Displaying Todos
 
@@ -408,20 +429,31 @@ Next, update the template to display the todos:
 </template>
 ```
 
-In your browser, add a few todos. Notice, todos are added to the bottom of your list. Usually you want the newest todos to appear first. To do that, you'll reverse the fetched todos.
+In your browser, add a few more todos and notice they are added to the bottom of your list. Usually you want the newest todos to appear first. To do that, you'll reverse the fetched todos.
 
-```vue title="App.vue" del={4} ins={5,6} ins="(fetchedTodos.value = docs)"
+```vue title="App.vue" del={5,14,22} ins={3,6,7,15,23} mark=", computed"
 <script setup lang="ts">
 ...
+import { ref, computed, type Ref } from "vue";
 
 const todos: Ref<Todo[]> = ref([]);
 const fetchedTodos: Ref<Todo[]> = ref([]);
 const todos = computed(() => [...fetchedTodos.value].reverse());
 
-...
+const todosCollection = bzr.collection<Todo>("todos");
+
+async function onSubmit() {
+  const unpersistedTodo = { text: todoText.value, completed: false };
+  const id = await todosCollection.insertOne(unpersistedTodo);
+  todos.value.push({ id, ...unpersistedTodo });
+  fetchedTodos.value.push({ id, ...unpersistedTodo });
+
+  todoText.value = "";
+}
 
 async function doLoginActions() {
   isLoggedIn.value = true;
+  todosCollection.getAll().then((docs) => (todos.value = docs));
   todosCollection.getAll().then((docs) => (fetchedTodos.value = docs));
 }
 
@@ -457,7 +489,7 @@ function onSubmit() {
 
 async function doLoginActions() {
   isLoggedIn.value = true;
-  todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(todos.value));
+  todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(fetchedTodos.value));
 }
 
 ...
@@ -466,7 +498,7 @@ async function doLoginActions() {
 
 In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection, and `arrayMirrorSubscribeListener` ensures that the local `todos` array stays in sync with the collection.
 
-You can write your own subscribe listener. The syntax looks like this:
+You can write your own subscribe listeners. The syntax looks like this:
 
 ```ts
 import type { AnyDoc, SubscribeListener } from "@bzr/bazaar";
@@ -515,7 +547,7 @@ function toggleTodoCompletion(todo: Todo) {
 </script>
 ```
 
-That function updates the `completed` value for a todo, setting it to the opposite of its current state. Remember, you don't need to update your local state, the `arrayMirrorSubscribeListener` helper keeps your local state in sync with the database.
+That function updates the `completed` value for a todo, setting it to the opposite of its current state. Remember, you don't need to update your local state. The `arrayMirrorSubscribeListener` helper keeps your local state in sync with the database.
 
 Next, update the template to include a button for toggling the completion status and conditionally style the todo text:
 
@@ -604,12 +636,12 @@ git branch -M main
 git push -u origin main
 ```
 
-Next, go to Netlify, create an account, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `vue-todo-guide`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
+Next, go to Netlify, create an account if necessary, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `vue-todo-guide`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
 
 Configure the site settings and build settings as follows:
 
-- **Site name**: `vue-todo-guide`
-- **Build command**: `npm run build` (default)
+- **Site name**: e.g. `vue-todo-guide`
+- **Build command**: `npm run build-only` (default)
 - **Publish directory**: `dist` (default)
 
 Add environment variables `VITE_URL` and `VITE_APP_ID`. For `VITE_URL`, use your app's Netlify URL (e.g., `https://vue-todo-guide.netlify.app`).
