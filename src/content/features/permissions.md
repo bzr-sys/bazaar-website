@@ -36,9 +36,9 @@ bzr.permissions.granted.subscribe(
       // Granted permission added
     }
     if (oldDoc && newDoc === null) {
-      // Granted permission removed 
+      // Granted permission removed
     }
-  }
+  },
 );
 ```
 

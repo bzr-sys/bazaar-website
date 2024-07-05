@@ -1,0 +1,228 @@
+---
+import BigTitle from "../components/BigTitle.astro";
+import PageLayout from "../layouts/PageLayout.astro";
+
+const title = "The Benefits of Bazaar";
+---
+
+<PageLayout title={title}>
+  <BigTitle>{title}</BigTitle>
+  <p>
+    There are numerous reasons to use Bazaar, depending on the lense you are
+    looking through.
+  </p>
+
+  <!-- Dev -->
+  <h1>Why developers should use Bazaar</h1>
+
+  <h2>Simplicity</h2>
+  <h3>Only front-end coding skills required</h3>
+  <p>
+    With Bazaar, every front-end developer can build full-stack applications.
+    There is literally no simpler way to build an SPA, PWA, or any other app
+    that usually requires a backend. Granted, this simplicity has a cost, i.e.,
+    you cannot create an arbitrary complex app without a custom backend.
+    However, for 90% of your ideas it will certainly be enough. We easily
+    created a <a href="/apps/chat">messaging app</a>, a micro-blogging platform,
+    a multiplayer game, a Kanban board, and so on.
+  </p>
+  <h3>Trivial deployment</h3>
+  <p>
+    Often, more complex than building an app is actually deploying it. With
+    Bazaar, deployment is trivial. Your app is just a static site and you can
+    host it where ever you like: GitHub pages, Netlify, your own nginx setup, or
+    anywhere else.
+  </p>
+
+  <h2>Data privacy and security</h2>
+  <h3>No compliance worries</h3>
+  <p>
+    Dealing with user data is complicated, especially when multiple
+    jurisdictions come into play. Are you following all GDPR rules when you ask
+    your users for their email address? With Bazaar, you don't have to worry
+    about data regulation compliance. All data is handled in Bazaar, so we do
+    that work for you.
+  </p>
+  <h3>Data security is Bazaars job</h3>
+  <p>
+    In addition to compliance there is security of user data. Following best
+    practices to make sure data cannot be stolen or lost is hard. Again, with
+    Bazaar you can focus on building your app and we take care of safekeeping
+    your users' data.
+  </p>
+
+  <h2>No running costs</h2>
+  <h3>Enables hobby projects</h3>
+  <p>
+    The early open source days started with the joy of sharing ones useful
+    creations. Now, in the age of web apps, sharing a useful tool has become
+    much harder. When an app you deploy for yourself and your friends to use
+    becomes popular, you suddenly run into hosting costs you are unwilling or
+    unable to cover. So you either have to come up with a business model or shut
+    down the app. With Bazaar, you no longer have to worry about costs. The
+    backend is free for developers, users pay the data they use.
+  </p>
+  <h3>Scale without fear</h3>
+  <p>
+    Bazaar allows you to focus on your ideas, focus on the functionality you
+    want to provide, focus on making your app better, and scale up without
+    worrying about costs.
+  </p>
+
+  <h2>Built-in social features</h2>
+  <p>
+    Handling user information, their contacts, and connections is all built into
+    Bazaar and available via a <a href="/docs/features/social/">simple API</a>.
+  </p>
+  <p>
+    Take advantage of social interactions from other Bazaar apps. Since social
+    features are integrated into Bazaar, all apps get the same view of a user's
+    contacts. For example, if somebody added their partner as a contact to share
+    a shopping list in one app, the contact is also available to this user in
+    your messaging app.
+  </p>
+
+  <h2>Trivial to monetize (coming soon)</h2>
+  <p>
+    Bazaar comes with a simple subscription API that allows you to create
+    powerful apps. You or your app's users can create plans other users can then
+    subscribe to. This allows you to not only monetize users directly but also
+    enable features where users create paywalled content, similar to platforms
+    like Substack or Patreon.
+  </p>
+  <p>
+    In contrast to other platform for creators where the platform takes a
+    revenue cut (e.g., 30%), for Bazaar apps there are three parties: the
+    platform, the developer, and the creator. The creator should still get the
+    largest cut, however, the developer should also be rewarded for their
+    creation and get part of the revenue.
+  </p>
+
+  <!-- User -->
+  <h1>Why users should use Bazaar</h1>
+
+  <h2>Is there an app you like?</h2>
+  <p>
+    To be frank, it is very simple. You will only use Bazaar if there is a
+    Bazaar app you want to use. Check out <a href="/apps">available apps</a> to see
+    if anything catches your eye. If not, <a href="mailto:hello@bzr.dev"
+      >let us know</a
+    > what app you would want us to build.
+  </p>
+  <p>
+    Of course, for any Bazaar app there might be a similar traditional app out
+    there that offers similar features. In that case, there is clear benefits to
+    choosing the Bazaar app. Read on to learn what they are.
+  </p>
+
+  <h2>Data ownership</h2>
+  <h3>You are not the product</h3>
+  <p>
+    Most apps out there, especially free apps, collect and harvest your data.
+    This is not the case for Bazaar apps. A Bazaar app uses the data in your
+    Bazaar account. As such, the creator of any given Bazaar app does not have
+    access to your data. Only you do via your Bazaar account. This way, your
+    privacy is guaranteed no matter what Bazaar app you use.
+  </p>
+  <h3>Absolute control</h3>
+  <p>
+    All data from all your Bazaar apps is stored in your Bazaar account. This
+    data is yours and you control this data. You can delete or download it with
+    a click of a button.
+  </p>
+  <h3>Data transfer (coming soon)</h3>
+  <p>
+    In the future we want to even go one step further and implement a seamless
+    way for you to transfer data to a new app. So if you are using a shopping
+    list app that hasn't been updated in a while and you want to change to a
+    newer, compatible shopping list app, just take our data and switch. It is
+    your data after all.
+  </p>
+
+  <h2>The right incentives</h2>
+  <p>
+    You might have heard the saying "if you are not paying for a service, you
+    are the product". Running an app incurs costs and if a user does not have to
+    pay to cover these costs, the app owner obviously has another revenue
+    stream, most likely one that involves selling or using your data. For
+    Bazaar, the incentives are clear. We want to build the easiest platform for
+    developers to create great apps. When users like you use these apps, we
+    charge you to host and manage your data. Thats it. No hidden agenda.
+  </p>
+
+  <!-- Business -->
+  <h1>Why businesses should use Bazaar</h1>
+
+  <p>
+    Businesses are also users, so similar reasoning applies. There are however,
+    a few extra benefits that applies specifically to organizations.
+  </p>
+
+  <h2>Data privacy and security</h2>
+  <h3>Minimize security risk</h3>
+  <p>
+    With each application you introduce in your organization, you need to make
+    sure their data and privacy policy is actually acceptable. On top of this,
+    you always run the risk of some data leakage if an app developer does not
+    take data security as seriously as they should. With Bazaar, data for all
+    apps is safeguarded in your Bazaar account. As such your data privacy and
+    security is handled by Bazaar.
+  </p>
+  <h3>Compliance</h3>
+  <p>
+    We use best practices to protect your data from loss or theft. We understand
+    that larger organizations require certain data compliance certifications. We
+    work together with all our enterprise customers to make sure all their
+    compliance needs are met.
+  </p>
+  <h3>Set your own data policy</h3>
+  <p>
+    With Bazaar, private users are in control of their data. In organizational
+    accounts, data control and retention policies for their and their users'
+    data are set by the organization. This protects organizations from rogue
+    employees or accidental deletions.
+  </p>
+
+  <h2>An ever expanding app catalogue</h2>
+  <p>
+    One benefit of Bazaar is that the app catalogue keeps expanding. You can use
+    new or better apps in your organization with the same business relationship
+    you have with Bazaar. Also, as mentioned previously, all the same privacy
+    and data policy apply for all new apps you use.
+  </p>
+
+  <h2>Easily customize open-source apps</h2>
+  <p>
+    The open-source ecosystem is incredible. Not only can you find an app to
+    solve any problem, you can also modify the code and tailor all apps to your
+    needs. However, deploying or hosting such tailored apps can be very complex
+    and costly. With Bazaar, apps are just static sites so deployment is
+    trivial. As such it is very easy to tailor open-source Bazaar apps to your
+    needs and deploy them.
+  </p>
+
+  <!-- Edu -->
+  <h1>Why educational institutions should use Bazaar</h1>
+
+  <p>
+    All business benefits obviously also apply to educational institutions.
+    There are, however, some unique advantages to using Bazaar in an educational
+    setting.
+  </p>
+
+  <h2>Teaching</h2>
+  <p>
+    Students often encounter problems that are unique to their setting or have
+    ideas to improve their or their fellow students lives. Bazaar is the
+    simplest platform to build a web based app that solves a problem for you or
+    other people. With its integrated social features it can easily build an app
+    that is meaningful for fellow students and with the monetization feature
+    (coming soon) students can even foster their entrepreneurial spirit.
+  </p>
+  <p>
+    To help with fostering these useful skills, creating Bazaar apps can be
+    easily integrated into a course, workshop, bootcamp, or competition.
+    Especially for less technical students, as the programming knowledge is more
+    basic (front-end web development only).
+  </p>
+</PageLayout>
