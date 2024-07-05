@@ -196,7 +196,7 @@ With the Bazaar client initialized you can now add authentication to your app.
 
 ## Step 5 — Adding User Authentication
 
-In this step, you'll add user authentication to your app.
+In this step, you will add user authentication to your app using Bazaar's OAuth2-based authentication system.
 
 First, add log in and log out buttons to your template:
 
@@ -205,15 +205,15 @@ First, add log in and log out buttons to your template:
   <div class="container">
     <h1>Todo</h1>
     <!-- Todo template content will be implemented here -->
-    <button @click="bzr.login">Log in</button>
+    <button @click="bzr.login">Log in or create account</button>
     <button @click="bzr.logOut">Log out</button>
   </div>
 </template>
 ```
 
-Clicking the login button opens a pop-up window. Create an test account by entering any email address, using the code `1234` and choosing any handle and name.
+When a user clicks the log in button, a pop-up window opens, prompting them to create a Bazaar account or log in if they already have one. Once the account is created, the user is prompted to authorize your Todo app.
 
-After you log in, the pop-up will close. Refresh the page, and in your developer console you'll see the following:
+Create a test account by entering any email address, using the code `1234` and choosing any handle and name. Then, authorize the app. The pop-up will close. Refresh the page, and in your developer console you'll see the following:
 
 ```log title="Developer Console"
 is logged in: true
@@ -291,7 +291,7 @@ Next, update the template to display log in and log out buttons conditionally:
   <div class="container">
     <h1>Todo</h1>
     <template v-if="!isLoggedIn">
-      <button @click="bzr.login">Log in</button>
+      <button @click="bzr.login">Log in or create account</button>
     </template>
     <template v-else>
       <button @click="bzr.logOut">Log out</button>
@@ -648,7 +648,7 @@ That code change will render a delete button for each todo.
       <div class="container">
         <h1>Todo</h1>
         <template v-if="!isLoggedIn">
-          <button @click="bzr.login">Log in</button>
+          <button @click="bzr.login">Log in or create account</button>
         </template>
         <template v-else>
           <button @click="bzr.logOut">Log out</button>
