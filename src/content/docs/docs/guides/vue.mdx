@@ -20,7 +20,7 @@ To complete this tutorial, you will need:
 
 In this step, you will create a new Vue project using the official Vue project scaffolding tool. The created project will be using a build setup based on [Vite](https://vitejs.dev/).
 
-Open up your terminal and ensure your current working directory is where you intend to create a project. Then, Run the following command in your command line:
+Open up your terminal and ensure your current working directory is where you intend to create a project. Then, Run the following command:
 
 ```bash
 npm create vue@latest
@@ -344,7 +344,7 @@ async function onSubmit() {
 
 In this code, you define a `Todo` type and create two reactive variables, one for the new todo text and another for holding the list of todos.
 
-The `bzr.collection` method creates an object to interact with a database collection. By default, a collection object interacts with the database of the authenticated user.
+The `bzr.collection` method creates an object to interact with a database collection. Learn more in the [collections docs](/docs/features/collections/).
 
 <Aside title="Bazaar Databases">
   Bazaar provides document-orientated (NoSQL) and schema-less databases scoped
@@ -496,7 +496,7 @@ async function doLoginActions() {
 </script>
 ```
 
-In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection, and `arrayMirrorSubscribeListener` handles change events, ensuring the local `todos` array stays in sync with the collection. As such, in `onSubmit`, you no longer need to add the todo to your local state. Learn about [subscribe listeners](https://bzr.dev/docs/features/collections/).
+In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection, and `arrayMirrorSubscribeListener` handles change events, ensuring the local `todos` array stays in sync with the collection. As such, in `onSubmit`, you no longer need to add the todo to your local state. Learn about [subscribe listeners](/docs/features/collections/).
 
 With realtime syncing enabled, any changes to the todos will be updated instantly. In the next step, you will implement the functionality to toggle the completion status of todos.
 
@@ -726,4 +726,4 @@ Return to Netlify and paste in your app ID as the `VITE_APP_ID` value, and click
 
 In this tutorial, you built and deployed a Todo app using Vue.js and Bazaar. You set up a new Vue project, integrated Bazaar for backend services, implemented user authentication, added and displayed todos, enabled realtime syncing, and deployed your app to Netlify.
 
-Check the [Bazaar documentation](https://cloud.bzr.dev/docs) for more features and capabilities.
+Check the [Bazaar documentation](/docs) for more features and capabilities.
