@@ -129,7 +129,7 @@ With the project cleaned up, you are ready to integrate Bazaar for authenticatio
 
 In this step, you will use the Bazaar mock server to develop your app locally. The mock server simulates the Bazaar backend, allowing you to test and build your application in a local environment.
 
-Run the following command to start the mock server:
+In a new terminal window, run the following command to start the mock server:
 
 ```bash
 npx @bzr/bazaar-mock -u http://localhost:5173/
@@ -191,6 +191,12 @@ In this code, you set the following `BazaarApp` options:
   prefixed with `VITE_` are exposed to your Vite-processed code. See the [Vite
   Env Variables and Modes docs](https://vitejs.dev/guide/env-and-mode).
 </Aside>
+
+Open up the app in in your browser and check the developer console. You'll see the following:
+
+```log title="Developer Console"
+is logged in: false
+```
 
 With the Bazaar client initialized you can now add authentication to your app.
 
@@ -497,6 +503,8 @@ async function doLoginActions() {
 ```
 
 In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection, and `arrayMirrorSubscribeListener` handles change events, ensuring the local `todos` array stays in sync with the collection. As such, in `onSubmit`, you no longer need to add the todo to your local state. Learn about [subscribe listeners](/docs/features/collections/).
+
+To test the realtime updates, open your app in a private window while keeping the original window open, and log in. When you make changes in one window, you'll see them appear in the other in realtime.
 
 With realtime syncing enabled, any changes to the todos will be updated instantly. In the next step, you will implement the functionality to toggle the completion status of todos.
 
