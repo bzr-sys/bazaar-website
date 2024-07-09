@@ -1,5 +1,916 @@
 ---
-title: Pure JavaScript
+title: How to Build a Vanilla JS Todo App with Bazaar
 ---
 
-Get started with plain JavaScript, no framework.
+import { Steps, Aside, FileTree } from "@astrojs/starlight/components";
+
+In this tutorial, you will build a simple Todo application using vanilla JavaScript and [Bazaar](https://bzr.dev/). This guide will walk you through setting up the project, integrating Bazaar for backend services, and deploying your application to [Netlify](https://www.netlify.com/). By the end of this tutorial, you will have a fully functional Todo app with features to add, display, mark as complete, and delete tasks.
+
+## Prerequisites
+
+To complete this tutorial, you will need:
+
+- A basic understanding of JavaScript.
+- [Node.js](https://nodejs.org/en/) installed on your machine.
+- [Git](https://github.com/git-guides/install-git) installed on your machine.
+- A [GitHub](https://github.com/) account for code repository hosting.
+- (Optional) A [Netlify](https://www.netlify.com/) account for deploying your app.
+
+## Step 1 —  Setup a New Project
+
+In this step, you will create the files and folders needed for your app and add some starting boilerplate.
+
+Create a folder for your project named `bazaar-vanilla-js-todo`.
+
+Create the folders `css` and `js` in your new project folder. Then, create the files `index.html`, `css/style.css`, and `js/app.js`. Your file structure will look like this:
+
+<FileTree>
+
+- css
+  - style.css
+- js
+  - app.js
+- index.html
+
+</FileTree>
+
+Next, add the starting content to each of these files:
+
+<Steps>
+
+1. First, add the starting HTML to `index.html`:
+
+   ```html title="index.html"
+   <!DOCTYPE html>
+   <html lang="en">
+     <head>
+       <meta charset="UTF-8" />
+       <title>To Do</title>
+       <meta name="viewport" content="width=device-width, initial-scale=1" />
+       <link rel="stylesheet" href="css/style.css" />
+     </head>
+     <body>
+       <div class="container">
+         <h1>To Do</h1>
+         <!-- Todo markup will be added here -->
+       </div>
+
+       <script src="js/app.js"></script>
+     </body>
+   </html>
+
+   ```
+
+   This HTML provides the basic structure for a web page, linking to `css/style.css` for styling and `js/app.js` for functionality. The main content area is enclosed in a `div` with the class `container`. Next, you'll enhance it with some minimal CSS.
+
+2. Add the following styles to `css/style.css`:
+
+   ```css title="style.css"
+   body {
+     font-family: sans-serif;
+   }
+   .logged-out #logout-button,
+   .logged-out .main {
+     display: none;
+   }
+   .container {
+     margin: 0 auto;
+     max-width: 600px;
+     padding: 3em 0;
+   }
+   .card {
+     background-color: #eee;
+     padding: 1rem;
+   }
+   #todo-form {
+     margin: 2rem 0;
+   }
+   #todos {
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+   }
+   .todo-text {
+     margin-bottom: 1rem;
+   }
+   .completed .todo-text {
+     text-decoration: line-through;
+   }
+   ```
+
+3. Finally, add the following to `app.js`:
+
+   ```js title="app.js"
+   document.addEventListener("DOMContentLoaded", async () => {
+      // Todo logic will be implemented here
+   });
+   ```
+
+   JavaScript is added within a function that runs when the `DOMContentLoaded` event occurs. This prevents global variable leakage and ensures the code runs after the DOM has fully loaded, allowing safe manipulation of HTML elements.
+
+</Steps>
+
+Your project is set up. Next, you'll run a local HTTP server to view it in the browser.
+
+## Step 2 — Running a local HTTP Server
+
+In this step, you'll run a local HTTP server to view your app. While you could open the `index.html` file directly in your browser, serving your app locally provides a real URL necessary for integrating Bazaar's backend services.
+
+Open up your terminal and ensure your project folder is the current working directory. Then, Run the following command:
+
+```bash
+npx http-server
+```
+
+That command will install (if necessary) and execute [http-server](https://www.npmjs.com/package/http-server), a simple HTTP server. It will serve on `http://127.0.0.1:8080` by default. Check your app in the browser to see the text **Todo**.
+
+## Step 3 — Running the Mock Server
+
+In this step, you will use the Bazaar mock server to develop your app locally. The mock server simulates the Bazaar backend, allowing you to test and build your application in a local environment.
+
+In a new terminal window, run the following command to start the mock server:
+
+```bash
+npx @bzr/bazaar-mock -u http://localhost:8080/
+```
+
+This command assumes `http-server` server is running on the default port, `8080`. Update accordingly if you're running on a different port.
+
+Install the `@bzr/bazaar-mock` NPM package if prompted.
+
+You should see output similar to this:
+
+```bash
+Running mock Bazaar server at: http://localhost:3377
+
+App ID is test
+App URL is http://localhost:8080/
+Redirect URIs are http://localhost:8080/
+Use any email to sign up / log in. Code is always 1234
+```
+
+Now that the mock server is running, you'll initialize a Bazaar client.
+
+## Step 4 — Initializing a Bazaar Client
+
+In this step, you will install and initialize the Bazaar client to manage backend services for your Todo app.
+
+You can use Bazaar directly from a CDN via a script tag. Add the script tag before the `app.js` tag in `index.html`:
+
+```html title="index.html" ins={1}
+<script src="https://unpkg.com/@bzr/bazaar"></script>
+<script src="js/app.js"></script>
+```
+
+html
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+Here you are using [unpkg](https://unpkg.com/), but you can also use any CDN that serves NPM packages, for example [jsdelivr](https://www.jsdelivr.com/) or [cdnjs](https://cdnjs.com/).
+
+<Aside>For Node projects, Bazaar can also be installed as an NPM package with `npm install @bzr/bazaar`.</Aside>
+
+Next, initialize the Bazaar client in `app.js`:
+
+```js title="app.js" del={2} ins={3-11}
+document.addEventListener("DOMContentLoaded", async () => {
+  // Todo logic will be implemented here
+  const bzr = new BazaarApp({
+      appId: "test",
+      loginRedirectUri: window.location.href,
+      bazaarUri: "http://localhost:3377",
+      onApiConnectError: (bzr) => bzr.logOut(),
+ });
+
+  // Test the client initialization by checking the logged in status
+  console.log("is logged in:", bzr.isLoggedIn());
+});
+```
+
+In this code, you set the following `BazaarApp` options for local development:
+
+- `appId`: Uses `test`, the Bazaar mock server default.
+- `loginRedirectUri`: Uses `window.location.href` as the default, e.g. `http://localhost:8080/`.
+- `bazaarUri`: Uses `http://localhost:3377`, the Bazaar mock server URL.
+- `onApiConnectError`: If a connection error occurs, logs out the user.
+
+Open the app in your browser and check the developer console. You'll see the following:
+
+```log title="Developer Console"
+is logged in: false
+```
+
+With the Bazaar client initialized you can now add authentication to your app.
+
+## Step 5 — Adding User Authentication
+
+In this step, you'll add user authentication to your app using Bazaar's OAuth2-based authentication system.
+
+First, add log in and log out buttons to your template:
+
+```html title="index.html" del={3} ins={4,5}
+<div class="container">
+  <h1>Todo</h1>
+  <!-- Todo markup will be added here -->
+  <button id="login-button">Log in or create account</button>
+  <button id="logout-button">Log out</button>
+</div>
+```
+
+And add the corresponding `click` event listeners in `app.js`:
+
+```js title="app.js" ins={6-10}
+const bzr = new BazaarApp({...});
+
+// Test the client initialization by checking the logged in status
+console.log("is logged in:", bzr.isLoggedIn());
+
+const loginButton = document.querySelector("#login-button");
+loginButton.addEventListener("click", () => bzr.login());
+
+const logoutButton = document.querySelector("#logout-button");
+logoutButton.addEventListener("click", () => bzr.logOut());
+```
+
+<Aside>
+ An ellipses (`...`) indicates portions of previously added code omitted for
+ brevity.
+</Aside>
+
+When a user clicks the log in button, a pop-up window opens, prompting them to create a Bazaar account or log in if they already have one. Once the account is created, the user is prompted to authorize your Todo app.
+
+Create a test account by entering any email address, using the code `1234` and choosing any handle and name. Then, authorize the app. The pop-up will close. Refresh the page, and in your developer console you'll see the following:
+
+```log title="Developer Console"
+is logged in: true
+```
+
+<Aside type="caution" title="Login Error">
+ If login fails with an error like **Invalid client: redirect_uri does not match client value. Got
+  http://localhost:8080/, valid is http://localhost:8080**, make sure the `loginRedirectUri` in your Bazaar client config exactly matches the URI of your mock server `-u` option.
+
+In the error above, the mock server accepts requests from `http://localhost:8080` and is missing a trailing slash as the HTTP server is serving on `http://localhost:8080/`.
+
+</Aside>
+
+Next, refactor the code so the login status updates immediately after a successful login, not just on page load.
+
+```js title="app.js" del={3,4} ins={12-22}
+const bzr = new BazaarApp({...});
+
+// Test the client initialization by checking the logged in status
+console.log("is logged in:", bzr.isLoggedIn());
+
+const loginButton = document.querySelector("#login-button");
+loginButton.addEventListener("click", () => bzr.login());
+
+const logoutButton = document.querySelector("#logout-button");
+logoutButton.addEventListener("click", () => bzr.logOut());
+
+// Perform login actions immediately after login
+bzr.onLogin(doLoginActions);
+
+// Perform login actions if logged in on page load
+if (bzr.isLoggedIn()) {
+  doLoginActions();
+}
+
+async function doLoginActions() {
+  console.log("is logged in:", bzr.isLoggedIn());
+}
+```
+
+Log out and log back in, and you'll see `is logged in: true` in your console after the pop-up closes without needing a page refresh.
+
+You have now added user authentication to your app. Next, you will conditionally display content based on the user's login status.
+
+## Step 6 — Displaying Logged-in Content
+
+In this step, you will conditionally display content based on the user's login status.
+
+First, make the following changes in `index.html`:
+
+```html title="index.html" ins={1,7-13} mark=' class="logged-out"'
+<body class="logged-out">
+  <div class="container">
+    <h1>To Do</h1>
+    <button id="login-button">Log in or create account</button>
+    <button id="logout-button">Log out</button>
+
+    <main class="main">
+      <div>Main content will go here.</div>
+
+      <!-- Add todo form will go here -->
+
+      <!-- Todos will be displayed here -->
+    </main>
+  </div>
+ ...
+</body>
+```
+
+In these changes, you add a `logged-out` class to the `body` tag and a `main` tag, where logged-in content will be displayed.
+
+In `style.css`, notice the log out button and `main` element (the logged-in content) are hidden when the `logged-out` class is present:
+
+```css title="style.css"
+.logged-out #logout-button,
+.logged-out .main {
+  display: none;
+}
+```
+
+Next, update the `doLoginActions` function to display content in `app.js conditionally`:
+
+```js title="app.js" del={2} ins={3-5}
+async function doLoginActions() {
+  console.log("is logged in:", bzr.isLoggedIn());
+  document.body.classList.remove("logged-out");
+
+  loginButton.remove();
+}
+```
+
+Now, on log in, the `logged-out` class is removed from the `body` element, displaying the log out button and the `main` element. The log in button is also removed from the DOM as it's unnecessary once a user has logged in.
+
+The app now displays the appropriate content based on the user's login status.
+
+Next, you'll add the functionality to create todos.
+
+## Step 7 — Adding a Todo
+
+In this step, you'll implement the feature to create todos.
+
+In `index.html`, add a form to create a todo.
+
+```html title="index.html" del={2-4} ins={5-14}
+<main class="main">
+  <div>Main content will go here.</div>
+
+  <!-- Add todo form will go here -->
+  <form id="todo-form" action="">
+    <input
+      type="text"
+      name="todo"
+      id="todo-text-input"
+      placeholder="Write a to do..."
+      required
+    />
+    <button>Add</button>
+  </form>
+
+  <!-- Todos will be displayed here -->
+</main>
+```
+
+These changes add a form with a single input field for the todo text. Notice that the form has no `action`, you'll add a submit event listener in JavaScript next.
+
+Update the `doLoginActions` function to add the submit event listener:
+
+```js title="app.js" ins={6-22}
+async function doLoginActions() {
+ ...
+
+  loginButton.remove();
+
+  const todosCollection = bzr.collection("todos");
+
+  const todoForm = document.querySelector("#todo-form");
+  todoForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const todoTextInput = document.querySelector("#todo-text-input");
+    const unpersistedTodo = {
+      text: todoTextInput.value,
+      completed: false,
+ };
+    const id = await todosCollection.insertOne(unpersistedTodo);
+    const todo = { id, ...unpersistedTodo};
+    console.log(todo);
+
+    todoTextInput.value = "";
+ });
+}
+```
+
+The `bzr.collection` method creates an object to interact with a database collection. Learn more in the [collections docs](/docs/features/collections/).
+
+<Aside title="Bazaar Databases">
+ Bazaar provides document-orientated (NoSQL) and schema-less databases scoped
+ to a user and app. A database contains collections which are analogous to
+ tables in a relational databases. Collections are made up of documents, or
+ docs, analogous to rows in a relational database.
+</Aside>
+
+The submit handler takes the input value and creates a doc in the `todos` collection.
+
+Back in your browser, submit the form to create a todo. In your developer console, you'll see the todo with the generated ID returned from the database.
+
+You have now implemented the functionality to add new todos, but they still need to be displayed. In the next step, you will display these todos in your app.
+
+## Step 8 — Displaying Todos
+
+In this step, you will fetch and display todos from the collection.
+
+First, add an element to hold the todos in `index.html`:
+
+```html title="index.html" del={4} ins={5}
+<main class="main">
+  <form id="todo-form" action="">...</form>
+
+  <!-- Todos will be displayed here -->
+  <div id="todos"></div>
+</main>
+```
+
+Next, update the `doLoginActions` function to fetch todos and insert them into the DOM:
+
+```js title="app.js" ins={"Create a JSDoc type definition for a todo":6-13} ins={15-32} ins={34-43} ins={"Fetch todos from the database and insert into the DOM one by one":45-50}
+async function doLoginActions() {
+ ...
+
+  todoForm.addEventListener("submit", (event) => {...});
+
+
+  /**
+ * A todo
+ * @typedef {Object} Todo
+ * @property {string} id
+ * @property {string} text
+ * @property {boolean} completed
+ */
+
+  /**
+ * Insert a todo into the DOM
+ * @param {Todo} todo
+ */
+  function insertTodoInDOM(todo) {
+    // Do not add the todo if it already exists
+    if (document.getElementById(todo.id)) return;
+
+    const todosElement = document.querySelector("#todos");
+    todosElement.insertAdjacentHTML(
+      "afterbegin",
+      `
+ <div id="${escapeHtml(todo.id)}" class="card">
+ <div class="todo-text">${escapeHtml(todo.text)}</div>
+ </div>
+ `
+ );
+ }
+
+  /**
+ * Escape HTML to prevent XSS attacks
+ * @param {string} string - The string to escape.
+ * @returns {string} - The escaped string.
+ */
+  function escapeHtml(string) {
+    const div = document.createElement("div");
+    div.appendChild(document.createTextNode(string));
+    return div.innerHTML;
+ }
+
+
+  todosCollection.getAll().then((docs) => {
+    for (doc of docs) {
+      insertTodoInDOM(doc);
+ }
+ });
+}
+```
+
+The `insertTodoInDOM` function first makes sure an element with a todo ID doesn't already exist. Next, it gets a reference to the `<div id="todos"></div>` element you just added in `index.html` and inserts the todo HTML as the first child of the todos element, ensuring the most recent todos are added to the top of the list.
+
+Finally, you need to add a todo to the DOM when it gets added to the database. Update the submit event listenter:
+
+```js title="app.js" del={3} ins={4}
+todoForm.addEventListener("submit", (event) => {
+ ...
+  console.log(todo);
+  insertTodoInDOM(todo);
+
+  todoTextInput.value = "";
+});
+```
+
+You have now successfully displayed the todos fetched from the collection. In the next step, you will add realtime syncing to keep the todos updated across different devices.
+
+## Step 9 — Adding Realtime Syncing
+
+In this step, you will enable realtime updates for your todos so that changes are reflected instantly across different devices.
+
+Replace the `todosCollection.getAll` call with `todosCollection.subscribeAll`:
+
+```js title="app.js" del={1-5} ins={7-17}
+todosCollection.getAll().then((docs) => {
+  for (doc of docs) {
+    insertTodoInDOM(todo);
+ }
+});
+
+todosCollection.subscribeAll(
+ {},
+ {
+    onInitial: (doc) => {
+      insertTodoInDOM(doc);
+ },
+    onAdd: (doc) => {
+      insertTodoInDOM(doc);
+ },
+ }
+);
+```
+
+In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection. You pass a subscribe listener as the second `subscribeAll` argument with functions to handle `onInitial` and `onAdd` events. In both cases, you insert a todo into the DOM, exactly as you did in `todosCollection.getAll`.
+
+You can think of `onInitial` as syntactic sugar for `todosCollection.getAll`. It fetches all docs from the collection, then calls your `onInitial` function for each doc.
+
+With the `onAdd` handler in place, there's no need to add a todo to the DOM when the form is submitted. Update the submit event listener:
+
+```js title="app.js" del={3,4}
+todoForm.addEventListener("submit", (event) => {
+ ...
+  const todo = { id, ...unpersistedTodo };
+  insertTodoInDOM(todo);
+
+  todoTextInput.value = "";
+});
+```
+
+Learn about [subscribe listeners](/docs/features/collections/).
+
+To test the realtime updates, open your app in a private window while keeping the original window open and logging in. When you make changes in one window, they will appear in the other in realtime.
+
+Realtime syncing is enabled, but it only handles add todo events. In the next step, you will implement the functionality to toggle the completion status of todos and update your subscribe listener with an `onChange` handler.
+
+## Step 10 — Toggling Todo Completion
+
+In this step, you'll implement functionality to toggle the completion status of todos.
+
+First, update the todo template and add an update event listener:
+
+```js title="app.js" ins={6-8,10,15-23}
+function insertTodoInDOM(todo) {
+ ...
+    todosElement.insertAdjacentHTML(
+      "afterbegin",
+      `
+ <div id="${escapeHtml(todo.id)}" class="card ${
+        todo.completed && "completed"
+      }">
+ <div class="todo-text">${escapeHtml(todo.text)}</div>
+ <button class="update-todo-button">Toggle Completion</button>
+ </div>
+ `
+ );
+
+    const todoElement = document.getElementById(todo.id);
+
+    // Add update button event listener
+    const updateButton = todoElement.querySelector(".update-todo-button");
+    updateButton.addEventListener("click", () => {
+      todosCollection.updateOne(todo.id, {
+        completed: !todoElement.classList.contains("completed"),
+ });
+ });
+ }
+```
+
+In these changes, you add a `completed` class to a todo when it's complete. The `completed` styles are already in `style.css`.
+
+Then, you add a button and event listener for toggling todo completion. To determine if a todo is completed, you check for the presence of the `completed` class. If it is present, set the todo `completed` value to `false`, otherwise, set it to `true`. 
+
+Finally, modify the subscribe listener to handle change events.
+
+```js title="app.js" ins={6-10}
+todosCollection.subscribeAll(
+ {},
+ {
+    onInitial: (doc) => {...},
+    onAdd: (doc) => {...},
+    onChange: (oldDoc, newDoc) => {
+      const todoElement = document.getElementById(newDoc.id);
+      if (!todoElement) return;
+      todoElement.classList.toggle("completed", newDoc.completed);
+ },
+ }
+);
+```
+
+The `onChange` handler forces the presence of the `completed` class to the `completed` value of the changed doc by passing the value as the second argument of `todoElement.classList.toggle`.
+
+You can now mark todos as completed or incomplete. In the next step, you will add the functionality to delete todos.
+
+## Step 11 — Deleting a Todo
+
+In this step, you will implement the functionality to delete todos.
+
+First, update the todo template and add a click event listener:
+
+```js title="app.js" ins={11,21-26}
+function insertTodoInDOM(todo) {
+ ...
+    todosElement.insertAdjacentHTML(
+      "afterbegin",
+      `
+ <div id="${escapeHtml(todo.id)}" class="card ${
+        todo.completed && "completed"
+      }">
+ <div class="todo-text">${escapeHtml(todo.text)}</div>
+ <button class="update-todo-button">Toggle Completion</button>
+ <button class="delete-todo-button">Delete</button>
+ </div>
+ `
+ );
+
+    const todoElement = document.getElementById(todo.id);
+
+    // Add update button event listener
+ ...
+
+    // Add delete button event listener
+    const deleteButton = todoElement.querySelector(".delete-todo-button");
+    deleteButton.addEventListener("click", () => {
+      if (!window.confirm("Delete todo forever?")) return;
+      todosCollection.deleteOne(todo.id);
+ });
+ }
+```
+
+With these changes, you add a button and event listener for deleting a todo. `window.confirm` prompts the user confirmation before deleting.
+
+Next, add a delete event handler to your subscribe listener:
+
+```js title="app.js" ins={7-9}
+todosCollection.subscribeAll(
+ {},
+ {
+    onInitial: (doc) => {...},
+    onAdd: (doc) => {...},
+    onChange: (oldDoc, newDoc) => {...},
+    onDelete: (doc) => {
+      document.getElementById(doc.id)?.remove();
+ },
+ }
+);
+```
+
+The delete handler removes the todo with the corresponding ID from the DOM. The [optional chaining operator (?)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) checks for the element's presence before deleting it.
+
+<details class="collapse bg-base-200">
+  <summary class="collapse-title text-xl font-medium">Show the Completed `app.js` File</summary>
+  <div class="collapse-content">
+    ```js title="app.js"
+    document.addEventListener("DOMContentLoaded", async () => {
+      const bzr = new BazaarApp({
+        appId: "test",
+        loginRedirectUri: window.location.href,
+        bazaarUri: "http://localhost:3377",
+        onApiConnectError: (bzr) => bzr.logOut(),
+      });
+
+      const loginButton = document.querySelector("#login-button");
+      loginButton.addEventListener("click", () => bzr.login());
+
+      const logoutButton = document.querySelector("#logout-button");
+      logoutButton.addEventListener("click", () => bzr.logOut());
+
+      // Perform login actions immediately after login
+      bzr.onLogin(doLoginActions);
+
+      // Perform login actions if logged in on page load
+      if (bzr.isLoggedIn()) {
+        doLoginActions();
+      }
+
+      async function doLoginActions() {
+        document.body.classList.remove("logged-out");
+
+        loginButton.remove();
+
+        const todosCollection = bzr.collection("todos");
+
+        const todoForm = document.querySelector("#todo-form");
+        todoForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const todoTextInput = document.querySelector("#todo-text-input");
+          const unpersistedTodo = {
+            text: todoTextInput.value,
+            completed: false,
+          };
+          const id = await todosCollection.insertOne(unpersistedTodo);
+
+          todoTextInput.value = "";
+        });
+
+        /**
+         * A todo
+         * @typedef {Object} Todo
+         * @property {string} id
+         * @property {string} text
+         * @property {boolean} completed
+         */
+
+        /**
+         * Insert a todo into the DOM
+         * @param {Todo} todo
+         */
+        function insertTodoInDOM(todo) {
+          // Do not add the todo if it already exists
+          if (document.getElementById(todo.id)) return;
+
+          const todosElement = document.querySelector("#todos");
+          todosElement.insertAdjacentHTML(
+            "afterbegin",
+            `
+            <div id="${escapeHtml(todo.id)}" class="card ${
+              todo.completed && "completed"
+            }">
+              <div class="todo-text">${escapeHtml(todo.text)}</div>
+              <button class="update-todo-button">Toggle Completion</button>
+              <button class="delete-todo-button">Delete</button>
+            </div>
+            `
+          );
+
+          const todoElement = document.getElementById(todo.id);
+
+          // Add update button event listener
+          const updateButton = todoElement.querySelector(".update-todo-button");
+          updateButton.addEventListener("click", () => {
+            todosCollection.updateOne(todo.id, {
+              completed: !todoElement.classList.contains("completed"),
+            });
+          });
+
+          // Add delete button event listener
+          const deleteButton = todoElement.querySelector(".delete-todo-button");
+          deleteButton.addEventListener("click", () => {
+            if (!window.confirm("Delete todo forever?")) return;
+            todosCollection.deleteOne(todo.id);
+          });
+        }
+
+        /**
+         * Escape HTML to prevent XSS attacks
+         * @param {string} string - The string to escape.
+         * @returns {string} - The escaped string.
+         */
+        function escapeHtml(string) {
+          const div = document.createElement("div");
+          div.appendChild(document.createTextNode(string));
+          return div.innerHTML;
+        }
+
+        todosCollection.subscribeAll(
+          {},
+          {
+            onInitial: (doc) => {
+              insertTodoInDOM(doc);
+            },
+            onAdd: (doc) => {
+              insertTodoInDOM(doc);
+            },
+            onChange: (oldDoc, newDoc) => {
+              const todoElement = document.getElementById(newDoc.id);
+              if (!todoElement) return;
+              todoElement.classList.toggle("completed", newDoc.completed);
+            },
+            onDelete: (doc) => {
+              document.getElementById(doc.id)?.remove();
+            },
+          }
+        );
+      }
+    });
+    ```
+
+  </div>
+</details>
+
+<details class="collapse bg-base-200">
+  <summary class="collapse-title text-xl font-medium">Show the Completed `index.html` File</summary>
+  <div class="collapse-content">
+    ```html title="index.html"
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>To Do</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="css/style.css" />
+      </head>
+      <body class="logged-out">
+        <div class="container">
+          <h1>To Do</h1>
+          <button id="login-button">Log in or create account</button>
+          <button id="logout-button">Log out</button>
+
+          <main class="main">
+            <form id="todo-form" action="">
+              <input
+                type="text"
+                name="todo"
+                id="todo-text-input"
+                placeholder="Write a to do..."
+                required
+              />
+              <button>Add</button>
+            </form>
+
+            <div id="todos"></div>
+          </main>
+        </div>
+
+        <script src="https://unpkg.com/@bzr/bazaar"></script>
+        <script src="js/app.js"></script>
+      </body>
+    </html>
+
+    ```
+
+  </div>
+</details>
+
+With that, your todo app is complete and ready to deploy.
+
+## Step 12 — Deploying to Netlify
+
+In this step, you will deploy your Todo app to Netlify. You can deploy a Bazaar-powered app anywhere static sites can be hosted. Netlify provides a frictionless deployment process and free static site hosting for public GitHub repos.
+
+<Steps>
+
+1. To start, initialize a Git repository and push your code to GitHub:
+
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit: Vanilla JS todo app"
+   ```
+ 
+   Go to GitHub and create a public repo named `vanilla-js-todo-guide`.
+ 
+   ```bash
+   git remote add origin https://github.com/<your-username>/vanilla-js-todo-guide.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+2. Next, deploy the Netlify to get your App URL
+
+   Go to Netlify, create an account if necessary, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `vanilla-js-todo-guide`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
+ 
+   Configure the site settings and build settings as follows:
+ 
+   - **Site name**: e.g. `vanilla-js-todo-guide`
+   - **Branch to deploy**: e.g. `main`
+ 
+   Leave the other fields blank. Note down your Netlify URL, which is found under the **Site name** field. Then, click **Deploy**.
+ 
+   The process will take a few minutes, after which your todo app will be deployed. However, the Bazaar config still needs to be updated. You deploy the app before updating the configuration because the app URL is required.
+
+3. Register a Bazaar App
+
+   You need a Bazaar app ID to configure your Bazaar client for production.
+   
+   Open [cloud.bzr.dev](https://cloud.bzr.dev/) and create a free account. Click on the user icon at the top right, then click **Developers**. Next, click **Create App**. Give your app a name. I'm using **Vanilla JS Todo Guide**. Set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://vanilla-js-todo-guide.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
+
+4. Update your Bazaar client config and Redeploy
+
+   Finally, you can update your Bazaar client config. As you're not using a build step, you can't make use of environment variables, so you'll hardcode production values:
+   
+   ```js title="app.js"
+   // Local config
+   // const bzr = new BazaarApp({
+   //   appId: "test",
+   //   loginRedirectUri: window.location.href,
+   //   bazaarUri: "http://localhost:3377",
+   //   onApiConnectError: (bzr) => bzr.logOut(),
+   // });
+   
+   // Production config
+   const bzr = new BazaarApp({
+     appId: "<your-bazaar-app-id>",
+     loginRedirectUri: "<your-netlify-url>",
+     onApiConnectError: (bzr) => bzr.logOut(),
+   });
+   ```
+   
+   Make sure to replace the `appId` and `loginRedirectUri` values with your own. Notice `bazaarUri` is removed so it defaults to its production value.
+   
+   Commit your changes and push to re-deploy:
+   
+   ```bash
+   git add .
+   git commit -m "Add production Bazaar config"
+   git push
+   ```
+
+</Steps>
+
+Pushing will trigger Netlify to deploy your site. In a few minutes, your todo app will be deployed!
+
+## Conclusion
+
+In this tutorial, you built and deployed a Todo app using vanilla JavaScript and Bazaar. You set up a new project, integrated Bazaar for backend services, implemented user authentication, added and displayed todos, enabled realtime syncing, and deployed your app to Netlify.
+
+Check the [Bazaar documentation](/docs) for more features and capabilities.
