@@ -665,7 +665,7 @@ The delete handler removes the todo with the corresponding ID from the DOM. The 
         loginRedirectUri: window.location.href,
         bazaarUri: "http://localhost:3377",
         onApiConnectError: (bzr) => bzr.logOut(),
- });
+      });
 
       const loginButton = document.querySelector("#login-button");
       loginButton.addEventListener("click", () => bzr.login());
