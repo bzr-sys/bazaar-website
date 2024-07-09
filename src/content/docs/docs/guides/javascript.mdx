@@ -679,7 +679,7 @@ The delete handler removes the todo with the corresponding ID from the DOM. The 
       // Perform login actions if logged in on page load
       if (bzr.isLoggedIn()) {
         doLoginActions();
- }
+      }
 
       async function doLoginActions() {
         document.body.classList.remove("logged-out");
@@ -696,24 +696,24 @@ The delete handler removes the todo with the corresponding ID from the DOM. The 
           const unpersistedTodo = {
             text: todoTextInput.value,
             completed: false,
- };
+          };
           const id = await todosCollection.insertOne(unpersistedTodo);
 
           todoTextInput.value = "";
- });
+        });
 
         /**
- * A todo
- * @typedef {Object} Todo
- * @property {string} id
- * @property {string} text
- * @property {boolean} completed
- */
+         * A todo
+         * @typedef {Object} Todo
+         * @property {string} id
+         * @property {string} text
+         * @property {boolean} completed
+         */
 
         /**
- * Insert a todo into the DOM
- * @param {Todo} todo
- */
+         * Insert a todo into the DOM
+         * @param {Todo} todo
+         */
         function insertTodoInDOM(todo) {
           // Do not add the todo if it already exists
           if (document.getElementById(todo.id)) return;
@@ -722,15 +722,15 @@ The delete handler removes the todo with the corresponding ID from the DOM. The 
           todosElement.insertAdjacentHTML(
             "afterbegin",
             `
- <div id="${escapeHtml(todo.id)}" class="card ${
+            <div id="${escapeHtml(todo.id)}" class="card ${
               todo.completed && "completed"
             }">
- <div class="todo-text">${escapeHtml(todo.text)}</div>
- <button class="update-todo-button">Toggle Completion</button>
- <button class="delete-todo-button">Delete</button>
- </div>
- `
- );
+              <div class="todo-text">${escapeHtml(todo.text)}</div>
+              <button class="update-todo-button">Toggle Completion</button>
+              <button class="delete-todo-button">Delete</button>
+            </div>
+            `
+          );
 
           const todoElement = document.getElementById(todo.id);
 
@@ -739,49 +739,49 @@ The delete handler removes the todo with the corresponding ID from the DOM. The 
           updateButton.addEventListener("click", () => {
             todosCollection.updateOne(todo.id, {
               completed: !todoElement.classList.contains("completed"),
- });
- });
+            });
+          });
 
           // Add delete button event listener
           const deleteButton = todoElement.querySelector(".delete-todo-button");
           deleteButton.addEventListener("click", () => {
             if (!window.confirm("Delete todo forever?")) return;
             todosCollection.deleteOne(todo.id);
- });
- }
+          });
+        }
 
         /**
- * Escape HTML to prevent XSS attacks
- * @param {string} string - The string to escape.
- * @returns {string} - The escaped string.
- */
+         * Escape HTML to prevent XSS attacks
+         * @param {string} string - The string to escape.
+         * @returns {string} - The escaped string.
+         */
         function escapeHtml(string) {
           const div = document.createElement("div");
           div.appendChild(document.createTextNode(string));
           return div.innerHTML;
- }
+        }
 
         todosCollection.subscribeAll(
- {},
- {
+          {},
+          {
             onInitial: (doc) => {
               insertTodoInDOM(doc);
- },
+            },
             onAdd: (doc) => {
               insertTodoInDOM(doc);
- },
+            },
             onChange: (oldDoc, newDoc) => {
               const todoElement = document.getElementById(newDoc.id);
               if (!todoElement) return;
               todoElement.classList.toggle("completed", newDoc.completed);
- },
+            },
             onDelete: (doc) => {
               document.getElementById(doc.id)?.remove();
- },
- }
- );
- }
- });
+            },
+          }
+        );
+      }
+    });
     ```
 
   </div>
