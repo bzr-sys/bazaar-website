@@ -1,5 +1,5 @@
 ---
-title: How to Build a Vue.js Todo App with Bazaar
+title: How to Build a Vue Todo App with Bazaar
 ---
 
 import { Steps, Aside } from "@astrojs/starlight/components";
@@ -706,28 +706,28 @@ git add .
 git commit -m "Initial commit: Vue todo app"
 ```
 
-Go to GitHub and create a public repo named `vue-todo-guide`.
+Go to GitHub and create a public repo named `bazaar-vue-todo`.
 
 ```bash
-git remote add origin https://github.com/<your-username>/vue-todo-guide.git
+git remote add origin https://github.com/<your-username>/bazaar-vue-todo.git
 git branch -M main
 git push -u origin main
 ```
 
-Next, go to Netlify, create an account if necessary, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `vue-todo-guide`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
+Next, go to Netlify, create an account if necessary, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `bazaar-vue-todo`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
 
 Configure the site settings and build settings as follows:
 
-- **Site name**: e.g. `vue-todo-guide`
+- **Site name**: e.g. `bazaar-vue-todo`
 - **Branch to deploy**: e.g. `main`
 - **Build command**: `npm run build-only` (default)
 - **Publish directory**: `dist` (default)
 
-Add environment variables `VITE_URL` and `VITE_APP_ID`. For `VITE_URL`, use your app's Netlify URL (e.g., `https://vue-todo-guide.netlify.app`).
+Add environment variables `VITE_URL` and `VITE_APP_ID`. For `VITE_URL`, use your app's Netlify URL (e.g., `https://bazaar-vue-todo.netlify.app`).
 
 To get your Bazaar app ID, open [cloud.bzr.dev](https://cloud.bzr.dev/) and create a free account. Click on the user icon at the top right, then click **Developers**. Next, click **Create App**.
 
-Give your app a name. I'm using **Vue Todo Guide**. Set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://vue-todo-guide.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
+Give your app a name. I'm using **Vue Todo**. Set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://bazaar-vue-todo.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
 
 Return to Netlify and paste in your app ID as the `VITE_APP_ID` value, and click **Deploy**. You'll see a notice, **Site deploy in progress**. The process will take a few minutes, after which your todo app will be deployed!
 

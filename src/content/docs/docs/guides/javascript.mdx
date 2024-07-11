@@ -163,7 +163,6 @@ You can use Bazaar directly from a CDN via a script tag. Add the script tag befo
 ```
 
 html
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 Here you are using [unpkg](https://unpkg.com/), but you can also use any CDN that serves NPM packages, for example [jsdelivr](https://www.jsdelivr.com/) or [cdnjs](https://cdnjs.com/).
 
 <Aside>For Node projects, Bazaar can also be installed as an NPM package with `npm install @bzr/bazaar`.</Aside>
@@ -537,7 +536,7 @@ todoForm.addEventListener("submit", (event) => {
 
 Learn about [subscribe listeners](/docs/features/collections/).
 
-To test the realtime updates, open your app in a private window while keeping the original window open and logging in. When you make changes in one window, they will appear in the other in realtime.
+To test the realtime updates, open your app in a private window while keeping the original window open. When you make changes in one window, they will appear in the other in realtime.
 
 Realtime syncing is enabled, but it only handles add todo events. In the next step, you will implement the functionality to toggle the completion status of todos and update your subscribe listener with an `onChange` handler.
 
@@ -847,21 +846,21 @@ In this step, you will deploy your Todo app to Netlify. You can deploy a Bazaar-
    git commit -m "Initial commit: Vanilla JS todo app"
    ```
  
-   Go to GitHub and create a public repo named `vanilla-js-todo-guide`.
+   Go to GitHub and create a public repo named `bazaar-vanilla-js-todo`.
  
    ```bash
-   git remote add origin https://github.com/<your-username>/vanilla-js-todo-guide.git
+   git remote add origin https://github.com/<your-username>/bazaar-vanilla-js-todo.git
    git branch -M main
    git push -u origin main
    ```
 
 2. Next, deploy the Netlify to get your App URL
 
-   Go to Netlify, create an account if necessary, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `vanilla-js-todo-guide`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
+   Go to Netlify, create an account if necessary, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `bazaar-vanilla-js-todo`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
  
    Configure the site settings and build settings as follows:
  
-   - **Site name**: e.g. `vanilla-js-todo-guide`
+   - **Site name**: e.g. `bazaar-vanilla-js-todo`
    - **Branch to deploy**: e.g. `main`
  
    Leave the other fields blank. Note down your Netlify URL, which is found under the **Site name** field. Then, click **Deploy**.
@@ -872,7 +871,7 @@ In this step, you will deploy your Todo app to Netlify. You can deploy a Bazaar-
 
    You need a Bazaar app ID to configure your Bazaar client for production.
    
-   Open [cloud.bzr.dev](https://cloud.bzr.dev/) and create a free account. Click on the user icon at the top right, then click **Developers**. Next, click **Create App**. Give your app a name. I'm using **Vanilla JS Todo Guide**. Set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://vanilla-js-todo-guide.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
+   Open [cloud.bzr.dev](https://cloud.bzr.dev/) and create a free account. Click on the user icon at the top right, then click **Developers**. Next, click **Create App**. Give your app a name. I'm using **Vanilla JS Todo**. Set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://bazaar-vanilla-js-todo.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
 
 4. Update your Bazaar client config and Redeploy
 
