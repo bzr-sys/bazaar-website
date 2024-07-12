@@ -1,0 +1,774 @@
+---
+title: How to Build a React Todo App with Bazaar
+---
+
+import { Steps, Aside } from "@astrojs/starlight/components";
+
+In this tutorial, you will build a simple Todo application using [React](https://react.dev/) and [Bazaar](https://bzr.dev/). This guide will walk you through setting up a new React project, integrating Bazaar for backend services, and deploying your application to [Netlify](https://www.netlify.com/). By the end of this tutorial, you will have a fully functional Todo app with features to add, display, mark as complete, and delete tasks.
+
+## Prerequisites
+
+To complete this tutorial, you will need:
+
+- A basic understanding of [React](https://react.dev/).
+- [Node.js](https://nodejs.org/en/) installed on your machine.
+- [Git](https://github.com/git-guides/install-git) installed on your machine.
+- A [GitHub](https://github.com/) account for code repository hosting.
+- (Optional) A [Netlify](https://www.netlify.com/) account for deploying your app.
+
+## Step 1 — Scaffolding a New React Project
+
+In this step, you will create a new React project with TypeScript using the official [Vite](https://vitejs.dev/) project scaffolding tool, [`create-vite`](https://github.com/vitejs/vite/tree/main/packages/create-vite).
+
+Open up your terminal and ensure your current working directory is where you intend to create a project. Then, Run the following command:
+
+```bash
+npm create vite@latest bazaar-react-todo -- --template react-ts
+```
+
+That command will install and execute `create-vite`, creating your React project in a folder named `bazaar-react-todo`. The option , `react-ts`, is the React + TypeScript template preset.
+
+Next, navigate to your project directory, install dependencies, and start the development server:
+
+```bash
+cd bazaar-react-todo
+npm install
+npm run dev
+```
+
+<Aside>
+  At the time of writing, React `18.3.1` is installed.
+</Aside>
+
+Open the default URL `http://localhost:5173/` in your browser to see the starter React project.
+
+In the next step, you'll prepare your project by cleaning up unnecessary scaffolded files and adding custom styles.
+
+## Step 2 — Preparing the Project
+
+In this step, you will clean up the scaffolded React project by removing unnecessary files and adding custom styles.
+
+<Steps>
+
+1. First, delete the following files and folders:
+
+   - `src/App.css`
+   - `src/assets/react.svg`
+
+2. Replace the contents of `src/assets/index.css` with:
+
+   ```css title="index.css"
+   body {
+     font-family: sans-serif;
+   }
+   .container {
+     margin: 0 auto;
+     max-width: 600px;
+     padding: 3em 0;
+   }
+   .card {
+     background-color: #eee;
+     padding: 1rem;
+   }
+   .todo-form {
+     margin: 2rem 0;
+   }
+   .todos {
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+   }
+   .todo-text {
+     margin-bottom: 1rem;
+   }
+   .strikethrough {
+     text-decoration: line-through;
+   }
+   ```
+
+3. Finally, replace the contents of `src/App.tsx` with the following:
+
+   ```tsx title="App.tsx"
+   function App() {
+     return (
+       <>
+         <div className="container">
+           <h1>Todo</h1>
+           {/* Todo template content will be implemented here */}
+         </div>
+       </>
+     );
+   }
+   
+   export default App;
+   ```
+</Steps>
+
+Check your app in the browser to see the text **Todo**.
+
+With the project cleaned up, you are ready to integrate Bazaar for authentication and realtime data storage.
+
+## Step 3 — Running the Mock Server
+
+In this step, you will use the Bazaar mock server to develop your app locally. The mock server simulates the Bazaar backend, allowing you to test and build your application in a local environment.
+
+In a new terminal window, run the following command to start the mock server:
+
+```bash
+npx @bzr/bazaar-mock -u http://localhost:5173/
+```
+
+This command assumes the Vite dev server is running on the default port `5173`. Update accordingly if you're running on a different port.
+
+Install the `@bzr/bazaar-mock` NPM package if prompted.
+
+You should see output similar to this:
+
+```bash
+Running mock Bazaar server at: http://localhost:3377
+
+App ID is test
+App URL is http://localhost:5173/
+Redirect URIs are http://localhost:5173/
+Use any email to sign up / log in. Code is always 1234
+```
+
+Now that the mock server is running, you'll initialize a Bazaar client.
+
+## Step 4 — Initializing a Bazaar Client
+
+In this step, you will install and initialize the Bazaar client to manage backend services for your Todo app.
+
+First, install the Bazaar library:
+
+```bash
+npm install @bzr/bazaar
+```
+
+Next, initialize the Bazaar client at the top of `src/App.tsx`:
+
+```tsx title="App.tsx" ins={1-10}
+import { BazaarApp } from "@bzr/bazaar";
+
+const bzr = new BazaarApp({
+  appId: import.meta.env.VITE_APP_ID || "test",
+  loginRedirectUri: import.meta.env.VITE_URL || window.location.href,
+  onApiConnectError: async (bzr) => bzr.logOut(),
+});
+
+// Test the client initialization by checking the logged in status
+console.log("is logged in:", bzr.isLoggedIn());
+
+function App() {...}
+```
+
+<Aside>
+  An ellipses (`...`) indicates portions of previously added code omitted for
+  brevity.
+</Aside>
+
+In this code, you set the following `BazaarApp` options:
+
+- `appId`: Checks for a `VITE_APP_ID` environment variable and, if not present, uses `test`, the Bazaar mock server default.
+- `loginRedirectUri`: Checks for a `VITE_URL` environment variable and, if not present, uses `window.location.href` as the default, e.g. `http://localhost:5173/`.
+- `onApiConnectError`: If a connection error occurs, logs out the user.
+
+<Aside>
+  To prevent accidentally leaking env variables to the client, only variables
+  prefixed with `VITE_` are exposed to your Vite-processed code. See the [Vite
+  Env Variables and Modes docs](https://vitejs.dev/guide/env-and-mode).
+</Aside>
+
+Open the app in your browser and check the developer console. You'll see the following:
+
+```log title="Developer Console"
+is logged in: false
+```
+
+With the Bazaar client initialized you can now add authentication to your app.
+
+## Step 5 — Adding User Authentication
+
+In this step, you'll add user authentication to your app using Bazaar's OAuth2-based authentication system.
+
+First, add log in and log out buttons to your template:
+
+```tsx title="App.tsx" del={3} ins={4,5}
+<div className="container">
+  <h1>Todo</h1>
+  {/* Todo template content will be implemented here */}
+  <button onClick={() => bzr.login()}>Log in or create account</button>
+  <button onClick={() => bzr.logOut()}>Log out</button>
+</div>
+```
+
+When a user clicks the log in button, a pop-up window opens, prompting them to create a Bazaar account or log in if they already have one. Once the account is created, the user is prompted to authorize your Todo app.
+
+Create a test account by entering any email address, using the code `1234` and choosing any handle and name. Then, authorize the app. The pop-up will close. Refresh the page, and in your developer console you'll see the following:
+
+```log title="Developer Console"
+is logged in: true
+```
+
+<Aside type="caution" title="Login Error">
+ If login fails with an error like **Invalid client: redirect_uri does not match client value. Got
+  http://localhost:5173/, valid is http://localhost:5173**, make sure the `loginRedirectUri` in your Bazaar client config exactly matches the URI of your mock server `-u` option.
+
+In the error above, the mock server accepts requests from `http://localhost:5173` and is missing a trailing slash as the Vite dev server is serving on `http://localhost:5173/`.
+
+</Aside>
+
+Next, refactor the code so the login status updates immediately after a successful login, not just on page load.
+
+```tsx title="App.tsx" del={4,5} ins={2,8-20}
+import { BazaarApp } from "@bzr/bazaar";
+import { useEffect } from "react";
+
+// Test the client initialization by checking the logged in status
+console.log("is logged in:", bzr.isLoggedIn());
+
+function App() {
+  useEffect(() => {
+    async function doLoginActions() {
+      console.log("is logged in:", bzr.isLoggedIn());
+    }
+
+    // Perform login actions if the user is already logged in on page load
+    if (bzr.isLoggedIn()) {
+      doLoginActions();
+    }
+
+    // Set up handler to perform login actions immediately after a successful login
+    bzr.onLogin(doLoginActions);
+  }, []);
+
+  ...
+}
+```
+
+In these changes, you wrap the login code in `useEffect` with an empty dependency array so the code is executed only on the component's initial render. The code needs to be in the component function because you will use reactive state in the `doLoginActions` function in the next step.
+
+Log out and log back in, and you'll see `is logged in: true` in your console after the pop-up closes without needing a page refresh.
+
+You have now added user authentication to your app. Next, you will conditionally display content based on the user's login status.
+
+## Step 6 — Displaying Logged-in Content
+
+In this step, you will conditionally display content based on the user's login status.
+
+First, make the following changes:
+
+```tsx title="App.tsx" ins={2,6,11,21,23,25} del={10} mark=", useState"
+import { BazaarApp } from "@bzr/bazaar";
+import { useEffect, useState } from "react";
+...
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    async function doLoginActions() {
+      console.log("is logged in:", bzr.isLoggedIn());
+      setIsLoggedIn(true);
+    }
+
+    ...
+  }, []);
+
+  return (
+    <>
+      <div className="container">
+        <h1>Todo</h1>
+        {!isLoggedIn ? (
+          <button onClick={() => bzr.login()}>Log in or create account</button>
+        ) : (
+          <button onClick={() => bzr.logOut()}>Log out</button>
+        )}
+      </div>
+    </>
+  );
+}
+```
+
+In these changes, you create a state variable for the login status and set its value to `true` when a user logs in. Next, you update the template to display log in and log out buttons conditionally.
+
+Next, you'll add the functionality to create todos.
+
+## Step 7 — Adding a Todo
+
+In this step, you'll implement the feature to create todos.
+
+Make the following changes to your script:
+
+```tsx title="App.tsx" ins={2,4-8,12,16,17,21-29} mark=", FormEvent"
+import { BazaarApp } from "@bzr/bazaar";
+import { useEffect, useState, FormEvent } from "react";
+
+type Todo = {
+  id: string;
+  text: string;
+  completed: boolean;
+};
+
+const bzr = new BazaarApp({...});
+
+const todosCollection = bzr.collection<Todo>("todos");
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [todoText, setTodoText] = useState("");
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {...}, []);
+
+  async function onSubmit(event: FormEvent) {
+    event.preventDefault();
+
+    const unpersistedTodo = { text: todoText, completed: false };
+    const id = await todosCollection.insertOne(unpersistedTodo);
+    setTodos([...todos, { id, ...unpersistedTodo }]);
+
+    setTodoText("");
+  }
+}
+```
+
+In this code, you define a `Todo` type and create two state variables, one for the new todo text and another for holding the list of todos.
+
+The `bzr.collection` method creates an object to interact with a database collection. Learn more in the [collections docs](/docs/features/collections/).
+
+<Aside title="Bazaar Databases">
+  Bazaar provides document-orientated (NoSQL) and schema-less databases scoped
+  to a user and app. A database contains collections which are analogous to
+  tables in a relational databases. Collections are made up of documents, or
+  docs, analogous to rows in a relational database.
+</Aside>
+
+The `onSubmit` function adds a new todo to the `todos` collection with `todosCollection.insertOne` (collections are created lazily) and adds the todo to your app's local state with the ID generated by the database after insertion.
+
+Next, add the form to your template after the log out button:
+
+```tsx title="App.tsx" ins={4,7-17}
+{!isLoggedIn ? (
+  <button onClick={() => bzr.login()}>Log in or create account</button>
+) : (
+  <>
+    <button onClick={() => bzr.logOut()}>Log out</button>
+
+    <form onSubmit={onSubmit} className="todo-form">
+      <input
+        type="text"
+        value={todoText}
+        onChange={(event) => setTodoText(event.target.value)}
+        placeholder="Write a todo..."
+        required
+      />
+      <button>Add</button>
+    </form>
+  </>
+)}
+```
+
+In these changes, you hook up the `onSubmit` handler to the form submit event and bind the `todoText` state variable you just created to the input. There are now multiple logged-in elements, which get wrapped in a fragment (`<></>`).
+
+You have now implemented the functionality to add new todos, but they still need to be displayed.
+
+<Aside>
+  To verify todos are being created in the database and added to the local
+  state, you can use the [React Developer Tools browser
+  extension](https://react.dev/learn/react-developer-tools) and view the `todos` local state.
+  You'll see todos added with the ID returned from the database.
+</Aside>
+
+In the next step, you will display these todos in your app.
+
+## Step 8 — Displaying Todos
+
+In this step, you will fetch and display todos from the collection.
+
+First, update the `doLoginActions` function to fetch todos:
+
+```tsx title="App.tsx" ins={3}
+async function doLoginActions() {
+  setIsLoggedIn(true);
+  todosCollection.getAll().then((docs) => setTodos([...docs]));
+}
+```
+
+In this code, `todosCollection.getAll()` fetches all the todos from the collection, and the results are stored in the `todos` state variable.
+
+Next, update the template to display the todos under the form:
+
+```tsx title="App.tsx" ins={3-9}
+<form onSubmit={onSubmit} className="todo-form">...</form>
+
+<div className="todos">
+  {todos.map((todo) => (
+    <div className="card" key={todo.id}>
+      <div className="todo-text">{todo.text}</div>
+    </div>
+  ))}
+</div>
+```
+
+Add a few more todos in your browser and notice they get added to the bottom of your list. Usually you want the newest todos to appear first. To do that, you'll reverse the fetched todos.
+
+Start by adding `reversedTodos`, which derives its state from `todos`:
+
+```tsx title="App.tsx" ins={4}
+...
+const [todos, setTodos] = useState<Todo[]>([]);
+
+const reversedTodos: Todo[] = [...todos].reverse();
+...
+```
+
+The spread operator (`...`) creates a new array, as the `reverse` method mutates an array.
+
+Then, in your template, replace `todos` with the new `reversedTodos` state variable to list the todos:
+
+```tsx title="App.tsx" ins={3} mark="reversedTodos"
+...
+<div className="todos">
+  {reversedTodos.map((todo) => (
+    <div className="card" key={todo.id}>
+      <div className="todo-text">{todo.text}</div>
+    </div>
+  ))}
+</div>
+...
+```
+
+You have now successfully displayed the todos fetched from the collection. In the next step, you will add realtime syncing to keep the todos updated across different devices.
+
+## Step 9 — Adding Realtime Syncing
+
+In this step, you will enable realtime updates for your todos so that changes are reflected instantly across different devices.
+
+Add the following to the `doLoginActions` function:
+
+```tsx title="App.tsx" ins={5-15}
+async function doLoginActions() {
+  setIsLoggedIn(true);
+  todosCollection.getAll().then((docs) => setTodos([...docs]));
+
+  todosCollection.subscribeAll(
+    {},
+    {
+      onAdd: (doc) => {
+        setTodos((todos) => {
+          if (todos.some((todo) => todo.id === doc.id)) return [...todos];
+          return [...todos, doc];
+        });
+      },
+    }
+  );
+}
+```
+
+In this code, `todosCollection.subscribeAll` subscribes to all changes in the `todos` collection. You pass a subscribe listener as the second `subscribeAll` argument with a function to handle `onAdd` events. When an `onAdd` event is triggered, you update your local state.
+
+Learn about [subscribe listeners](/docs/features/collections/).
+
+With the `onAdd` handler in place, there's no need to add a todo to your local state when the form is submitted. Replace the submit event listener with the following:
+
+```tsx title="App.tsx"
+function onSubmit(event: FormEvent) {
+  event.preventDefault();
+
+  const unpersistedTodo = { text: todoText, completed: false };
+  todosCollection.insertOne(unpersistedTodo);
+
+  setTodoText("");
+}
+```
+
+The main line removed is `setTodos([...todos, { id, ...unpersistedTodo }]);`. The function no longer needs to be async as you don't need to wait for the ID from the database and is updated accordingly.
+
+To test the realtime updates, open your app in a private window while keeping the original window open. When you make changes in one window, they will appear in the other in realtime.
+
+Realtime syncing is enabled, but it only handles add todo events. In the next step, you will implement the functionality to toggle the completion status of todos and update your subscribe listener with an `onChange` handler.
+
+## Step 10 — Toggling Todo Completion
+
+In this step, you'll implement functionality to toggle the completion status of todos.
+
+First, add an `onChange` handler to your subscribe listener:
+
+```tsx title="App.tsx" ins={5-9}
+todosCollection.subscribeAll(
+  {},
+  {
+    onAdd: (doc) => {...},
+    onChange: (_, newDoc) => {
+      setTodos((todos) =>
+        todos.map((todo) => (todo.id === newDoc.id ? newDoc : todo))
+      );
+    },
+  },
+);
+```
+
+The `onChange` handler updates the corresponding todo in your local state. Note that the first parameter in the `onChange` handler is `newDoc`, which you don't need. An underscore is used as the parameter name to indicate the variable is unused and to avoid a React build error.
+
+Next, update your template:
+
+```tsx title="App.tsx" ins={3-6,8-10}
+<div className="todos">
+  {reversedTodos.map((todo) => (
+    <div
+      className={`card ${todo.completed && "strikethrough"}`}
+      key={todo.id}
+    >
+      <div className="todo-text">{todo.text}</div>
+      <button onClick={() => toggleTodoCompletion(todo)}>
+        Mark as {todo.completed ? "Incomplete" : "Completed"}
+      </button>
+    </div>
+  ))}
+</div>
+```
+
+In these changes, you add a `strikethrough` class to a todo when it's complete. The `strikethrough` style is already in `index.css`.
+
+And add the `toggleTodoCompletion` click event handler below `onSubmit`:
+
+```tsx title="App.tsx" ins={3-5}
+function onSubmit(event: FormEvent) {...}
+
+function toggleTodoCompletion(todo: Todo) {
+  todosCollection.updateOne(todo.id, { completed: !todo.completed });
+}
+```
+
+That function updates the `completed` value for a todo, setting it to the opposite of its current state.
+
+You can now mark todos as completed or incomplete. In the next step, you will add the functionality to delete todos.
+
+## Step 11 — Deleting a Todo
+
+In this step, you will implement the functionality to delete todos.
+
+First, add an `onDelete` handler to your subscribe listener:
+
+```tsx title="App.tsx" ins={6-8}
+todosCollection.subscribeAll(
+  {},
+  {
+    onAdd: (doc) => {...},
+    onChange: (_, newDoc) => {...},
+    onDelete: (doc) => {
+      setTodos((todos) => todos.filter((todo) => todo.id !== doc.id));
+    },
+  },
+);
+```
+
+The `onDelete` handler deletes the corresponding todo from your local state.
+
+Next, add a delete button to your template:
+
+```tsx title="App.tsx" ins={11}
+<div className="todos">
+  {reversedTodos.map((todo) => (
+    <div
+      className={`card ${todo.completed && "strikethrough"}`}
+      key={todo.id}
+    >
+      <div className="todo-text">{todo.text}</div>
+      <button onClick={() => toggleTodoCompletion(todo)}>
+        Mark as {todo.completed ? "Incomplete" : "Completed"}
+      </button>
+      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+    </div>
+  ))}
+</div>
+```
+
+And add the `toggleTodoCompletion` click event handler below `deleteTodo`:
+
+```tsx title="App.tsx" ins={3-6}
+function toggleTodoCompletion(todo: Todo) {...}
+
+function deleteTodo(id: string) {
+  if (!window.confirm("Delete todo forever?")) return;
+  todosCollection.deleteOne(id);
+}
+```
+
+Now you can delete todos.
+
+<details class="collapse bg-base-200">
+  <summary class="collapse-title text-xl font-medium">Show the Completed `App.tsx` File</summary>
+  <div class="collapse-content">
+    ```tsx title="App.tsx"
+    import { BazaarApp } from "@bzr/bazaar";
+    import { useEffect, useState, FormEvent } from "react";
+
+    type Todo = {
+      id: string;
+      text: string;
+      completed: boolean;
+    };
+
+    const bzr = new BazaarApp({
+      appId: import.meta.env.VITE_APP_ID || "test",
+      loginRedirectUri: import.meta.env.VITE_URL || window.location.href,
+      onApiConnectError: async (bzr) => bzr.logOut(),
+    });
+
+    const todosCollection = bzr.collection<Todo>("todos");
+
+    function App() {
+      const [isLoggedIn, setIsLoggedIn] = useState(false);
+      const [todoText, setTodoText] = useState("");
+      const [todos, setTodos] = useState<Todo[]>([]);
+
+      const reversedTodos: Todo[] = [...todos].reverse();
+
+      useEffect(() => {
+        async function doLoginActions() {
+          setIsLoggedIn(true);
+          todosCollection.getAll().then((docs) => setTodos([...docs]));
+
+          todosCollection.subscribeAll(
+            {},
+            {
+              onAdd: (doc) => {
+                setTodos((todos) => {
+                  if (todos.some((todo) => todo.id === doc.id)) return [...todos];
+                  return [...todos, doc];
+                });
+              },
+              onChange: (_, newDoc) => {
+                setTodos((todos) =>
+                  todos.map((todo) => (todo.id === newDoc.id ? newDoc : todo))
+                );
+              },
+              onDelete: (doc) => {
+                setTodos((todos) => todos.filter((todo) => todo.id !== doc.id));
+              },
+            }
+          );
+        }
+
+        // Perform login actions if the user is already logged in on page load
+        if (bzr.isLoggedIn()) {
+          doLoginActions();
+        }
+
+        // Set up handler to perform login actions immediately after a successful login
+        bzr.onLogin(doLoginActions);
+      }, []);
+
+      function onSubmit(event: FormEvent) {
+        event.preventDefault();
+
+        const unpersistedTodo = { text: todoText, completed: false };
+        todosCollection.insertOne(unpersistedTodo);
+
+        setTodoText("");
+      }
+
+      function toggleTodoCompletion(todo: Todo) {
+        todosCollection.updateOne(todo.id, { completed: !todo.completed });
+      }
+
+      function deleteTodo(id: string) {
+        if (!window.confirm("Delete todo forever?")) return;
+        todosCollection.deleteOne(id);
+      }
+
+      return (
+        <>
+          <div className="container">
+            <h1>Todo</h1>
+            {!isLoggedIn ? (
+              <button onClick={() => bzr.login()}>Log in or create account</button>
+            ) : (
+              <>
+                <button onClick={() => bzr.logOut()}>Log out</button>
+
+                <form onSubmit={onSubmit} className="todo-form">
+                  <input
+                    type="text"
+                    value={todoText}
+                    onChange={(event) => setTodoText(event.target.value)}
+                    placeholder="Write a todo..."
+                    required
+                  />
+                  <button>Add</button>
+                </form>
+
+                <div className="todos">
+                  {reversedTodos.map((todo) => (
+                    <div
+                      className={`card ${todo.completed && "strikethrough"}`}
+                      key={todo.id}
+                    >
+                      <div className="todo-text">{todo.text}</div>
+                      <button onClick={() => toggleTodoCompletion(todo)}>
+                        Mark as {todo.completed ? "Incomplete" : "Completed"}
+                      </button>
+                      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      );
+    }
+
+    export default App;
+
+    ```
+
+  </div>
+</details>
+
+With that, your todo app is complete and ready to deploy.
+
+## Step 12 — Deploying to Netlify
+
+In this step, you will deploy your React Todo app to Netlify. You can deploy a Bazaar-powered app anywhere static sites can be hosted. Netlify provides a frictionless deployment process and free static site hosting for public GitHub repos.
+
+First, initialize a Git repository and push your code to GitHub:
+
+```bash
+git init
+git add .
+git commit -m "Initial commit: React todo app"
+```
+
+Go to GitHub and create a public repo named `bazaar-react-todo`.
+
+```bash
+git remote add origin https://github.com/<your-username>/bazaar-react-todo.git
+git branch -M main
+git push -u origin main
+```
+
+Next, go to Netlify, create an account if necessary, and click **Add new site**. Select **Import an existing project** and choose **GitHub**. Select your repository `bazaar-react-todo`. If you can't find your repo, click **Configure the Netlify app on GitHub** to grant access.
+
+Configure the site settings and build settings as follows:
+
+- **Site name**: e.g. `bazaar-react-todo`
+- **Branch to deploy**: e.g. `main`
+- **Build command**: `npm run build` (default)
+- **Publish directory**: `dist` (default)
+
+Add environment variables `VITE_URL` and `VITE_APP_ID`. For `VITE_URL`, use your app's Netlify URL (e.g., `https://bazaar-react-todo.netlify.app`).
+
+To get your Bazaar app ID, open [cloud.bzr.dev](https://cloud.bzr.dev/) and create a free account. Click on the user icon at the top right, then click **Developers**. Next, click **Create App**.
+
+Give your app a name. I'm using **React Todo**. Set your **APP URL**, which should be the same as your app's Netlify URL, e.g. `https://bazaar-react-todo.netlify.app`. Finally, click **Create**, then copy your app ID. It will look something like `01907291-d4e5-79d5-a312-ba20260c9b98`.
+
+Return to Netlify and paste in your app ID as the `VITE_APP_ID` value, and click **Deploy**. You'll see a notice, **Site deploy in progress**. The process will take a few minutes, after which your todo app will be deployed!
+
+## Conclusion
+
+In this tutorial, you built and deployed a Todo app using React and Bazaar. You set up a new React project, integrated Bazaar for backend services, implemented user authentication, added and displayed todos, enabled realtime syncing, and deployed your app to Netlify.
+
+Check the [Bazaar documentation](/docs) for more features and capabilities.
