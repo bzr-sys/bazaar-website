@@ -230,12 +230,12 @@ console.log("is logged in:", bzr.isLoggedIn());
 function App() {
   useEffect(() => {
     async function doLoginActions() {
-    console.log("is logged in:", bzr.isLoggedIn());
+      console.log("is logged in:", bzr.isLoggedIn());
     }
 
     // Perform login actions if the user is already logged in on page load
     if (bzr.isLoggedIn()) {
-    doLoginActions();
+      doLoginActions();
     }
 
     // Set up handler to perform login actions immediately after a successful login
