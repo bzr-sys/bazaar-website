@@ -52,7 +52,7 @@ servers and networks which are connected to the Service).
 ## 3. Service Policies and Privacy
 
 3.1. You agree to comply with the Bazaar Acceptable Use Policy included
-available at [https://bzr.dev/legal/aup/](/legal/aup/) (the
+available at [https://bzr.dev/acceptable-use-policy/](/acceptable-use-policy/) (the
 "Acceptable Use Policy") which is incorporated herein by this reference and
 which may be updated from time to time.
 
