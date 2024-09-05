@@ -5,17 +5,17 @@ title: Terms of Use
 
 # Terms of Use
 
-TODO update
-located in San
-Francisco, CA 94110, United States
+Bazaar, Inc.  
+1 Union Sq W  
+New York, NY 10003
 
 Last Revised: April 19, 2024
 
 ## 1. Your Agreement with Bazaar
 
 1.1. Your use of the Bazaar service (the "Service") is governed by this
-agreement (the "Terms"). "Bazaar" means Bazaar, Inc. located in San
-Francisco, CA 94110, United States and its subsidiaries or affiliates involved
+agreement (the "Terms"). "Bazaar" means Bazaar, Inc. located in New York,
+NY 10003, United States and its subsidiaries or affiliates involved
 in providing the Service. The "Service" means the services Bazaar makes
 available through this website, our API and any other software or services
 offered by Bazaar in connection to any of those.
@@ -384,8 +384,8 @@ and Internet disturbances.
 16.7. The Terms, and your relationship with Bazaar under the Terms, shall
 be governed by the laws of the State of California without regard to its
 conflict of laws provisions. You and Bazaar agree to submit to the
-exclusive jurisdiction of the courts located within the county of San
-Francisco, California to resolve any legal matter arising from the Terms.
+exclusive jurisdiction of the courts located within the New York, NY 
+to resolve any legal matter arising from the Terms.
 Notwithstanding this, you agree that Bazaar shall still be allowed to apply
 for injunctive remedies (or an equivalent type of urgent legal relief) in any
 jurisdiction.
