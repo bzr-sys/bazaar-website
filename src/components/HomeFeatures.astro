@@ -1,0 +1,23 @@
+---
+import { getEntry } from "astro:content";
+import FeatureCard from "./FeatureCard.astro";
+
+const privacyAndDataProtection = await getEntry(
+  "features",
+  "privacy-and-data-protection",
+);
+const backendless = await getEntry("features", "truly-backendless");
+const zeroRunningCosts = await getEntry("features", "zero-running-costs");
+const social = await getEntry("features", "social");
+const noSql = await getEntry("features", "realtime-databases");
+const authentication = await getEntry("features", "authentication");
+---
+
+<div class="mx-auto grid max-w-screen-2xl gap-4 px-4 py-8 lg:grid-cols-3">
+  <FeatureCard feature={privacyAndDataProtection} />
+  <FeatureCard feature={backendless} />
+  <FeatureCard feature={zeroRunningCosts} />
+  <FeatureCard feature={social} />
+  <FeatureCard feature={noSql} />
+  <FeatureCard feature={authentication} />
+</div>

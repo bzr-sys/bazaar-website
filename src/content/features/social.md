@@ -1,6 +1,6 @@
 ---
 title: Powerful Social Fabric
-summary: Bazaar has social features built-in and any app can use them to create a more meaningful experience.
+summary: Bazaar has social features built-in and any app can use them to create more meaningful experiences.
 order: 4
 ---
 
