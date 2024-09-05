@@ -18,7 +18,7 @@
     "astro": "^4.0.7",
     "daisyui": "^4.12.8",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.4"
   },
   "devDependencies": {
     "prettier": "^3.1.0",

@@ -382,7 +382,7 @@ earthquake, fire, flood or other acts of God, labor conditions, power failures,
 and Internet disturbances.
 
 16.7. The Terms, and your relationship with Bazaar under the Terms, shall
-be governed by the laws of the State of California without regard to its
+be governed by the laws of the State of New York without regard to its
 conflict of laws provisions. You and Bazaar agree to submit to the
 exclusive jurisdiction of the courts located within the New York, NY 
 to resolve any legal matter arising from the Terms.
