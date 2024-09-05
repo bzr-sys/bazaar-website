@@ -8,7 +8,7 @@ Bazaar is basically an identity provider on steroids. In addition to your identi
 
 ## The right Incentives
 
-When using a free or paid app such as Google maps, Instagram, or Amazon Prime, it is never entirely clear what role the value of our data plays in our interactions with the app. For a Bazaar app the incentive is always to provide you a service, as it can never be to get your data, simply because your data is not stored with the application.
+When using a free or paid app, such as Google maps, Instagram, or Amazon Prime, it is never entirely clear what role the value of our data plays in our interactions with the app. For a Bazaar app the incentive is always to provide you a service, as it can never be to get your data, simply because your data is not stored with the application.
 
 ## Benefits for Users
 

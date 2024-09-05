@@ -4,6 +4,10 @@ summary: Bazaar has social features built-in and any app can use them to create 
 order: 4
 ---
 
+import Image from "astro/components/Image.astro";
+import { getImageWidths } from "../../utils";
+import socialModalImage from "../../images/social-modal-screenshot.png";
+
 Bazaar is social from the ground up. It has a built-in notion of users and contacts which is akin to people you add to your address book. Contacts can then be connected, requiring both sides to acknowledged the status. Connected contacts can have extra permissions.
 
 ## One social graph for all apps
@@ -33,4 +37,10 @@ bzr.social.openModal((userId) => {
 });
 ```
 
-TODO screenshot modal.
+<Image
+  src={socialModalImage}
+  alt="Screenshot of the Bazaar social modal with user search and contact management"
+  class="rounded-2xl"
+  widths={getImageWidths(280, 655, socialModalImage.width)}
+  sizes="(max-width: 654px) calc(100vw - 2rem), 655px"
+/>

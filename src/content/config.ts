@@ -5,11 +5,11 @@ const docsCollection = defineCollection({ schema: docsSchema() });
 
 const featuresCollection = defineCollection({
   type: "content",
-  schema: {
+  schema: z.object({
     title: z.string(),
     summary: z.string(),
     order: z.number(),
-  },
+  }),
 });
 
 export const collections = {
