@@ -8,31 +8,29 @@ Bazaar realtime databases are document-orientated, with no need to create or enf
 
 ## Simple SDK
 
-Create a document:
+Insert a doc:
 
 ```ts
 const tasksCollection = bzr.collection("tasks");
-const id = await tasksCollection.insert({ id: 1, name: "Do laundry" });
+
+const task = { name: "Make dream apps with Bazaar" };
+tasksCollection.insertOne({ task });
 ```
 
-Read a document:
+Read a doc:
 
 ```ts
-const tasksCollection = bzr.collection("tasks");
-const task = await tasksCollection.getOne(1);
+const task = await tasksCollection.getOne("task-id");
 ```
 
-Read the [Realtime Database docs](/docs/features/realtime-databases).
+Read the [Collections docs](/docs/features/collections/).
 
 ## Database-per-user Architecture
 
 Bazaar employs a database architecture where each user is assigned
 an individual database for your app through their Bazaar account. This
-approach allows users manage their authorized apps, and handle their app-specific data including viewing, exporting, or deleting, through
-their Bazaar dashboard, thereby supporting better data privacy and
+approach allows users manage their authorized apps, and handle their app-specific data including viewing, exporting, or deleting, through their Bazaar dashboard, thereby supporting better data privacy and
 ownership practices.
-
-Screenshot of the Bazaar admin dashboard for users
 
 The per-user-per-app database model provides simplified access management. It eliminates the need for configuring access policies, as users have automatic access to their databases.
 
