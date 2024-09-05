@@ -11,6 +11,8 @@ module.exports = {
         dark: {
           ...require("daisyui/src/theming/themes")["night"],
           primary: "#db9a59",
+          "--rounded-box": "3px",
+          "--rounded-btn": "3px",
         },
       },
     ],
