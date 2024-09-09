@@ -1,32 +1,31 @@
 ---
-import BigTitle from "../components/BigTitle.astro";
 import PageLayout from "../layouts/PageLayout.astro";
 
 const title = "The Benefits of Bazaar";
 ---
 
 <PageLayout title={title}>
-  <BigTitle>{title}</BigTitle>
-  <p>
+  <h1>{title}</h1>
+  <p class="text-xl">
     There are numerous reasons to use Bazaar, depending on the lense you are
     looking through.
   </p>
 
   <!-- Dev -->
-  <h1>Why developers should use Bazaar</h1>
+  <h2>Why developers should use Bazaar</h2>
 
-  <h2>Simplicity</h2>
-  <h3>Only front-end coding skills required</h3>
+  <h3>Simplicity</h3>
+  <h4>Only front-end coding skills required</h4>
   <p>
     With Bazaar, every front-end developer can build full-stack applications.
     There is literally no simpler way to build an SPA, PWA, or any other app
     that usually requires a backend. Granted, this simplicity has a cost, i.e.,
     you cannot create an arbitrary complex app without a custom backend.
     However, for 90% of your ideas it will certainly be enough. We easily
-    created a <a href="/apps/chat">messaging app</a>, a micro-blogging platform,
-    a multiplayer game, a Kanban board, and so on.
+    created a messaging app, a micro-blogging platform, a multiplayer game, a
+    Kanban board, and so on.
   </p>
-  <h3>Trivial deployment</h3>
+  <h4>Trivial deployment</h4>
   <p>
     Often, more complex than building an app is actually deploying it. With
     Bazaar, deployment is trivial. Your app is just a static site and you can
@@ -34,8 +33,8 @@ const title = "The Benefits of Bazaar";
     anywhere else.
   </p>
 
-  <h2>Data privacy and security</h2>
-  <h3>No compliance worries</h3>
+  <h3>Data privacy and security</h3>
+  <h4>No compliance worries</h4>
   <p>
     Dealing with user data is complicated, especially when multiple
     jurisdictions come into play. Are you following all GDPR rules when you ask
@@ -43,7 +42,7 @@ const title = "The Benefits of Bazaar";
     about data regulation compliance. All data is handled in Bazaar, so we do
     that work for you.
   </p>
-  <h3>Data security is Bazaars job</h3>
+  <h4>Data security is Bazaars job</h4>
   <p>
     In addition to compliance there is security of user data. Following best
     practices to make sure data cannot be stolen or lost is hard. Again, with
@@ -51,8 +50,8 @@ const title = "The Benefits of Bazaar";
     your users' data.
   </p>
 
-  <h2>No running costs</h2>
-  <h3>Enables hobby projects</h3>
+  <h3>No running costs</h3>
+  <h4>Enables hobby projects</h4>
   <p>
     The early open source days started with the joy of sharing ones useful
     creations. Now, in the age of web apps, sharing a useful tool has become
@@ -62,14 +61,14 @@ const title = "The Benefits of Bazaar";
     down the app. With Bazaar, you no longer have to worry about costs. The
     backend is free for developers, users pay the data they use.
   </p>
-  <h3>Scale without fear</h3>
+  <h4>Scale without fear</h4>
   <p>
     Bazaar allows you to focus on your ideas, focus on the functionality you
     want to provide, focus on making your app better, and scale up without
     worrying about costs.
   </p>
 
-  <h2>Built-in social features</h2>
+  <h3>Built-in social features</h3>
   <p>
     Handling user information, their contacts, and connections is all built into
     Bazaar and available via a <a href="/docs/features/social/">simple API</a>.
@@ -82,7 +81,7 @@ const title = "The Benefits of Bazaar";
     your messaging app.
   </p>
 
-  <h2>Trivial to monetize (coming soon)</h2>
+  <h3>Trivial to monetize (coming soon)</h3>
   <p>
     Bazaar comes with a simple subscription API that allows you to create
     powerful apps. You or your app's users can create plans other users can then
@@ -99,15 +98,13 @@ const title = "The Benefits of Bazaar";
   </p>
 
   <!-- User -->
-  <h1>Why users should use Bazaar</h1>
+  <h2>Why users should use Bazaar</h2>
 
-  <h2>Is there an app you like?</h2>
+  <h3>Is there an app you like?</h3>
   <p>
     To be frank, it is very simple. You will only use Bazaar if there is a
-    Bazaar app you want to use. Check out <a href="/apps">available apps</a> to see
-    if anything catches your eye. If not, <a href="mailto:hello@bzr.dev"
-      >let us know</a
-    > what app you would want us to build.
+    Bazaar app you want to use. <a href="mailto:hello@bzr.dev">Let us know</a> what
+    app you would want us to build.
   </p>
   <p>
     Of course, for any Bazaar app there might be a similar traditional app out
@@ -115,8 +112,8 @@ const title = "The Benefits of Bazaar";
     choosing the Bazaar app. Read on to learn what they are.
   </p>
 
-  <h2>Data ownership</h2>
-  <h3>You are not the product</h3>
+  <h3>Data ownership</h3>
+  <h4>You are not the product</h4>
   <p>
     Most apps out there, especially free apps, collect and harvest your data.
     This is not the case for Bazaar apps. A Bazaar app uses the data in your
@@ -124,13 +121,13 @@ const title = "The Benefits of Bazaar";
     access to your data. Only you do via your Bazaar account. This way, your
     privacy is guaranteed no matter what Bazaar app you use.
   </p>
-  <h3>Absolute control</h3>
+  <h4>Absolute control</h4>
   <p>
     All data from all your Bazaar apps is stored in your Bazaar account. This
     data is yours and you control this data. You can delete or download it with
     a click of a button.
   </p>
-  <h3>Data transfer (coming soon)</h3>
+  <h4>Data transfer (coming soon)</h4>
   <p>
     In the future we want to even go one step further and implement a seamless
     way for you to transfer data to a new app. So if you are using a shopping
@@ -139,7 +136,7 @@ const title = "The Benefits of Bazaar";
     your data after all.
   </p>
 
-  <h2>The right incentives</h2>
+  <h3>The right incentives</h3>
   <p>
     You might have heard the saying "if you are not paying for a service, you
     are the product". Running an app incurs costs and if a user does not have to
@@ -151,15 +148,15 @@ const title = "The Benefits of Bazaar";
   </p>
 
   <!-- Business -->
-  <h1>Why businesses should use Bazaar</h1>
+  <h2>Why businesses should use Bazaar</h2>
 
   <p>
     Businesses are also users, so similar reasoning applies. There are however,
     a few extra benefits that applies specifically to organizations.
   </p>
 
-  <h2>Data privacy and security</h2>
-  <h3>Minimize security risk</h3>
+  <h3>Data privacy and security</h3>
+  <h4>Minimize security risk</h4>
   <p>
     With each application you introduce in your organization, you need to make
     sure their data and privacy policy is actually acceptable. On top of this,
@@ -168,14 +165,14 @@ const title = "The Benefits of Bazaar";
     apps is safeguarded in your Bazaar account. As such your data privacy and
     security is handled by Bazaar.
   </p>
-  <h3>Compliance</h3>
+  <h4>Compliance</h4>
   <p>
     We use best practices to protect your data from loss or theft. We understand
     that larger organizations require certain data compliance certifications. We
     work together with all our enterprise customers to make sure all their
     compliance needs are met.
   </p>
-  <h3>Set your own data policy</h3>
+  <h4>Set your own data policy</h4>
   <p>
     With Bazaar, private users are in control of their data. In organizational
     accounts, data control and retention policies for their and their users'
@@ -183,7 +180,7 @@ const title = "The Benefits of Bazaar";
     employees or accidental deletions.
   </p>
 
-  <h2>An ever expanding app catalogue</h2>
+  <h3>An ever expanding app catalogue</h3>
   <p>
     One benefit of Bazaar is that the app catalogue keeps expanding. You can use
     new or better apps in your organization with the same business relationship
@@ -191,7 +188,7 @@ const title = "The Benefits of Bazaar";
     and data policy apply for all new apps you use.
   </p>
 
-  <h2>Easily customize open-source apps</h2>
+  <h3>Easily customize open-source apps</h3>
   <p>
     The open-source ecosystem is incredible. Not only can you find an app to
     solve any problem, you can also modify the code and tailor all apps to your
@@ -202,7 +199,7 @@ const title = "The Benefits of Bazaar";
   </p>
 
   <!-- Edu -->
-  <h1>Why educational institutions should use Bazaar</h1>
+  <h2>Why educational institutions should use Bazaar</h2>
 
   <p>
     All business benefits obviously also apply to educational institutions.
@@ -210,7 +207,7 @@ const title = "The Benefits of Bazaar";
     setting.
   </p>
 
-  <h2>Teaching</h2>
+  <h3>Teaching</h3>
   <p>
     Students often encounter problems that are unique to their setting or have
     ideas to improve their or their fellow students lives. Bazaar is the

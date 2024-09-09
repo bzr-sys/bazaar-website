@@ -1,0 +1,67 @@
+---
+import { type CollectionEntry } from "astro:content";
+import DataPrivacySVG from "./DataPrivacySVG.astro";
+import BackendSVG from "./BackendSVG.astro";
+import ZeroCostsSVG from "./ZeroCostsSVG.astro";
+import SocialConnectionSVG from "./SocialConnectionSVG.astro";
+import NoSqlSVG from "./NoSqlSVG.astro";
+import AuthenticationSVG from "./AuthenticationSVG.astro";
+
+interface Props {
+  feature: CollectionEntry<"features">;
+}
+
+const { feature } = Astro.props;
+
+const iconClassName = "w-[100px] fill-base-content opacity-40";
+---
+
+<div class="card w-full bg-base-200 shadow-xl">
+  <div class="card-body">
+    <div class="mx-auto py-8">
+      {
+        feature.slug === "privacy-and-data-protection" && (
+          <DataPrivacySVG slot="icon" className={iconClassName} />
+        )
+      }
+      {
+        feature.slug === "truly-backendless" && (
+          <BackendSVG slot="icon" className={iconClassName} />
+        )
+      }
+      {
+        feature.slug === "zero-running-costs" && (
+          <ZeroCostsSVG slot="icon" className={iconClassName} />
+        )
+      }
+      {
+        feature.slug === "social" && (
+          <SocialConnectionSVG slot="icon" className={iconClassName} />
+        )
+      }
+      {
+        feature.slug === "realtime-databases" && (
+          <NoSqlSVG slot="icon" className={iconClassName} />
+        )
+      }
+      {
+        feature.slug === "authentication" && (
+          <AuthenticationSVG slot="icon" className={iconClassName} />
+        )
+      }
+    </div>
+    <h2 class="card-title">
+      <a href={`/${feature.collection}/${feature.slug}`}>{feature.data.title}</a
+      >
+    </h2>
+    <p>{feature.data.summary}</p>
+    <div class="card-actions justify-end">
+      <a
+        href={`/${feature.collection}/${feature.slug}`}
+        class="btn btn-primary"
+      >
+        Learn More
+      </a>
+    </div>
+  </div>
+</div>

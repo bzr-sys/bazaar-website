@@ -247,7 +247,6 @@ comfortable about your security and privacy with us.
 Questions regarding this privacy policy or our privacy practices should be
 directed to [privacy@bzr.dev](mailto:privacy@bzr.dev) or to:
 
-TODO
 Bazaar, Inc.  
 1 Union Sq W  
 New York, NY 10003

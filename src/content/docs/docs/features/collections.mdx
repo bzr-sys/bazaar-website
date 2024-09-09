@@ -69,7 +69,7 @@ Get all docs from a collection.
 const docs = await exampleCollection.getAll(filter, options);
 ```
 
-The `filter` and `options` parameters are optional: 
+The `filter` and `options` parameters are optional:
 
 ```js
 const allDocs = await exampleCollection.getAll();
@@ -204,29 +204,50 @@ const message = await exampleCollection.deleteOne("example-doc-id");
 
 ### Subscribe to Collection Change Events
 
-Receive realtime updates whenever any document in the collection changes.
+Receive realtime updates whenever any document in the collection changes. Returns an unsubscribe function.
 
 ```js
 const unsubscribe = await exampleCollection.subscribeAll(filter, listener);
 ```
 
-The listener is an object that contains optional functions to be run when an object is added, updated, or deleted. It has type
+Similar to the `getAll` method, the `filter` is optional and can be empty. See [`filter`](#filtering) docs.
+
+#### Subscribe Listener
+
+The `listener` is an object that contains optional callbacks to be run when a document is added, updated, or deleted. It has the following type:
 
 ```ts
 type SubscribeListener<T extends Doc> = {
   onAdd?: (doc: T) => void;
   onChange?: (oldDoc: T, newDoc: T) => void;
   onDelete?: (doc: T) => void;
+  onInitial?: (doc: T) => void;
 };
 ```
 
-Similar to the `getAll` method, the `filter` is optional and can be empty. See [`filter`](#filtering) docs.
+`onInitial` usage notes:
 
-```js
-const unsubscribe = await exampleCollection.subscribeAll({}, listener);
+- When a listener is first invoked and an `onInitial` function is provided, it will be called for each existing document in the collection.
+- The `onInitial` callback serves as a convenient alternative to manually fetching and iterating over all documents in a collection.
+- `onInitial` is particularly useful for initializing local state with existing data from the collection.
+
+For example, instead of:
+
+```typescript
+const docs = await bzr.exampleCollection.getAll();
+docs.forEach((doc) => addToLocalState(doc));
 ```
 
-Returns an unsubscribe function.
+You can use:
+
+```typescript
+bzr.exampleCollection.subscribe({
+  onInitial: (doc) => addToLocalState(doc),
+  // ... other callbacks as needed
+});
+```
+
+This approach simplifies the process of initially populating local state with existing documents from the collection.
 
 ### Subscribe to Doc Change Events
 
@@ -234,13 +255,25 @@ Receive realtime updates for a specific document in the collection.
 
 ```js
 const docId = "example-doc-id";
-const unsubscribe = await exampleCollection.subscribeOne(
-  docId,
-  listener,
-);
+const unsubscribe = await exampleCollection.subscribeOne(docId, listener);
 ```
 
 Returns an unsubscribe function.
+
+See [Subscribe Listener](#subscribe-listener) docs.
+
+### Subscribe Listener Helpers
+
+When subscribing to change events, a common use case is to keep a local array or object in sync with the database. For those cases you can utilize the `arrayMirrorSubscribeListener` and `objectMirrorSubscribeListener` [subscribe listener](#subscribe-listener) helpers to avoid writing boilerplate to update arrays and objects.
+
+```js
+const unsubscribe = await exampleCollection.subscribeAll(
+  {},
+  arrayMirrorSubscribeListener(exampleArray),
+);
+```
+
+These helpers can also take a [subscribe listener](#subscribe-listener) as a second argument, allowing you to customize any of the listener callbacks.
 
 ### Reserved field names and values
 
@@ -274,12 +307,12 @@ const filter = {
 
 Filters currently support the following comparison operators:
 
-* `$eq`: equal
-* `$ne`: not equal
-* `$gt`: greater than
-* `$ge`: greater than or equal
-* `$lt`: less than
-* `$le`: less than or equal
+- `$eq`: equal
+- `$ne`: not equal
+- `$gt`: greater than
+- `$ge`: greater than or equal
+- `$lt`: less than
+- `$le`: less than or equal
 
 ### Filter with `$contains` Operator
 
@@ -307,7 +340,7 @@ For simple filters, this is enough. For more complex filtering queries you can a
 ```js
 // Select documents where `age` is greater than 30 and `isActive` is true
 const filter = {
-  $and: [{ age: { $gt: 30 }}, { isActive: true }]
+  $and: [{ age: { $gt: 30 } }, { isActive: true }],
 };
 ```
 
