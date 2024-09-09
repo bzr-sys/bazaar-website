@@ -2,19 +2,18 @@
 title: Local Development
 ---
 
-To test your Bazaar app locally, install and run the mock server on your machine:
+To test your Bazaar app locally, run the mock:
 
 ```bash
-npm i -D @bzr/bazaar-mock
-npx bzr
+npx @bzr/bazaar-mock
 ```
 
-This will launch a mock Bazaar server on port 3377. It will also create an app with ID "test" that is expected to run on 'http://localhost:8080'.
+This will launch a mock Bazaar server on port 3377. It will also create an app with ID "test" that is expected to run on http://localhost:8080.
 
 You can change these defaults with the following options.
 
 ```
-npx bzr [options]
+npx @bzr/bazaar-mock [options]
   -i specify app ID. It is optional and defaults to 'test'.
   -u specify app URL. It is optional and defaults to 'http://localhost:8080'.
   -r specify redirect URI. Can be specified multiple times. It is optional and defaults app URL.
@@ -27,7 +26,7 @@ The mock server is close in functionality with the real server. You can log in o
 
 ## Connect your app to the mock server
 
-Whenever you run your app with `NODE_ENV=development`, the Bazaar library will automatically connect to "http://localhost:3377". You can also change this URL manually when creating a BazaarApp.
+Whenever you run your app with `NODE_ENV=development`, the Bazaar library will automatically connect to http://localhost:3377. You can also change this URL manually when creating a BazaarApp.
 
 ```js
 import { BazaarApp } from "@bzr/bazaar";
