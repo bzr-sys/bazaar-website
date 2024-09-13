@@ -1,4 +1,6 @@
 ---
+import BusinessPlanCard from "../components/BusinessPlanCard.astro";
+import ProPlanCard from "../components/ProPlanCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Pricing";
@@ -49,68 +51,14 @@ const title = "Pricing";
           Sign Up
         </a>
       </div>
-      <div class="card flex-col justify-between border p-4">
-        <div>
-          <div class="rounded bg-neutral p-6">
-            <h3 class="font-bold text-primary">Pro</h3>
-            <div class="font-bold">
-              <span id="price" class="text-5xl">$5</span> /user per month
-            </div>
-          </div>
-          <div class="px-4 py-8">
-            <div class="pb-2 italic">Everything in Free +</div>
-            <div class="pb-2 font-bold">User benefits:</div>
-            <ul class="mb-4 list-inside list-disc">
-              <li>5GB of application storage</li>
-              <li>500'000 API calls</li>
-            </ul>
-            <div class="pb-2 font-bold">Developer benefits:</div>
-            <ul class="list-inside list-disc">
-              <li>Use the subscription API</li>
-            </ul>
-          </div>
-        </div>
-        <a href="https://cloud.bzr.dev/login" class="btn btn-outline btn-block">
-          Sign Up
-        </a>
-      </div>
+      <ProPlanCard />
     </div>
 
     <h2 class="mb-12 text-center text-4xl font-bold">Organizations</h2>
     <div
       class="mb-24 grid grid-cols-1 justify-items-center gap-12 md:grid-cols-2 [&>div]:w-full [&>div]:max-w-[448px]"
     >
-      <div class="card flex-col justify-between border p-4">
-        <div>
-          <div class="rounded bg-neutral p-6">
-            <h3 class="font-bold">Business</h3>
-            <div class="font-bold">
-              <span id="price" class="text-5xl">$15</span> /user per month
-            </div>
-          </div>
-          <div class="px-4 py-8">
-            <div class="pb-2 italic">Everything in Pro +</div>
-            <div class="pb-2 font-bold">Organization benefits:</div>
-            <ul class="mb-4 list-inside list-disc">
-              <li>SAML SSO</li>
-              <li>Create teams</li>
-              <li>10GB of team application storage</li>
-            </ul>
-            <div class="pb-2 font-bold">User benefits:</div>
-            <ul class="list-inside list-disc">
-              <li>10GB of application storage</li>
-              <li>1M API calls</li>
-            </ul>
-            <div class="pb-2 font-bold">Developer benefits:</div>
-            <ul class="list-inside list-disc">
-              <li>Team collaboration</li>
-            </ul>
-          </div>
-        </div>
-        <a href="https://cloud.bzr.dev/login" class="btn btn-outline btn-block">
-          Sign Up
-        </a>
-      </div>
+      <BusinessPlanCard />
       <div class="card flex-col justify-between border p-4">
         <div>
           <div class="rounded bg-neutral p-6">
@@ -141,26 +89,6 @@ const title = "Pricing";
         </div>
         <a href="https://cloud.bzr.dev/login" class="btn btn-outline btn-block">
           Talk to Sales
-        </a>
-      </div>
-    </div>
-
-    <h2 class="mb-12 text-center text-4xl font-bold">Add-Ons</h2>
-    <div class="mb-24 flex justify-center gap-12 [&>div]:max-w-[448px]">
-      <div class="card flex-col justify-between border p-4">
-        <div>
-          <div class="rounded bg-neutral p-6">
-            <h3 class="font-bold">Additional Storage</h3>
-            <div class="font-bold">
-              <span id="price" class="text-5xl">$5</span> /10 GB
-            </div>
-          </div>
-        </div>
-        <a
-          href="https://cloud.bzr.dev/login"
-          class="btn btn-outline btn-block mt-8"
-        >
-          Get started
         </a>
       </div>
     </div>

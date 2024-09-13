@@ -1,0 +1,135 @@
+---
+
+---
+
+<div class="card flex-col justify-between border p-4">
+  <div id="business-details" aria-live="polite">
+    <div class="rounded bg-neutral p-6">
+      <h3 class="font-bold">Business</h3>
+      <div class="font-bold">
+        <span id="business-price" class="text-5xl"></span> /user per month
+      </div>
+    </div>
+    <div class="px-4 py-8">
+      <div class="pb-2 italic">Everything in Pro +</div>
+      <div class="pb-2 font-bold">Organization benefits:</div>
+      <ul class="mb-4 list-inside list-disc">
+        <li>SAML SSO</li>
+        <li>Create teams</li>
+        <li>
+          <span id="business-team-app-storage"></span> of team application storage
+        </li>
+      </ul>
+      <div class="pb-2 font-bold">User benefits:</div>
+      <ul class="list-inside list-disc">
+        <li><span id="business-app-storage"></span> of application storage</li>
+        <li><span id="business-api-call-limit"></span> API calls</li>
+      </ul>
+      <div class="pb-2 font-bold">Developer benefits:</div>
+      <ul class="list-inside list-disc">
+        <li>Team collaboration</li>
+      </ul>
+      <div id="business-range-wrapper" class="pt-12"></div>
+    </div>
+  </div>
+  <a href="https://cloud.bzr.dev/login" class="btn btn-outline btn-block">
+    Sign Up
+  </a>
+</div>
+
+<script>
+  (() => {
+    const planDetailsId = "business-details";
+    const rangeWrapperId = "business-range-wrapper";
+    const rangeInputId = "business-range";
+    const rangeInputLabelText = "Select a Business plan tier";
+    const appStorageId = "business-app-storage";
+    const teamAppStorageId = "business-team-app-storage";
+    const apiCallLimitId = "business-api-call-limit";
+    const priceId = "business-price";
+
+    const planDetails = [
+      {
+        appStorage: "5 GB",
+        teamAppStorage: "10 GB",
+        apiCallLimit: "1M",
+        price: "$5",
+      },
+      {
+        appStorage: "20 GB",
+        teamAppStorage: "20 GB",
+        apiCallLimit: "2M",
+        price: "$25",
+      },
+    ];
+
+    const defaultPlanDetailsIndex = "0";
+
+    const rangeWrapperElement = document.getElementById(rangeWrapperId);
+    if (!rangeWrapperElement) return;
+
+    // Range label
+    const rangeInputLabel = document.createElement("label");
+    rangeInputLabel.setAttribute("for", rangeInputId);
+    rangeInputLabel.className = "sr-only";
+    rangeInputLabel.textContent = rangeInputLabelText;
+    rangeWrapperElement.appendChild(rangeInputLabel);
+
+    // Range input
+    const rangeInput = document.createElement("input");
+    rangeInput.id = rangeInputId;
+    rangeInput.setAttribute("aria-controls", planDetailsId);
+    rangeInput.type = "range";
+    rangeInput.min = "0";
+    rangeInput.max = (planDetails.length - 1).toString();
+    rangeInput.value = defaultPlanDetailsIndex;
+    rangeInput.className = "range";
+    rangeInput.step = "0";
+    rangeWrapperElement.appendChild(rangeInput);
+
+    const rangeElement = document.getElementById(rangeInputId);
+    if (!rangeElement) return;
+
+    rangeElement.addEventListener("input", (event) => {
+      const rangeElement = event.target as HTMLInputElement;
+      setPlanDetails(rangeElement.value);
+    });
+
+    // Set default values
+    setPlanDetails(defaultPlanDetailsIndex);
+
+    function setPlanDetails(index: string): void {
+      const appStorageElement = document.getElementById(appStorageId);
+      const teamAppStorageElement = document.getElementById(teamAppStorageId);
+      const apiCallLimitElement = document.getElementById(apiCallLimitId);
+      const priceElement = document.getElementById(priceId);
+      if (
+        !appStorageElement ||
+        !teamAppStorageElement ||
+        !apiCallLimitElement ||
+        !priceElement
+      )
+        return;
+
+      const { appStorage, teamAppStorage, apiCallLimit, price } =
+        planDetails[parseInt(index)];
+
+      appStorageElement.textContent = appStorage;
+      teamAppStorageElement.textContent = teamAppStorage;
+      apiCallLimitElement.textContent = apiCallLimit;
+      priceElement.textContent = price;
+    }
+
+    // Do range labels
+    const labelsDiv = document.createElement("div");
+    labelsDiv.className = "flex w-full justify-between px-2 text-xs";
+
+    planDetails.forEach(({ appStorage }) => {
+      const span = document.createElement("span");
+      span.textContent = appStorage;
+      labelsDiv.appendChild(span);
+    });
+
+    rangeWrapperElement.appendChild(labelsDiv);
+  })();
+</script>
