@@ -7,19 +7,19 @@
     <div class="rounded bg-neutral p-6">
       <h3 class="font-bold text-primary">Pro</h3>
       <div class="font-bold">
-        <span id="pro-price" class="text-5xl"></span> /user per month
+        <span id="pro-price" class="text-5xl"></span> /month
       </div>
     </div>
     <div class="px-4 py-8">
       <div class="pb-2 italic">Everything in Free +</div>
-      <div class="pb-2 font-bold">User benefits:</div>
+      <!-- <div class="pb-2 font-bold">User benefits:</div> -->
       <ul class="mb-4 list-inside list-disc">
-        <li><span id="pro-app-storage"></span> of application storage</li>
+        <li><span id="pro-app-storage"></span> of storage</li>
         <li><span id="pro-api-call-limit"></span> API calls</li>
       </ul>
       <div class="pb-2 font-bold">Developer benefits:</div>
       <ul class="list-inside list-disc">
-        <li>Use the subscription API</li>
+        <li>Email support by development team</li>
       </ul>
       <div id="pro-range-wrapper" class="pt-12"></div>
     </div>
@@ -46,9 +46,14 @@
         price: "$5",
       },
       {
+        appStorage: "10 GB",
+        apiCallLimit: "1.5M",
+        price: "$9",
+      },
+      {
         appStorage: "20 GB",
         apiCallLimit: "2M",
-        price: "$25",
+        price: "$16",
       },
     ];
 
