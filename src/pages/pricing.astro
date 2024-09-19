@@ -1,4 +1,5 @@
 ---
+import BuilderPlanCard from "../components/BuilderPlanCard.astro";
 import BusinessPlanCard from "../components/BusinessPlanCard.astro";
 import ProPlanCard from "../components/ProPlanCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -20,25 +21,25 @@ const title = "Pricing";
     </div>
   </div>
 
-  <div class="mx-auto max-w-5xl px-4">
+  <div class="mx-auto max-w-6xl px-4">
     <h2 class="mb-12 text-center text-4xl font-bold">Individuals</h2>
     <div
-      class="mb-24 grid grid-cols-1 justify-items-center gap-12 md:grid-cols-2 [&>div]:w-full [&>div]:max-w-[448px]"
+      class="mb-24 grid grid-cols-1 justify-items-center gap-12 md:grid-cols-3 [&>div]:w-full [&>div]:max-w-[448px]"
     >
       <div class="card flex-col justify-between border p-4">
         <div>
           <div class="rounded bg-neutral p-6">
             <h3 class="font-bold">Free</h3>
             <div class="font-bold">
-              <span id="price" class="text-5xl">$0</span> /user per month
+              <span id="price" class="text-5xl">$0</span>
             </div>
           </div>
           <div class="px-4 py-8">
-            <div class="pb-2 font-bold">User benefits:</div>
+            <!-- <div class="pb-2 font-bold">User benefits:</div> -->
             <ul class="mb-4 list-inside list-disc">
               <li>Use any Bazaar application</li>
               <li>Control over all your data</li>
-              <li>100MB of application storage</li>
+              <li>100MB of storage</li>
               <li>100'000 API calls</li>
             </ul>
             <div class="pb-2 font-bold">Developer benefits:</div>
@@ -52,6 +53,7 @@ const title = "Pricing";
         </a>
       </div>
       <ProPlanCard />
+      <BuilderPlanCard />
     </div>
 
     <h2 class="mb-12 text-center text-4xl font-bold">Organizations</h2>
@@ -70,21 +72,22 @@ const title = "Pricing";
           </div>
           <div class="px-4 py-8">
             <div class="pb-2 italic">Everything in Business +</div>
-            <div class="pb-2 font-bold">Organization benefits:</div>
+            <!-- <div class="pb-2 font-bold">Organization benefits:</div> -->
             <ul class="mb-4 list-inside list-disc">
-              <li>User provisioning (SCIM)</li>
-              <li>Dedicated Manager</li>
-              <li>25GB of team application storage</li>
+              <li>SAML SSO & user provisioning (SCIM)</li>
+              <li>Create teams within organization</li>
+              <li>Dedicated manager & support</li>
+              <li>Custom organizational storage</li>
             </ul>
-            <div class="pb-2 font-bold">User benefits:</div>
-            <ul class="list-inside list-disc">
-              <li>25GB of application storage</li>
-              <li>2M API calls</li>
+            <div class="pb-2 font-bold">Member benefits:</div>
+            <ul class="mb-4 list-inside list-disc">
+              <li>Custom storage</li>
+              <li>Custom API call quota</li>
             </ul>
-            <div class="pb-2 font-bold">Developer benefits:</div>
+            <!-- <div class="pb-2 font-bold">Developer benefits:</div>
             <ul class="list-inside list-disc">
               <li>Dedicated Support</li>
-            </ul>
+            </ul> -->
           </div>
         </div>
         <a href="https://cloud.bzr.dev/login" class="btn btn-outline btn-block">

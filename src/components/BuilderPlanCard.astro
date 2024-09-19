@@ -3,75 +3,62 @@
 ---
 
 <div class="card flex-col justify-between border p-4">
-  <div id="business-details" aria-live="polite">
+  <div id="builder-details" aria-live="polite">
     <div class="rounded bg-neutral p-6">
-      <h3 class="font-bold text-primary">Business</h3>
+      <h3 class="font-bold">Builder</h3>
       <div class="font-bold">
-        <span id="business-price" class="text-5xl"></span> /user per month
+        <span id="builder-price" class="text-5xl"></span> /month
       </div>
     </div>
     <div class="px-4 py-8">
-      <!-- <div class="pb-2 italic">Everything in Pro +</div> -->
-      <!-- <div class="pb-2 font-bold">Organization benefits:</div> -->
+      <div class="pb-2 italic">Everything in Pro +</div>
+      <!-- <div class="pb-2 font-bold">User benefits:</div> -->
       <ul class="mb-4 list-inside list-disc">
-        <li>Create organization</li>
-        <li>
-          <span id="business-team-app-storage"></span> of organizational storage
-        </li>
-        <li>Email support by development team</li>
-      </ul>
-      <div class="pb-2 font-bold">Member benefits:</div>
-      <ul class="mb-4 list-inside list-disc">
-        <li><span id="business-app-storage"></span> of storage</li>
-        <li><span id="business-api-call-limit"></span> API calls</li>
+        <li><span id="builder-app-storage"></span> of storage</li>
+        <li><span id="builder-api-call-limit"></span> API calls</li>
       </ul>
       <div class="pb-2 font-bold">Developer benefits:</div>
       <ul class="list-inside list-disc">
-        <li>Team collaboration</li>
+        <li>Monetization</li>
+        <li>Application storage</li>
+        <li>Send Transactional Emails</li>
       </ul>
-      <div id="business-range-wrapper" class="pt-12"></div>
+      <div id="builder-range-wrapper" class="pt-12"></div>
     </div>
   </div>
-  <a href="https://cloud.bzr.dev/login" class="btn btn-outline btn-block">
-    Sign Up
+  <a
+    href="https://cloud.bzr.dev/login"
+    class="btn btn-disabled btn-outline btn-block"
+  >
+    Coming Soon
   </a>
 </div>
 
 <script>
   (() => {
-    const planDetailsId = "business-details";
-    const rangeWrapperId = "business-range-wrapper";
-    const rangeInputId = "business-range";
-    const rangeInputLabelText = "Select a Business plan tier";
-    const appStorageId = "business-app-storage";
-    const teamAppStorageId = "business-team-app-storage";
-    const apiCallLimitId = "business-api-call-limit";
-    const priceId = "business-price";
+    const planDetailsId = "builder-details";
+    const rangeWrapperId = "builder-range-wrapper";
+    const rangeInputId = "builder-range";
+    const rangeInputLabelText = "Select a Builder plan tier";
+    const appStorageId = "builder-app-storage";
+    const apiCallLimitId = "builder-api-call-limit";
+    const priceId = "builder-price";
 
     const planDetails = [
       {
-        appStorage: "10 GB",
-        teamAppStorage: "10 GB",
+        appStorage: "5 GB",
         apiCallLimit: "1M",
-        price: "$15",
+        price: "$10",
       },
       {
         appStorage: "20 GB",
-        teamAppStorage: "20 GB",
         apiCallLimit: "2M",
-        price: "$25",
+        price: "$20",
       },
       {
         appStorage: "50 GB",
-        teamAppStorage: "50 GB",
         apiCallLimit: "3M",
-        price: "$45",
-      },
-      {
-        appStorage: "100 GB",
-        teamAppStorage: "100 GB",
-        apiCallLimit: "5M",
-        price: "$85",
+        price: "$40",
       },
     ];
 
@@ -112,22 +99,13 @@
 
     function setPlanDetails(index: string): void {
       const appStorageElement = document.getElementById(appStorageId);
-      const teamAppStorageElement = document.getElementById(teamAppStorageId);
       const apiCallLimitElement = document.getElementById(apiCallLimitId);
       const priceElement = document.getElementById(priceId);
-      if (
-        !appStorageElement ||
-        !teamAppStorageElement ||
-        !apiCallLimitElement ||
-        !priceElement
-      )
-        return;
+      if (!appStorageElement || !apiCallLimitElement || !priceElement) return;
 
-      const { appStorage, teamAppStorage, apiCallLimit, price } =
-        planDetails[parseInt(index)];
+      const { appStorage, apiCallLimit, price } = planDetails[parseInt(index)];
 
       appStorageElement.textContent = appStorage;
-      teamAppStorageElement.textContent = teamAppStorage;
       apiCallLimitElement.textContent = apiCallLimit;
       priceElement.textContent = price;
     }
