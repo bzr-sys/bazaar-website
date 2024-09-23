@@ -1,6 +1,6 @@
 ---
-title: Authentication
-summary: Bazaar enhances app authentication with a simple API and robust OAuth flow, ensuring secure authorization and efficient token management for improved security and developer experience.
+title: Simple Authentication
+summary: Bazaar makes user authentication as simple as can be with a minimal API and robust OAuth flow, ensuring secure authorization and efficient token management for improved security and developer experience.
 order: 6
 ---
 
