@@ -26,7 +26,7 @@ The mock server is close in functionality with the real server. You can log in o
 
 ## Connect your app to the mock server
 
-Whenever you run your app with `NODE_ENV=development`, the Bazaar library will automatically connect to http://localhost:3377. You can also change this URL manually when creating a BazaarApp.
+When running your app in development mode, the Bazaar library will automatically connect to mock server URL by defaulting `bazaarUri` to `http://localhost:3377`. In production, `bazaarUri` is set to `https://cloud.bzr.dev`. You can optionally set this URL when creating a BazaarApp.
 
 ```js
 import { BazaarApp } from "@bzr/bazaar";
