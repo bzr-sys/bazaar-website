@@ -11,7 +11,6 @@ export default defineConfig({
   site: "https://bzr.dev",
   integrations: [
     tailwind(),
-    mdx(),
     sitemap(),
     starlight({
       title: "Bazaar Docs",
@@ -42,5 +41,6 @@ export default defineConfig({
         { label: "API Reference", link: "/api" },
       ],
     }),
+    mdx(),
   ],
 });
