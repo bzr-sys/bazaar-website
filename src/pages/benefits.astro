@@ -1,14 +1,36 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 
-const title = "The Benefits of Bazaar";
+const title = "The Benefits & Limitations of Bazaar";
 ---
 
 <PageLayout title={title}>
   <h1>{title}</h1>
   <p class="text-xl">
     There are numerous reasons to use Bazaar, depending on the lense you are
-    looking through.
+    looking through. First, though, we should acknowledge the limitations Bazaar
+    has.
+  </p>
+
+  <!-- Limitations -->
+  <h2>When should you <i>not</i> use Bazaar</h2>
+  <p>
+    With any ordinary backend-as-a-service (BaaS) like Firebase or Supabase, you
+    can basically build any application you can think of. It might not be ideal
+    for every application, but there are no technical impediments. The same
+    cannot be said of Bazaar. Currently, Bazaar is not feature-complete, most
+    notably lacking compute (functions) in the backend. We are working on
+    filling that gap, but even with our entire vision for the Bazaar API
+    complete, there are inherent limitations. The Bazaar backend always runs
+    within the context of the end-user, is paid for by the end-user, and is
+    ultimately under control of the end-user. For some applications, this is
+    simply not acceptable.
+  </p>
+  <p>
+    At Bazaar, we accept these limitations. We do not intend to be the perfect
+    backend for all applications but instead aim to make it easier, cheaper, and
+    more secure to build 80% of the applications you can come up with. All while
+    letting users own their data.
   </p>
 
   <!-- Dev -->
