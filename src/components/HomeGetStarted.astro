@@ -1,0 +1,264 @@
+---
+import { Code } from "astro:components";
+---
+
+<div class="px-4 pb-28">
+  <h2 class="pb-12 text-center text-4xl font-bold">Getting Started</h2>
+  <div class="mx-auto grid max-w-screen-lg gap-12 px-4">
+    <!-- Init client: install, init,  -->
+    <div class="copy-start-grid">
+      <!-- card code description -->
+      <div class="copy-start-cell px-4 lg:px-0 lg:py-8">
+        <div class="card rounded bg-base-200 pb-[30px] lg:pb-0 lg:pr-[50px]">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold uppercase">Get Setup</h3>
+            <div class="prose">
+              <ol>
+                <li>
+                  <a
+                    class="link-hover opacity-60"
+                    href="/docs/start-here/getting-started/#create-an-account"
+                    >Create a Bazaar app</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="link-hover opacity-60"
+                    href="/docs/start-here/getting-started/#install-the-library"
+                    >Install the Bazaar library</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="link-hover opacity-60"
+                    href="/docs/start-here/getting-started/#initialize-a-client"
+                    >Initialize a client</a
+                  >
+                </li>
+              </ol>
+            </div>
+
+            <div class="link-hover mt-4 text-right text-sm">
+              <a href="/docs/start-here/getting-started"
+                >Read setup docs &rarr;</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- code snippet -->
+      <Code
+        class="code-start-cell rounded px-8 drop-shadow-xl"
+        lang="ts"
+        code={`
+// Initialize a client
+import { BazaarApp } from "@bzr/bazaar";
+
+const bzr = new BazaarApp({
+  appId: "example-app-id",
+  loginRedirectUri: "http://example.com",
+});
+        `}
+      />
+    </div>
+
+    <!-- Auth  -->
+    <div class="copy-start-grid">
+      <!-- card code description -->
+      <div class="copy-start-cell px-4 lg:px-0 lg:py-8">
+        <div class="card rounded bg-base-200 pb-[30px] lg:pb-0 lg:pr-[50px]">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold uppercase">
+              Log in <span class="lowercase opacity-60">or</span> Sign up
+            </h3>
+            <div class="prose">
+              <p>
+                Add authentication to your app using Bazaar as an OAuth2
+                provider.
+              </p>
+            </div>
+            <div class="link-hover mt-4 text-right text-sm">
+              <a href="/docs/features/auth/">Read auth docs &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- code snippet -->
+      <Code
+        class="code-start-cell rounded px-8 drop-shadow-xl"
+        lang="ts"
+        code={`
+// Log in or sign up a user
+bzr.login();
+
+// Check if a user is logged in
+bzr.isLoggedIn();
+
+// On user log in event...
+bzr.onLogin(() => {
+  // ...handle login
+});
+
+// Log in or sign up a user
+bzr.login();
+
+// Check if a user is logged in
+bzr.isLoggedIn();
+
+// On user log in event...
+bzr.onLogin(() => {
+  // ...handle login
+});
+        `}
+      />
+    </div>
+
+    <!-- Data -->
+    <div class="copy-start-grid">
+      <!-- card code description -->
+      <div class="copy-start-cell px-4 lg:px-0 lg:py-8">
+        <div class="card rounded bg-base-200 pb-[30px] lg:pb-0 lg:pr-[50px]">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold uppercase">Realtime Databases</h3>
+            <div class="prose">
+              <p>
+                After logging in, each user gets immediate access to their own
+                database, with realtime capabilities.
+              </p>
+            </div>
+            <div class="link-hover mt-4 text-right text-sm">
+              <a href="/docs/features/collections/">Read database docs &rarr;</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- code snippet -->
+      <Code
+        class="code-start-cell rounded px-8 drop-shadow-xl"
+        lang="ts"
+        code={`
+// Create a collection
+const tasksCollection = bzr.collection("tasks");
+
+// Insert a doc
+const task = { name: "Make dream apps with Bazaar" };
+tasksCollection.insertOne({ task });
+
+// Fetch all docs
+const allTasks = await tasksCollection.getAll();
+
+// Subscribe to all collection change events
+const unsubscribe = await tasksCollection.subscribeAll(filter, listener);
+        `}
+      />
+    </div>
+
+    <!-- Permissions -->
+    <div class="copy-start-grid">
+      <!-- card code description -->
+      <div class="copy-start-cell px-4 lg:px-0 lg:py-8">
+        <div class="card rounded bg-base-200 pb-[30px] lg:pb-0 lg:pr-[50px]">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold uppercase">
+              Simple <span class="lowercase opacity-60">and</span>
+              Powerful Permissions
+            </h3>
+            <div class="prose">
+              <p>
+                Share resources by granting permissions explicitly or by
+                creating sharing links.
+              </p>
+            </div>
+            <div class="link-hover mt-4 text-right text-sm">
+              <a href="/docs/features/permissions/"
+                >Read permissions docs &rarr;</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- code snippet -->
+      <Code
+        class="code-start-cell rounded px-8 drop-shadow-xl"
+        lang="ts"
+        code={`
+// Create a permission
+import { PermissionType } from "@bzr/bazaar";
+const newPermission = {
+  collectionName: "example-collection-name",
+  userId: "example-user-id-to-grant-permission-to",
+  types: [PermissionType.READ],
+  filter: {
+    id: "example-doc-id",
+  },
+};
+
+bzr.permissions.create(newPermission);
+        `}
+      />
+    </div>
+  </div>
+  <div class="pt-12 text-center">
+    <a
+      href="/docs/start-here/getting-started/"
+      class="link-hover link text-lg text-white">Get Started &rarr;</a
+    >
+  </div>
+</div>
+
+<style>
+  .copy-start-grid,
+  .copy-end-grid {
+    display: grid;
+    grid-template-rows: auto 2rem auto;
+    grid-template-areas:
+      "start"
+      "overlap"
+      "end";
+    position: relative;
+  }
+
+  .copy-start-cell,
+  .copy-end-cell {
+    grid-column: 1 / 2;
+    grid-row: start / overlap;
+  }
+
+  .code-start-cell,
+  .code-end-cell {
+    grid-column: 1 / 2;
+    grid-row: overlap / end;
+    z-index: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .copy-start-grid {
+      grid-template-columns: 3fr 2rem 6fr;
+      grid-template-rows: 1fr;
+      grid-template-areas: "start overlap end";
+    }
+    .copy-start-cell {
+      grid-column: start / overlap;
+      grid-row: 1;
+    }
+    .code-start-cell {
+      grid-column: overlap / end;
+      grid-row: 1;
+    }
+
+    .copy-end-grid {
+      grid-template-columns: 6fr 2rem 3fr;
+      grid-template-rows: 1fr;
+      grid-template-areas: "start overlap end";
+    }
+    .code-end-cell {
+      grid-column: start / overlap;
+      grid-row: 1;
+    }
+    .copy-end-cell {
+      grid-column: overlap / end;
+      grid-row: 1;
+    }
+  }
+</style>

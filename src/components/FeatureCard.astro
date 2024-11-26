@@ -11,57 +11,80 @@ interface Props {
   feature: CollectionEntry<"features">;
 }
 
-const { feature } = Astro.props;
-
-const iconClassName = "w-[100px] fill-base-content opacity-40";
+const {
+  feature: { slug, collection, data },
+} = Astro.props;
 ---
 
-<div class="card w-full bg-base-200 shadow-xl">
+<div class="card bg-base-200">
   <div class="card-body">
     <div class="mx-auto py-8">
       {
-        feature.slug === "privacy-and-data-protection" && (
-          <DataPrivacySVG slot="icon" className={iconClassName} />
+        slug === "privacy-and-data" && (
+          <DataPrivacySVG className="card-svg hover-glow" />
         )
       }
       {
-        feature.slug === "truly-backendless" && (
-          <BackendSVG slot="icon" className={iconClassName} />
+        slug === "truly-backendless" && (
+          <BackendSVG className="card-svg hover-glow" />
         )
       }
       {
-        feature.slug === "zero-running-costs" && (
-          <ZeroCostsSVG slot="icon" className={iconClassName} />
+        slug === "zero-running-costs" && (
+          <ZeroCostsSVG className="card-svg hover-glow" />
         )
       }
       {
-        feature.slug === "social" && (
-          <SocialConnectionSVG slot="icon" className={iconClassName} />
+        slug === "social" && (
+          <SocialConnectionSVG className="card-svg hover-glow" />
         )
       }
       {
-        feature.slug === "realtime-databases" && (
-          <NoSqlSVG slot="icon" className={iconClassName} />
+        slug === "realtime-databases" && (
+          <NoSqlSVG className="card-svg hover-glow" />
         )
       }
       {
-        feature.slug === "authentication" && (
-          <AuthenticationSVG slot="icon" className={iconClassName} />
+        slug === "authentication" && (
+          <AuthenticationSVG className="card-svg hover-glow" />
         )
       }
     </div>
     <h2 class="card-title">
-      <a href={`/${feature.collection}/${feature.slug}`}>{feature.data.title}</a
-      >
+      <a href={`/${collection}/${slug}`}>{data.title}</a>
     </h2>
-    <p>{feature.data.summary}</p>
-    <div class="card-actions justify-end">
+    <p>{data.summary}</p>
+    <div class="card-actions justify-end pt-8">
+      <!-- focus:active:transform-none is needed to override daisyUI a button style which scales the button and breaks the stretched-link styling -->
       <a
-        href={`/${feature.collection}/${feature.slug}`}
-        class="btn btn-primary"
+        href={`/${collection}#${slug}`}
+        class="stretched-link btn btn-outline btn-sm focus:active:transform-none"
       >
-        Learn More
+        Learn More &rarr;
       </a>
     </div>
   </div>
 </div>
+
+<style is:global>
+  /* move to global place! */
+  /* cover card with link to make the whole card clickable. Links can't wrap block elements */
+  .stretched-link::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    content: "";
+  }
+  .card .card-svg {
+    fill: #fff;
+    opacity: 0.4;
+    width: 100px;
+  }
+  .card:hover .hover-glow {
+    opacity: 1;
+    filter: drop-shadow(0px 0px 6px #db9a59);
+  }
+</style>

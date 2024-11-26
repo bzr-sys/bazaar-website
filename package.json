@@ -14,7 +14,7 @@
     "@astrojs/mdx": "^3.1.5",
     "@astrojs/rss": "^4.0.1",
     "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/starlight": "^0.24.4",
+    "@astrojs/starlight": "^0.29.2",
     "@astrojs/tailwind": "^5.0.4",
     "@tailwindcss/typography": "^0.5.13",
     "astro": "^4.0.7",

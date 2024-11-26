@@ -6,11 +6,11 @@ order: 6
 
 Bazaar Authentication offers a straightforward and secure solution right out of the box.
 
-## Bazaar OAuth Process
+### Bazaar OAuth Process
 
 Bazaar-powered apps require users to have a Bazaar account. Authentication is done via a user's account, where they authorize their chosen apps. The authentication flow takes place in a Bazaar pop-up. Users can then manage app authorization from their Bazaar Dashboard.
 
-## Simple SDK
+### Simple SDK
 
 Create a sign-up or login request:
 
@@ -36,10 +36,10 @@ bzr.onLogin(async () => {
 
 Read the [Auth docs](/docs/features/auth).
 
-## Simplified Permissions
+### Simplified Permissions
 
 Leveraging Bazaar's database-per-user architecture, users gain immediate access to their databases, bypassing the need for complex access policies. For more refined control, the [Permissions API](/features/permissions) allows assigning permissions with precision.
 
-## Technical Backbone
+### Technical Backbone
 
 Underneath, Bazaar Authentication utilizes the OAuth2 Authorization Code Flow with PKCE extension, ensuring enhanced security. After authorization, a JWT access token is issued. Our SDK simplifies the process, managing login requests, auth code exchanges for access tokens, token storage, and integration with users' [realtime database](/features/realtime-databases), creating a cohesive and secure user experience.
