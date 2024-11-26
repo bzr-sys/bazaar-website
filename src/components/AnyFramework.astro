@@ -1,0 +1,46 @@
+---
+import FrameworkCard from "./FrameworkCard.astro";
+import JavaScriptSVG from "./JavaScriptSVG.astro";
+import ReactSVG from "./ReactSVG.astro";
+import VueSVG from "./VueSVG.astro";
+---
+
+<div class="px-4 py-28">
+  <h2 class="pb-4 text-center text-4xl font-bold">
+    Use with your Framework of choice
+  </h2>
+  <div
+    class="mx-auto grid max-w-screen-2xl gap-4 px-4 py-8 md:grid-cols-2 lg:grid-cols-3"
+  >
+    <FrameworkCard url="/docs/guides/react/" linkTitle="Get Started with React">
+      <ReactSVG slot="icon" className="card-svg react-glow" />
+    </FrameworkCard>
+    <FrameworkCard url="/docs/guides/vue/" linkTitle="Get Started with Vue">
+      <VueSVG slot="icon" className="card-svg vue-glow" />
+    </FrameworkCard>
+    <FrameworkCard
+      url="/docs/guides/javascript/"
+      linkTitle="Get Started with Vanilla JS"
+    >
+      <JavaScriptSVG slot="icon" className="card-svg js-glow" />
+    </FrameworkCard>
+  </div>
+</div>
+
+<style is:global>
+  .card:hover .react-glow {
+    opacity: 1;
+    fill: #58c4dc;
+    filter: drop-shadow(0px 0px 3px #58c4dc);
+  }
+  .card:hover .vue-glow {
+    opacity: 1;
+    fill: #42b883;
+    filter: drop-shadow(0px 0px 3px #42b883);
+  }
+  .card:hover .js-glow {
+    opacity: 1;
+    fill: #f5ed08;
+    filter: drop-shadow(0px 0px 3px #f5ed08);
+  }
+</style>

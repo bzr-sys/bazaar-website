@@ -1,12 +1,26 @@
 ---
+import { getEntry } from "astro:content";
 import BigTitle from "../components/BigTitle.astro";
-import FeatureGrid from "../components/FeatureGrid.astro";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import Feature from "../components/Feature.astro";
+import PageLayout from "../layouts/PageLayout.astro";
 
 const title = "Features";
+
+const privacyAndData = await getEntry("features", "privacy-and-data");
+const backendless = await getEntry("features", "truly-backendless");
+const zeroRunningCosts = await getEntry("features", "zero-running-costs");
+const social = await getEntry("features", "social");
+const noSql = await getEntry("features", "realtime-databases");
+const authentication = await getEntry("features", "authentication");
 ---
 
-<BaseLayout title={title}>
+<PageLayout title={title}>
   <BigTitle>{title}</BigTitle>
-  <FeatureGrid />
-</BaseLayout>
+
+  <Feature feature={privacyAndData} />
+  <Feature feature={backendless} />
+  <Feature feature={zeroRunningCosts} />
+  <Feature feature={social} />
+  <Feature feature={noSql} />
+  <Feature feature={authentication} />
+</PageLayout>

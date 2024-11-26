@@ -1,0 +1,14 @@
+---
+import { type CollectionEntry } from "astro:content";
+
+interface Props {
+  feature: CollectionEntry<"features">;
+}
+
+const { feature } = Astro.props;
+
+const { Content } = await feature.render();
+---
+
+<h2 id={feature.slug}>{feature.data.title}</h2>
+<Content />

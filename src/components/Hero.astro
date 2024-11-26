@@ -1,9 +1,10 @@
 ---
 import poweredByBazaar from "../images/powered-by-bazaar.png";
+import SpannerSVG from "./SpannerSVG.astro";
 ---
 
 <div
-  class="hero-bg hero relative"
+  class="hero-bg hero relative mb-20"
   style={`background-image: url(${poweredByBazaar.src})`}
 >
   <div class="hero-content pb-40 pt-28 text-center text-neutral-content">
@@ -16,6 +17,15 @@ import poweredByBazaar from "../images/powered-by-bazaar.png";
       </p>
     </div>
   </div>
+</div>
+<div class="pb-20 text-center">
+  <a
+    class="animate-hover-spanner-throw btn btn-primary btn-lg"
+    href="https://cloud.bzr.dev"
+  >
+    <span>Start Building</span>
+    <SpannerSVG width="25px" />
+  </a>
 </div>
 
 <style>

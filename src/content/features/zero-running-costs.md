@@ -6,17 +6,17 @@ order: 3
 
 Bazaar introduces a groundbreaking approach to app development empowering developers to create without running costs. This unique offering enables developers to pursue their creative ideas, from personal hobby projects to large-scale applications, without worrying about escalating expenses.
 
-## How It Works
+### How It Works
 
 The key to Bazaar's innovative model lies in its user-centric approach. When users first sign up for a Bazaar-powered app, they create a Bazaar account. Their free Bazaar plan includes generous bandwidth and data storage so users can explore any Bazaar-powered app. Users' usage is based on their bandwidth and data storage consumption rather than the amount of apps they use. When a user wants more resources, they can upgrade to a flexible paid plan.
 
-## Benefits for Developers
+### Benefits for Developers
 
 - **Focus on Innovation:** With running costs off the table, developers can concentrate on what they do best – creating remarkable apps.
 - **Seamless Scalability:** If an app gains popularity, it can scale effortlessly. The cost of scaling is borne by the users who find value in the app, making the model sustainable and fair.
 - **Sustainable Hobby Projects:** Developers can build and maintain their hobby projects indefinitely, without the pressure of running costs.
 
-## Benefits for Users
+### Benefits for Users
 
 - **Control Over Costs:** Users only pay for what they use, ensuring they invest in apps that provide the most value.
 - **Transparency in Usage:** The precise structure of free and paid plans offers transparency, allowing users to manage their app usage and costs effectively.

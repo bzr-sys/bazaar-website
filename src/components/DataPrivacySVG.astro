@@ -3,10 +3,14 @@ interface Props {
   className?: string;
 }
 
-const { className } = Astro.props;
+const { className = "" } = Astro.props;
 ---
 
-<svg class={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg
+  class={`${className} glow`}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+>
   <path
     d="M59.733,34.133H51.2c-4.713,0-8.533,3.82-8.533,8.533S46.487,51.2,51.2,51.2h8.533c4.713,0,8.533-3.82,8.533-8.533
 				S64.446,34.133,59.733,34.133z"
@@ -83,3 +87,9 @@ const { className } = Astro.props;
 				c4.713,0,8.533-3.82,8.533-8.533S252.18,315.733,247.467,315.733z"
   ></path>
 </svg>
+
+<style is:global>
+  /* .card-body:hover .glow {
+    filter: drop-shadow(0px 0px 6px #db9a59);
+  } */
+</style>

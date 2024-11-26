@@ -6,7 +6,7 @@ order: 5
 
 Bazaar realtime databases are document-orientated, with no need to create or enforce schemas. Database collections are lazily created, enabling you to get your apps up and running quicker.
 
-## Simple SDK
+### Simple SDK
 
 Insert a doc:
 
@@ -25,7 +25,7 @@ const task = await tasksCollection.getOne("task-id");
 
 Read the [Collections docs](/docs/features/collections/).
 
-## Database-per-user Architecture
+### Database-per-user Architecture
 
 Bazaar employs a database architecture where each user is assigned
 an individual database for your app through their Bazaar account. This

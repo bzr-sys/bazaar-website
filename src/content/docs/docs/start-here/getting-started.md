@@ -4,11 +4,11 @@ title: Getting Started
 
 Getting started with Bazaar is quick and easy. To being, you create a Bazaar account, then create a Bazaar App and register your app. Next, you install the JavaScript SDK, configure an instance of the SDK, then create and log in a user before interacting with data.
 
-## Create a Bazaar Account
+## Create an Account
 
-To begin, [create a Bazaar account](https://cloud.bzr.dev/login).
+To begin, [create a free Bazaar account](https://cloud.bzr.dev/login).
 
-## Create a Bazaar App
+## Register an App
 
 On your Bazaar dashboard go to the Developers section by opening the menu and clicking [**Developers**](https://cloud.bzr.dev/developers).
 
@@ -20,9 +20,9 @@ Next, click **Create App**.
 
 Click **Create** to get an app ID.
 
-## Install the JavaScript SDK
+## Install the library
 
-Install the SDK from NPM:
+Install the Bazaar library from NPM:
 
 ```bash
 npm i @bzr/bazaar
@@ -34,7 +34,7 @@ Or, load it from a CDN:
 <script src="https://unpkg.com/@bzr/bazaar"></script>
 ```
 
-## Create a Bazaar App Client
+## Initialize a Client
 
 ```js
 import { BazaarApp } from "@bzr/bazaar";
