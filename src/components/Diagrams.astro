@@ -1,0 +1,32 @@
+---
+import { Image } from "astro:assets";
+import architectureTraditionalImage from "../images/architecture-traditional.png";
+import architectureBazaarImage from "../images/architecture-bazaar.png";
+---
+
+<div class="px-4 pt-20">
+  <h2 class="pb-12 text-center text-4xl font-bold">Not your typical BaaS</h2>
+
+  <div
+    class="mx-auto grid max-w-screen-sm gap-12 lg:max-w-screen-lg lg:grid-cols-2"
+  >
+    <div class="card bg-base-200 p-8 text-center">
+      <h3 class="text-2xl font-bold">Traditional BaaS</h3>
+      <p class="pb-8 opacity-60">Developer Managed</p>
+      <Image
+        class="mx-auto max-w-[335px]"
+        src={architectureTraditionalImage}
+        alt="Architecture diagram of a traditional Backend-as-a-service where the developer manages the database, compute, and frontend"
+      />
+    </div>
+    <div class="card bg-base-200 p-8 text-center">
+      <h3 class="text-2xl font-bold">Bazaar</h3>
+      <p class="pb-8 opacity-60">Database and Compute per User</p>
+      <Image
+        class="mx-auto max-w-[442px]"
+        src={architectureBazaarImage}
+        alt="Architecture diagram of the Bazaar Backend-as-a-service where the developer manages the frontend, and users get their own database and compute"
+      />
+    </div>
+  </div>
+</div>
