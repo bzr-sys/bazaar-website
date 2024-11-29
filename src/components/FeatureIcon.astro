@@ -1,0 +1,24 @@
+---
+import DataPrivacySVG from "./DataPrivacySVG.astro";
+import BackendSVG from "./BackendSVG.astro";
+import ZeroCostsSVG from "./ZeroCostsSVG.astro";
+import SocialConnectionSVG from "./SocialConnectionSVG.astro";
+import NoSqlSVG from "./NoSqlSVG.astro";
+import AuthenticationSVG from "./AuthenticationSVG.astro";
+
+interface Props {
+  slug: string;
+  className: string;
+}
+
+const { slug, className } = Astro.props;
+
+const fullClass = `mx-auto w-[100px] fill-white opacity-40 ${className}`;
+---
+
+{slug === "privacy-and-data" && <DataPrivacySVG className={fullClass} />}
+{slug === "truly-backendless" && <BackendSVG className={fullClass} />}
+{slug === "zero-running-costs" && <ZeroCostsSVG className={fullClass} />}
+{slug === "social" && <SocialConnectionSVG className={fullClass} />}
+{slug === "realtime-databases" && <NoSqlSVG className={fullClass} />}
+{slug === "authentication" && <AuthenticationSVG className={fullClass} />}

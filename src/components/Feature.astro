@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry } from "astro:content";
+import FeatureIcon from "./FeatureIcon.astro";
 
 interface Props {
   feature: CollectionEntry<"features">;
@@ -10,5 +11,8 @@ const { feature } = Astro.props;
 const { Content } = await feature.render();
 ---
 
+<FeatureIcon slug={feature.slug} className="card-svg" />
 <h2 id={feature.slug}>{feature.data.title}</h2>
-<Content />
+<div class="pb-24">
+  <Content />
+</div>
