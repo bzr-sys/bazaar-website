@@ -9,7 +9,7 @@ module.exports = {
     themes: [
       {
         dark: {
-          ...require("daisyui/src/theming/themes")["black"],
+          ...require("daisyui/src/theming/themes")["business"],
           primary: "#db9a59",
           "--rounded-box": "3px",
           "--rounded-btn": "3px",
