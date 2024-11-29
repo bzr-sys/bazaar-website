@@ -14,6 +14,9 @@ export default defineConfig({
     sitemap(),
     starlight({
       title: "Bazaar Docs",
+      expressiveCode: {
+        themes: ["github-dark"],
+      },
       customCss: ["./src/styles/starlight.css"],
       components: {
         SiteTitle: "./src/components/starlight/SiteTitle.astro",
