@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import starlight from "@astrojs/starlight";
-import astroExpressiveCode from "astro-expressive-code";
+import { astroExpressiveCode } from "@astrojs/starlight/expressive-code";
 
 import mdx from "@astrojs/mdx";
 
