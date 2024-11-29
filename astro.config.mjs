@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import starlight from "@astrojs/starlight";
+import astroExpressiveCode from "astro-expressive-code";
 
 import mdx from "@astrojs/mdx";
 
@@ -10,6 +11,9 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://bzr.dev",
   integrations: [
+    astroExpressiveCode({
+      themes: ["github-dark"],
+    }),
     tailwind(),
     sitemap(),
     starlight({
