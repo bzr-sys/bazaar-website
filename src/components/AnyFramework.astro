@@ -13,16 +13,25 @@ import VueSVG from "./VueSVG.astro";
     class="mx-auto grid max-w-screen-2xl gap-4 px-4 py-8 md:grid-cols-2 lg:grid-cols-3"
   >
     <FrameworkCard url="/docs/guides/react/" linkTitle="Get Started with React">
-      <ReactSVG slot="icon" className="card-svg react-glow" />
+      <ReactSVG
+        slot="icon"
+        className="react-glow w-[100px] fill-white opacity-40"
+      />
     </FrameworkCard>
     <FrameworkCard url="/docs/guides/vue/" linkTitle="Get Started with Vue">
-      <VueSVG slot="icon" className="card-svg vue-glow" />
+      <VueSVG
+        slot="icon"
+        className="vue-glow w-[100px] fill-white opacity-40"
+      />
     </FrameworkCard>
     <FrameworkCard
       url="/docs/guides/javascript/"
       linkTitle="Get Started with Vanilla JS"
     >
-      <JavaScriptSVG slot="icon" className="card-svg js-glow" />
+      <JavaScriptSVG
+        slot="icon"
+        className="js-glow w-[100px] fill-white opacity-40"
+      />
     </FrameworkCard>
   </div>
 </div>

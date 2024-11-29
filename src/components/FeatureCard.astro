@@ -1,11 +1,6 @@
 ---
 import { type CollectionEntry } from "astro:content";
-import DataPrivacySVG from "./DataPrivacySVG.astro";
-import BackendSVG from "./BackendSVG.astro";
-import ZeroCostsSVG from "./ZeroCostsSVG.astro";
-import SocialConnectionSVG from "./SocialConnectionSVG.astro";
-import NoSqlSVG from "./NoSqlSVG.astro";
-import AuthenticationSVG from "./AuthenticationSVG.astro";
+import FeatureIcon from "./FeatureIcon.astro";
 
 interface Props {
   feature: CollectionEntry<"features">;
@@ -19,36 +14,7 @@ const {
 <div class="card bg-base-200">
   <div class="card-body">
     <div class="mx-auto py-8">
-      {
-        slug === "privacy-and-data" && (
-          <DataPrivacySVG className="card-svg hover-glow" />
-        )
-      }
-      {
-        slug === "truly-backendless" && (
-          <BackendSVG className="card-svg hover-glow" />
-        )
-      }
-      {
-        slug === "zero-running-costs" && (
-          <ZeroCostsSVG className="card-svg hover-glow" />
-        )
-      }
-      {
-        slug === "social" && (
-          <SocialConnectionSVG className="card-svg hover-glow" />
-        )
-      }
-      {
-        slug === "realtime-databases" && (
-          <NoSqlSVG className="card-svg hover-glow" />
-        )
-      }
-      {
-        slug === "authentication" && (
-          <AuthenticationSVG className="card-svg hover-glow" />
-        )
-      }
+      <FeatureIcon slug={slug} className="hover-glow" />
     </div>
     <h2 class="card-title">
       <a href={`/${collection}/${slug}`}>{data.title}</a>
@@ -77,11 +43,6 @@ const {
     left: 0;
     z-index: 1;
     content: "";
-  }
-  .card .card-svg {
-    fill: #fff;
-    opacity: 0.4;
-    width: 100px;
   }
   .card:hover .hover-glow {
     opacity: 1;
