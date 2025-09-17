@@ -495,7 +495,7 @@ function onSubmit() {
 
 async function doLoginActions() {
  isLoggedIn.value = true;
- todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(fetchedTodos.value));
+ await todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(fetchedTodos.value));
 }
 
 ...
@@ -640,7 +640,7 @@ That code change will render a delete button for each todo.
 
     async function doLoginActions() {
       isLoggedIn.value = true;
-      todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(fetchedTodos.value));
+      await todosCollection.subscribeAll({}, arrayMirrorSubscribeListener(fetchedTodos.value));
     }
 
     // Perform login actions if the user is already logged in on page load
